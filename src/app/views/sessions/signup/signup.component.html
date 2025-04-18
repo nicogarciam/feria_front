@@ -1,0 +1,122 @@
+<div class="seciton-left">
+</div>
+<div
+        class="form-holder height-100vh mat-elevation-z4"
+        [perfectScrollbar]="{}"
+>
+    <form
+            [formGroup]="signupForm" (ngSubmit)="signup()"
+            class="signup-form"
+            fxLayout="column"
+            fxLayoutAlign="start"
+    >
+        <!-- headline -->
+        <div class="form-headline text-center mb-16">
+            <h1 class="font-weight-bold">{{ 'lets.start' | translate}}</h1>
+            <p class="text-muted">{{ 'create.account' | translate}}</p>
+        </div>
+        <div class="mb-32" fxLayout="row wrap" fxLayoutAlign="center center">
+            <img width="200px" src="assets/images/illustrations/posting_photo.svg" alt="">
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <div style="width: 450px">
+                <div fxLayout="row wrap" fxLayoutGap.md="16px" fxLayoutGap.lg="16px">
+                    <mat-form-field fxFlex="1 1 0%" appearance="outline">
+                        <mat-label>{{'name' | translate }}</mat-label>
+                        <input
+                                formControlName="firstName"
+                                matInput
+                                type="text"
+                                name="first_name"
+                                placeholder="{{'name' | translate }}"
+                        />
+                    </mat-form-field>
+                    <mat-form-field fxFlex="1 1 0%" appearance="outline">
+                        <mat-label>{{'last.name' | translate }}</mat-label>
+                        <input
+                                formControlName="lastName"
+                                matInput
+                                type="text"
+                                name="Last_name"
+                                placeholder="{{'last.name' | translate }}"
+                        />
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>{{"username" | translate }}</mat-label>
+                    <input
+                            matInput
+                            formControlName="username"
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                    />
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>{{"email" | translate }}</mat-label>
+                    <input
+                            matInput
+                            formControlName="email"
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                    />
+                    <small
+                            *ngIf="signupForm.controls['email'].hasError('required') && signupForm.controls['email'].touched"
+                            class="form-error-msg">  {{'email.required' | translate}}</small>
+
+                    <small
+                            *ngIf="signupForm.controls['email'].hasError('email.already.taken') && signupForm.controls['email'].touched"
+                            class="form-error-msg"> {{'email.already.taken' | translate}}</small>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label> {{ 'password' | translate}}</mat-label>
+                    <input
+                            matInput
+                            formControlName="password"
+                            type="password"
+                            name="password"
+                            placeholder="********"
+                    />
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label> {{ 'confirm.password' | translate}} </mat-label>
+                    <input
+                            matInput
+                            type="password"
+                            name="confirm_password"
+                            placeholder="********"
+                            formControlName="confirmPassword"
+                    />
+                    <mat-error>
+                        {{ 'password.didnt.match' | translate}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-checkbox class="mb-24" formControlName="agreed">{{ 'agree.conditions' | translate}}</mat-checkbox>
+
+                <div>
+                    <button mat-raised-button color="primary">{{"signup" | translate }}</button>
+                </div>
+
+                <mat-divider class="my-32"></mat-divider>
+
+                <div class="mb-24" fxLayout="column" fxLayoutGap="16px">
+                    <div id="buttonDiv"></div>
+                </div>
+
+
+                <div class="text-center">
+                    <a [routerLink]="'/sessions/signin'"
+                       class="mat-color-primary text-center full-width">
+                        {{ 'already.have.account' | translate}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

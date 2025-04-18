@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+    <p>{{data.message}}</p>
+    <input matInput [(ngModel)]="data.note" *ngIf="data.withNote"
+           placeholder="{{'reasons' | translate }}">
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="close()">{{'no' | translate}}</button>
+    <button mat-button (click)="confirm()" cdkFocusInitial>{{'yes' | translate}}</button>
+</div>

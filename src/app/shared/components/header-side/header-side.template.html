@@ -1,0 +1,99 @@
+<mat-toolbar class="topbar">
+  <!-- Sidenav toggle button -->
+<!--  *ngIf="layoutConf.sidebarStyle !== 'compact'"-->
+  <button
+
+          mat-icon-button
+          id="sidenavToggle"
+          (click)="toggleCollapse()"
+          matTooltip="Toggle Hide/Open"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Search form -->
+  <!-- <div fxFlex fxHide.lt-sm="true" class="search-bar">
+    <form class="top-search-form">
+      <mat-icon role="img">search</mat-icon>
+      <input autofocus="true" placeholder="Search" type="text" />
+    </form>
+  </div> -->
+
+  <!-- Store Changer -->
+  <div fxLayout="row" fxLayoutAlign="start center" >
+    <div  *ngIf="(jwtAuth.getStore())" >
+        {{ jwtAuth.getStore().name }}
+    </div>
+    <button
+            mat-icon-button
+            matTooltip="{{ 'change.hotel' | translate}}"
+            (click)="openChangeStore()"
+            class="topbar-button-right"
+    >
+      <mat-icon>swap_horiz</mat-icon>
+    </button>
+
+  </div>
+
+  <span fxFlex></span>
+  <!-- Language Switcher -->
+
+
+
+    <button
+            mat-icon-button
+            matTooltip="{{'notifications' | translate}}"
+            (click)="toggleCart()"
+            [style.overflow]="'visible'"
+            class="topbar-button-right"
+    >
+        <mat-icon>shopping_cart</mat-icon>
+        <span class="notification-number mat-bg-primary">{{cartQuery?.getCount()}}</span>
+    </button>
+
+  <button mat-button [matMenuTriggerFor]="menu">
+    <span class="flag-icon {{currentLang.flag}} mr-05"></span>
+    <span>{{currentLang.name}}</span>
+  </button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item *ngFor="let lang of availableLangs" (click)="setLang(lang)">
+        <span class="flag-icon mr-05 {{lang.flag}}"></span>
+        <span>{{lang.name}}</span>
+  </button>
+</mat-menu>
+
+
+<!--  <egret-search-input-over placeholder="Country (e.g. US)" resultPage="/search">-->
+<!--  </egret-search-input-over>-->
+  <!-- Open "views/search-view/result-page.component" to understand how to subscribe to input field value -->
+
+  <!-- Notification toggle button -->
+  <button
+    mat-icon-button
+    matTooltip="{{'notifications' | translate}}"
+    [style.overflow]="'visible'"
+    class="topbar-button-right"
+  >
+    <mat-icon>notifications</mat-icon>
+    <span class="notification-number mat-bg-warn">3</span>
+  </button>
+  <!-- Top left user menu -->
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="accountMenu"
+    class="topbar-button-right img-button"
+  >
+    <img src="{{jwtAuth?.user?.account?.image_url}}" alt="">
+  </button>
+
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item [routerLink]="['/my-profile']">
+      <mat-icon>account_box</mat-icon>
+      <span>{{'my.profile' | translate}}</span>
+    </button>
+    <button mat-menu-item (click)="jwtAuth.signout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>{{ "SIGNOUT" | translate }}</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

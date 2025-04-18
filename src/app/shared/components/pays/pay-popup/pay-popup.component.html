@@ -1,0 +1,226 @@
+<div class="card-title-text p-0 m-0" mat-dialog-title>
+    <div fxFlex fxLayout="column">
+        <div fxFlex>{{'pay' | translate}} {{sale?.customer?.name}} {{sale?.code}}</div>
+    </div>
+    <span fxFlex></span>
+    <button class="card-control" mat-icon-button (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<form [formGroup]="itemForm" (ngSubmit)="submit()">
+<div fxLayout="row" fxLayoutAlign="space-between start">
+    <div fxFlex="60" fxLayout="column" fxLayoutAlign="start">
+        <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field style="width: 130px" class="pr-05">
+                <!-- [formControl]="pay_date"-->
+                <input
+                        formControlName="pay_date"
+                        matInput
+                        [matDatepicker]="pickerPayDate"
+                        placeholder="{{'pay.date' | translate }}"
+                        required
+                        style="width: 130px;"
+                />
+                <mat-datepicker-toggle matSuffix [for]="pickerPayDate"></mat-datepicker-toggle>
+                <mat-datepicker #pickerPayDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field  style="width: 120px">
+                <mat-label>{{'type' | translate}}</mat-label>
+                <mat-select required formControlName="type">
+                    <mat-option *ngFor="let pType of pay_types" [value]="pType">
+                        {{ pType }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="pr-05">
+                <!-- [ngModel]="pay.concept"-->
+                <input
+                        matInput
+                        placeholder="{{'concept' | translate }}"
+                        formControlName="concept">
+            </mat-form-field>
+
+        </div>
+        <div fxFlex="50">
+            <mat-accordion class="paymethod-headers-align">
+                <!-- PAY CASH-->
+                <mat-expansion-panel hideToggle (opened)="setPayMethod(1)" [disabled]="paying" expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'cash' | translate }}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span> </span>
+                            <mat-icon>payments</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <mat-form-field>
+                        <mat-label>{{'amount.paid' | translate}}</mat-label>
+                        <input matInput type="number" min="1" [(ngModel)]="pay.amount" name="cash.amount"
+                               [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                    <mat-action-row>
+                        <button-loading
+                                [loading]="paying"
+                                color="primary"
+                                [disable]="itemForm.invalid">
+                            {{ 'pay' | translate}}
+                        </button-loading>
+                    </mat-action-row>
+                </mat-expansion-panel>
+                <!-- PAY BANk-->
+                <mat-expansion-panel hideToggle (opened)="setPayMethod(4)" [disabled]="paying" >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'bank.transfer' | translate }}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span> </span>
+                            <mat-icon>payments</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <mat-form-field>
+                        <mat-label>{{'amount.paid' | translate}}</mat-label>
+                        <input matInput type="number" min="1" [(ngModel)]="pay.amount" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>{{'bank' | translate}}</mat-label>
+                        <mat-select [(value)]="pay.bank_account_id" [compareWith]="compareById" >
+                            <mat-option *ngFor="let bankAcc of banksAccounts" [value]="bankAcc.id">
+                                {{bankAcc.bank }}
+                                {{bankAcc.cbu ? ' - cbu: ' + bankAcc.cbu : '' }}
+                                {{bankAcc.cvu ? '- cvu ' + bankAcc.cvu : '' }}
+                                {{bankAcc.alias ? '- alias ' + bankAcc.alias : '' }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>{{'reference' | translate}}</mat-label>
+                        <input matInput min="1" [(ngModel)]="pay.pay_ref" [ngModelOptions]="{standalone: true}"
+                        placeholder="{{ 'transfer.nro' | translate}}">
+                    </mat-form-field>
+                    <mat-action-row>
+                        <button-loading
+                                [loading]="paying"
+                                class="mr-16"
+                                color="primary"
+                                [disable]="itemForm.invalid">
+                            {{ 'pay' | translate}}
+                        </button-loading>
+                    </mat-action-row>
+                </mat-expansion-panel>
+                <!-- PAY CREDIT CARD-->
+                <mat-expansion-panel hideToggle (opened)="setPayMethod(2)" [disabled]="paying">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'creditcard' | translate }}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span> </span>
+                            <mat-icon>payment</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Country</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                    <mat-action-row>
+                        <button-loading
+                                [loading]="paying"
+                                class="mr-16"
+                                color="primary"
+                                [disable]="itemForm.invalid">
+                            {{ 'pay' | translate}}
+                        </button-loading>
+                    </mat-action-row>
+                </mat-expansion-panel>
+                <!-- PAY MERCADO PAGO -->
+                <mat-expansion-panel hideToggle (opened)="setPayMethod(3)" [disabled]="paying">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'mercadopago' | translate }}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span> </span>
+                            <mat-icon>date_range</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
+                    </mat-form-field>
+                    <mat-datepicker #picker></mat-datepicker>
+
+                    <mat-action-row>
+                        <button-loading
+                                [loading]="paying"
+                                class="mr-16"
+                                color="primary"
+                                [disable]="itemForm.invalid">
+                            {{ 'pay' | translate}}
+                        </button-loading>
+                    </mat-action-row>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+
+
+    <div fxFlex="40" class="p-1" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayout="row" fxLayoutAlign="space-between start" class="mb-05">
+            <mat-form-field>
+                <input type="text" placeholder=" {{ 'discount.code' | translate}}" aria-label="Descuento" matInput
+                       [formControl]="discount_code"
+                       (focusin)="componentMethod($event)" autocomplete="false">
+                <button mat-button [disabled]="!discount_code" *ngIf="!findingVoucher" matSuffix
+                        mat-icon-button aria-label="Clear"
+                        (click)="findVoucher()">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <mat-spinner matSuffix diameter="16" *ngIf="findingVoucher"></mat-spinner>
+                <mat-error *ngIf="this.voucherError">{{this.voucherError}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <h4> {{ 'pay.detail' | translate}}</h4>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" *ngIf="sale">
+            <span>{{ 'sales.price' | translate}}</span>
+            <span >{{ sale?.total_price | currency: 'ARS' : '$' }}</span>
+        </div>
+
+        <mat-divider></mat-divider>
+        <div class="mt-05" fxLayout="row wrap" fxLayoutAlign="space-between center" *ngIf="sale">
+            <span>{{ 'total.price' | translate}}</span>
+            <span class="text-blue">{{ sale?.total_price | currency: 'ARS' : '$' }}</span>
+        </div>
+
+        <div class="dicount" fxFlex="100">
+            <div fxFlex>{{ 'discount' | translate}}</div>
+            <small>{{ pay.discount_dsc}}</small>
+            <div class="float-left">{{ pay.discount | currency:'ARS': '$'}}</div>
+        </div>
+
+        <div class="dicount" fxFlex="100">
+            <div fxFlex>{{ 'paid' | translate}}</div>
+            <div class="float-left">{{ totalPaid() | currency:'ARS': '$'}}</div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="total-pay p-0" fxFlex="100" *ngIf="sale">
+            <div fxFlex>{{ 'total' | translate}}</div>
+            <div class="float-left">{{totalToPay() | currency:'ARS': '$'}}</div>
+        </div>
+    </div>
+</div>
+</form>
+<div fxLayout="row wrap">
+    <span fxFlex></span>
+    <button mat-button color="warn" type="button"
+            (click)="dialogRef.close(false)">{{"cancel" | translate }}</button>
+</div>

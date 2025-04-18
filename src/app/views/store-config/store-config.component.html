@@ -1,0 +1,73 @@
+
+<div fxLayout="row wrap">
+    <div fxFlex="100" *ngIf="jwtAuth.getStore() == null">
+        <mat-card class="amber-A200 amber-A200-fg px-16 py-24 ng-star-inserted" >
+            {{'you.do.not.have.an.store' | translate}}
+        </mat-card>
+    </div>
+    <div fxFlex="100" fxFlex.gt-md="200px" fxFlex.gt-sm="50">
+        <mat-card class="profile-sidebar mb-1 pb-0">
+            <form>
+                <div class="form-group">
+                    <fieldset class="form-group" style="border: none">
+                        <label>Logo</label>
+                        {{imageError}}
+                        <div class="custom-file fileInputProfileWrap" fxLayout="column" fxLayoutAlign="space-between">
+                            <div class="img-space">
+                                <ng-container>
+                                    <img [src]="store?.logo" *ngIf="store?.logo != ''"/>
+                                    <img src="assets/images/no_image.png" *ngIf="store?.logo == ''"/>
+                                </ng-container>
+                                <span >
+                                    <button mat-icon-button>
+                                        <input type="file" (change)="fileChangeEvent($event)"
+                                               class="fileInputProfile">
+                                        <mat-icon>add_photo_alternate</mat-icon>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </form>
+            <div class="profile-title text-center mb-1">
+                <div class="main-title">{{store?.name}}</div>
+                <div class="subtitle mb-05"></div>
+<!--                <div class="text-muted">{{hotel?.address}}</div>-->
+            </div>
+        </mat-card>
+        <!-- Contact Information -->
+        <mat-card class="default">
+            <mat-card-title>{{'contact.information' | translate }}</mat-card-title>
+            <mat-card-content class="pt-0">
+                <mat-list>
+                    <mat-list-item>
+                        <mat-icon class="mr-1">email</mat-icon>
+                        {{store?.email}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon class="mr-1">phone</mat-icon>
+                        {{store?.phone}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon class="mr-1">add_location</mat-icon>
+                        {{store?.address}}
+                        <small *ngIf="store?.city"> {{store?.city?.province}}, {{store?.city?.name}}</small>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon class="mr-1">facebook</mat-icon>
+                        {{store?.facebook}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <img src="assets/images/instagram.svg" width="24px" class="mr-1"/>
+                        {{store?.instagram}}
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <!-- TABs Views -->
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="calc(100% - 300px)">
+        <app-store-settings (saved)="saveData($event)" [store]="store"></app-store-settings>
+    </div>
+</div>

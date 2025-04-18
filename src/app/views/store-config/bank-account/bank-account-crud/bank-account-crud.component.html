@@ -1,0 +1,100 @@
+<div class="p-1">
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="flex-start center">
+        <form [formGroup]="itemForm" (ngSubmit)="submit()">
+            <mat-form-field style="width: 130px" class="pr-05">
+                <input
+                        matInput
+                        placeholder="{{'bank' | translate }}"
+                        formControlName="bank"
+                        required>
+            </mat-form-field>
+
+            <mat-form-field class="pr-05">
+                <input
+                        matInput
+                        placeholder="{{'cbu' | translate }}"
+                        formControlName="cbu"
+                >
+            </mat-form-field>
+            <mat-form-field style="width: 130px" class="pr-05">
+                <input
+                        matInput
+                        placeholder="{{'cvu' | translate }}"
+                        formControlName="cvu"
+                >
+            </mat-form-field>
+            <mat-form-field style="width: 130px" class="pr-05">
+                <input
+                        matInput
+                        placeholder="{{'alias' | translate }}"
+                        formControlName="alias"
+                >
+            </mat-form-field>
+            <button-loading
+                    [loading]="loading"
+                    color="primary"
+                    [disable]="itemForm.invalid">
+                {{ 'save' | translate}}
+            </button-loading>
+        </form>
+
+        <div class="ml-1">
+            <input type="text" placeholder="{{'search' | translate}}" (input)="filter($event)"
+                   class="search default-bg full-width" />
+        </div>
+
+        <button mat-icon-button class="card-control" (click)="getItems()" class="ml-1">
+            <mat-icon>refresh</mat-icon>
+        </button>
+    </div>
+
+</div>
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+        <ngx-datatable
+                class="material ml-0 mr-0"
+                [rows]="rows"
+                [columnMode]="'force'"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [scrollbarH]="true"
+                [limit]="10"
+                [rowHeight]="50"
+                [loadingIndicator]="loading"
+                [messages]="{emptyMessage: 'Nada por aca' }"
+        >
+            <ngx-datatable-column name="{{'bank' | translate }}" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.bank }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'cbu' | translate }}" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.cbu }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'cvu' | translate }}" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.cvu }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'alias' | translate }}" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.alias }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="{{'actions' | translate }}" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="edit(row)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </mat-card-content>
+</mat-card>

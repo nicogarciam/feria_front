@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "",
+    "types": [
+      "googlemaps", "gapi","gapi.auth2"
+    ],
+    "paths": {
+      "@services/*": ["app/shared/services/*"],
+      "@components/*": ["app/shared/components/*"],
+      "@environments/*": ["environments/*"],
+      "@models/*": ["app/shared/models/*"],
+      "@animations/*": ["app/shared/animations/*"],
+      "@helpers/*": ["app/shared/helpers/*"],
+      "@interfaces/*": ["app/shared/interfaces/*"]
+    }
+  },
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "experimentalDecorators": false
+}

@@ -1,0 +1,43 @@
+<div class="container-dynamic">
+
+
+    <div
+            class="breadcrumb-bar"
+            *ngIf="
+      layout.layoutConf.useBreadcrumb &&
+      layout.layoutConf.breadcrumb === 'simple'
+    "
+    >
+
+        <ul class="breadcrumb">
+            <li>
+                <button mat-flat-button appBackButton *ngIf="layout.layoutConf.useBreadcrumb">
+                    <mat-icon>arrow_back_ios_new</mat-icon>
+                    {{ 'back' | translate}}
+                </button>
+            </li>
+            <li *ngFor="let part of routeParts">
+                <a routerLink="/{{ part.url }}">{{ part.breadcrumb | translate }}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div
+            class="breadcrumb-title"
+            *ngIf="
+      layout.layoutConf.useBreadcrumb &&
+      layout.layoutConf.breadcrumb === 'title'
+    "
+    >
+        <h1 class="bc-title">
+            {{ routeParts[routeParts.length - 1]?.breadcrumb | translate }}
+        </h1>
+        <ul class="breadcrumb" *ngIf="routeParts.length > 1">
+            <li *ngFor="let part of routeParts">
+                <a routerLink="/{{ part.url }}" class="text-muted">{{
+                    part.breadcrumb | translate
+                    }}</a>
+            </li>
+        </ul>
+    </div>
+</div>

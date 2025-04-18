@@ -1,0 +1,9 @@
+.form-holder {
+    background: white;
+    padding: 0px 16px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    min-width: 40%;
+}

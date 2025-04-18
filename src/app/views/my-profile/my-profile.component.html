@@ -1,0 +1,87 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" *ngIf="jwtAuth?.user?.logins < 1" [@animate]="{value:'*',params:{scale:'.9',delay:'600ms'}}">
+        <mat-card class="amber-A200 amber-A200-fg px-16 py-24 ng-star-inserted" >
+            <mat-icon>mark_chat_read</mat-icon> <span class="mat-display-1 ml-1">{{'welcome.message.title' | translate}}</span>
+            <p style="font-size: 20px">{{'welcome.message'  | translate}}</p>
+        </mat-card>
+    </div>
+    <div fxFlex="100" fxFlex.gt-md="300px" fxFlex.gt-sm="50">
+        <mat-card class="profile-sidebar mb-1 pb-0" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
+            <div class="form-group">
+                <fieldset class="form-group" style="border: none">
+                    {{imageError}}
+                    <div class="custom-file fileInputProfileWrap">
+                        <div class="img-space">
+                            <ng-container>
+                                <img [src]="account?.image_url" *ngIf="account?.image_url"/>
+                                <img src="/assets/images/no_image.png" *ngIf="!account?.image_url"/>
+                            </ng-container>
+                            <span>
+                                <button mat-icon-button>
+                                    <input type="file" (change)="fileChangeEvent($event)"
+                                           class="fileInputProfile">
+                                    <mat-icon>add_photo_alternate</mat-icon>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="profile-title text-center mb-1">
+                <div class="main-title">{{account?.last_name}}, {{account?.first_name}}</div>
+                <div class="subtitle mb-05">{{account?.email}}</div>
+            </div>
+
+            <div class="profile-nav">
+                <mat-nav-list>
+                    <mat-list-item (click)="gotoOverview()"
+                                   [class.list-item-active] = "overviewOn">
+                        <mat-icon>home</mat-icon>
+                        {{'overview' | translate }}
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item (click)="gotoSettings()"
+                                   [class.list-item-active] = "settingsOn">
+                        <mat-icon>settings</mat-icon>
+                        {{'settings' | translate }}
+                    </mat-list-item>
+                </mat-nav-list>
+            </div>
+        </mat-card>
+        <!-- Contact Information -->
+        <mat-card class="default">
+            <mat-card-title>{{'contact.information' | translate }}</mat-card-title>
+            <mat-card-content class="pt-0">
+                <mat-list>
+                    <mat-list-item>
+                        <mat-icon class="mr-1">email</mat-icon>
+                        {{account?.email}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon class="mr-1">phone</mat-icon>
+                        {{account?.phone}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon class="mr-1">add_location</mat-icon>
+                        {{account?.address}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon class="mr-1">wc</mat-icon>
+                        {{account?.gender | translate}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon class="mr-1">fingerprint</mat-icon>
+                        {{account?.dni}}
+                    </mat-list-item>
+
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Profile Views -->
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="calc(100% - 300px)">
+        <app-my-profile-settings [(account)]="account" *ngIf="settingsOn" ></app-my-profile-settings>
+        <app-my-profile-overview [account]="account" *ngIf="overviewOn"></app-my-profile-overview>
+    </div>
+</div>

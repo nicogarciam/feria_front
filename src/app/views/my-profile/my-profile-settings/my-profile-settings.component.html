@@ -1,0 +1,170 @@
+<mat-card class="p-0">
+    <mat-tab-group>
+        <mat-tab label="{{'account.settings' | translate }}">
+            <mat-card-content class="mt-1">
+                <form [formGroup]="itemForm" (ngSubmit)="submit()">
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                formControlName="firstName"
+                                name="name"
+                                placeholder="{{'firstname' | translate }}"
+                                value="">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                formControlName="lastName"
+                                name="lastName"
+                                placeholder="{{'lastname' | translate }}"
+                                value="">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                formControlName="email"
+                                name="email"
+                                placeholder="Email"
+                                value="">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                formControlName="dni"
+                                name="dni"
+                                placeholder="{{'dni' | translate }}"
+                                value="">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>{{'city' | translate }}</mat-label>
+                        <mat-select formControlName="city" [compareWith]="compareFn">
+                            <mat-option *ngFor="let city of cities" [value]="city">
+                                <span class="mr-1"> {{city.name}} </span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                formControlName="address"
+                                name="address"
+                                placeholder="{{'address' | translate }}"
+                                value="">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                formControlName="phone"
+                                name="phone"
+                                placeholder="{{'phone' | translate }}"
+                                value="">
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                        <input
+                                formControlName="birthday"
+                                matInput
+                                [matDatepicker]="pickerBirthday"
+                                placeholder="{{'birthday' | translate }}"
+                                required
+                        />
+                        <mat-datepicker-toggle matSuffix [for]="pickerBirthday"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerBirthday></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                        {{'gender' | translate }}:
+                        <mat-button-toggle-group name="gender" aria-label="Font Style" formControlName="gender">
+                            <mat-button-toggle value="MALE">{{'MALE' | translate }}</mat-button-toggle>
+                            <mat-button-toggle value="FEMALE">{{'FEMALE' | translate }}</mat-button-toggle>
+                            <mat-button-toggle value="OTHER">{{'OTHER' | translate }}</mat-button-toggle>
+                        </mat-button-toggle-group>
+
+                        <input
+                                formControlName="gender"
+                                matInput
+                                placeholder="{{'gender' | translate }}"
+                                [hidden]="true"
+                        />
+                    </mat-form-field>
+                    <button mat-raised-button color="primary"
+                            [disabled]="!itemForm.valid">{{'save' | translate }}</button>
+                </form>
+            </mat-card-content>
+        </mat-tab>
+        <mat-tab label="{{'change.password' | translate }}">
+            <mat-card>
+                <mat-card-content>
+                    <mat-card class="amber-A200 amber-A200-fg px-16 py-24 ng-star-inserted">
+                        <p>
+                            <mat-icon>warning</mat-icon>
+                            <span class=" ml-1">{{'change.password.waring' | translate}}</span>
+                        </p>
+                    </mat-card>
+                    <div>
+                        <form [formGroup]="changePassForm" (ngSubmit)="changePassword()">
+                            <mat-form-field class="full-width">
+                                <input
+                                        type="password"
+                                        matInput
+                                        name="phone"
+                                        formControlName="password"
+                                        placeholder="{{'actual.password' | translate }}"
+                                        value=""
+                                        required>
+                            </mat-form-field>
+                            <mat-form-field class="full-width">
+                                <input
+                                        type="password"
+                                        matInput
+                                        formControlName="new_password"
+                                        name="new_password"
+                                        placeholder="{{'new.password' | translate }}"
+                                        value=""
+                                        required>
+                            </mat-form-field>
+                            <mat-form-field class="full-width">
+                                <input
+                                        type="password"
+                                        matInput
+                                        formControlName="confirm_password"
+                                        name="confirm_password"
+                                        placeholder="{{'confirm.password' | translate }}"
+                                        value=""
+                                        required>
+                            </mat-form-field>
+                            <small
+                                    *ngIf="changePassForm.controls['confirm_password'].hasError('equalTo')"
+                                    class="form-error-msg"> {{'new.and.confirm.password.must.match' | translate }}</small>
+                            <button mat-raised-button color="primary"
+                                    [disabled]="!changePassForm.valid">{{'change.password' | translate }}</button>
+                        </form>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </mat-tab>
+        <mat-tab label="Privacy Settings">
+            <mat-card-content>
+                <div class="mb-1 mt-1">
+                    <mat-checkbox> Get weekly news in your email.</mat-checkbox>
+                </div>
+                <div class="mb-1">
+                    <mat-checkbox> Get notification when someone follows you.</mat-checkbox>
+                </div>
+                <div class="mb-1">
+                    <mat-checkbox> Get email when someone follows you.</mat-checkbox>
+                </div>
+                <div class="mb-1">
+                    <p>Choose your admin panel color schemes.</p>
+                    <mat-radio-group fxLayout="column" fxLayoutGap="4px">
+                        <mat-radio-button value="indigo">Indigo</mat-radio-button>
+                        <mat-radio-button value="blue">Blue</mat-radio-button>
+                        <mat-radio-button value="pink">Pink</mat-radio-button>
+                        <mat-radio-button value="purple">Purple</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <button mat-raised-button color="primary">Save</button>
+            </mat-card-content>
+        </mat-tab>
+    </mat-tab-group>
+</mat-card>

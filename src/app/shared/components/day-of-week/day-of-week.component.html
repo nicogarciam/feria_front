@@ -1,0 +1,9 @@
+<div fxLayout="column" fxLayoutAlign=" start" class="mr-05">
+    <span class="my-day-of-week {{selected? 'selected' : ''}} {{size}}">
+    {{text | translate}}
+    </span>
+    <div class="hour" *ngIf="hours.ini && selected">{{hours.ini}}</div>
+    <div class="hour" *ngIf="hours.end && selected">{{hours.end}}</div>
+</div>
+
+

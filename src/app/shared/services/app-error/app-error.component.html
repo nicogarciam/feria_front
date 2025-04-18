@@ -1,0 +1,17 @@
+<div [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">
+    <h6 class="m-0 pb-1 font-weight-bold" style="white-space: pre-wrap; line-height: 1.4;">{{ data.title }}</h6>
+    <div mat-dialog-content fxLayout="column" >
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon color="warn" style="font-size: 62px; height: 50px; width: 50px;">warning</mat-icon>
+            <div class="pl-1" [@animate]="{value:'*',params:{delay:'600ms',y:'50px'}}">{{ data.msg }}</div>
+        </div>
+        <small class="pl-1 mt-1" style="font-size: 9px" [@animate]="{value:'*',params:{delay:'600ms',y:'50px'}}">
+            {{ data.detail }}
+        </small>
+    </div>
+    <button
+            type="button"
+            color="accent"
+            mat-raised-button
+            (click)="dialogRef.close(false)">{{'OK' | translate}}</button>
+</div>

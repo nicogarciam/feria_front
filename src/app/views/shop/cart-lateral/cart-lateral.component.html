@@ -1,0 +1,122 @@
+<div class="margin-333">
+    <div *ngIf="!cartEmpty" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+        <table class="cart-table default-bg mat-elevation-z1"
+               *ngIf="cart$"
+               [@animate]="{value:'*',params:{delay: '100ms', x:'-50px'}}">
+            <thead>
+            <tr>
+                <th class="text-muted"></th>
+                <th class="text-muted">Product</th>
+                <th class="text-muted">Provider</th>
+                <th class="text-muted">Price</th>
+                <th class="text-muted">state</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of cart$ | async">
+                <td>
+                    <button mat-icon-button color="warn" (click)="removeProduct(item)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </td>
+                <td>{{ item.product.description }}</td>
+                <td>{{ item.product.provider.name }}</td>
+                <td>{{ item.product.price | currency :'ARS':'symbol':'1.0-0' }}</td>
+                <td>
+                    <mat-form-field class="p-0 ml-1" style="width: 140px" required>
+                        <mat-select [value]="item.product.state_id" (selectionChange)="changeItemProductState($event, item)">
+                            <mat-option *ngFor="let st of productStates" [value]="st.id">
+                                {{ st.name | translate }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div fxLayout="column" fxLayout.lt-md="column" [@animate]="{value:'*',params:{delay: '100ms', x:'50px'}}">
+            <mat-card class="m-0">
+                <div class="line mb-1">
+                    <span class="fw-500">Subtotal:</span>
+                    <span fxFlex></span>
+                    <span class="text-muted">{{ subTotal | currency:'ARS':'symbol':'1.0-0' }}</span>
+                </div>
+                <div class="line mb-1">
+                    <span class="fw-500">VAT:</span>
+                    <span fxFlex></span>
+                    <span class="text-muted">{{ vat }}%</span>
+                </div>
+                <mat-divider class=""></mat-divider>
+                <div class="line mb-1 pt-1">
+                    <span class="fw-500">Total:</span>
+                    <span fxFlex></span>
+                    <span class="text-muted">{{ total | currency:'ARS':'symbol':'1.0-0' }}</span>
+                </div>
+
+                <div>
+                    <form>
+                        <mat-form-field class="full-width">
+                            <input type="text" placeholder="{{'customer' | translate}} *"
+                                   matInput
+                                   [formControl]="customer_search"
+                                   [matAutocomplete]="autoCustomer"
+                                   appAutoGrow>
+                            <mat-autocomplete #autoCustomer="matAutocomplete" [displayWith]="displayCustomerFn">
+                                <mat-option *ngIf="loadingCustomer" class="pt-05">
+                                    <mat-spinner diameter="16"></mat-spinner>
+                                </mat-option>
+                                <mat-option class="pb-05" [value]="'new'">
+                                    <mat-icon [style.fontSize]="'25px'">add</mat-icon>
+                                    <span class="mr-1">Nuevo</span>
+                                </mat-option>
+                                <mat-option *ngFor="let p of filteredCustomers" [value]="p"
+                                            [style.fontSize]="'15px'">
+                                    <mat-icon [style.fontSize]="'25px'">person</mat-icon>
+                                    <span class="mr-1"> {{ p.name }}, {{ p.address }} </span>
+                                    <b class="mr-1">{{ p.email }} </b>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+
+
+<!--                        <mat-form-field style="width: 130px" class="pr-05">-->
+<!--                            <input-->
+<!--                                    formControl="date_sale"-->
+<!--                                    matInput-->
+<!--                                    [matDatepicker]="pickerSaleDate"-->
+<!--                                    placeholder="{{'sale.date' | translate }}"-->
+<!--                                    style="width: 130px;"-->
+<!--                                    required-->
+<!--                            />-->
+<!--                            <mat-datepicker-toggle matSuffix [for]="pickerSaleDate"></mat-datepicker-toggle>-->
+<!--                            <mat-datepicker #pickerSaleDate></mat-datepicker>-->
+<!--                        </mat-form-field>-->
+
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+
+                    </form>
+
+                </div>
+                <mat-card-actions>
+                    <span fxFlex></span>
+                    <button mat-raised-button color="primary" [disabled]="loading">{{ 'cancel' | translate }}</button>
+                    <button mat-raised-button color="warn" [disabled]="loading">{{ 'checkout' | translate }}</button>
+                    <button mat-raised-button color="warn" [disabled]="loading || !this.customer_search.invalid " (click)="saveCart()">{{ 'save' | translate }}</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+    <div *ngIf="cartEmpty" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+        <mat-card class="text-center">
+            <p>Your cart is empty</p>
+            <button mat-raised-button color="accent" >{{ 'cancel' | translate }}</button>
+        </mat-card>
+    </div>
+</div>

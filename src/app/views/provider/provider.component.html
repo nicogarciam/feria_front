@@ -1,0 +1,170 @@
+<div fxLayout="row wrap">
+
+    <div fxFlex="100" fxFlex.gt-sm="90">
+        <div class="ml-1">
+            <mat-form-field>
+                <input matInput placeholder="{{'search' | translate}}" (input)="filter($event)">
+            </mat-form-field>
+
+        </div>
+        <mat-card-content class="p-0">
+            <ngx-datatable
+                    class="material ml-0 mr-0"
+                    [rows]="rows"
+                    [columnMode]="'force'"
+                    [headerHeight]="50"
+                    [footerHeight]="50"
+                    [scrollbarH]="true"
+                    [limit]="10"
+                    [rowHeight]="50"
+                    [loadingIndicator]="loading"
+                    [messages]="{emptyMessage: 'Nada por aca' }"
+            >
+                <ngx-datatable-column name="{{'name' | translate }}" prop="name">
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                        <span title="Double click to edit"
+                              (dblclick)="editing[rowIndex] = true"
+                              *ngIf="!editing[rowIndex]">
+                            {{ value }}
+                        </span>
+
+                        <input autofocus
+                               *ngIf="editing[rowIndex]"
+                               (blur)="updateValue($event, 'name', rowIndex)"
+                               [value]="value"
+                               type="text"
+                        />
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{'contact.name' | translate }}" prop="contact_name">
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                        <span title="Double click to edit"
+                              (dblclick)="editing[rowIndex] = true"
+                              *ngIf="!editing[rowIndex]">
+                            {{ value }}
+                        </span>
+
+                        <input *ngIf="editing[rowIndex]"
+                               (blur)="updateValue($event, 'contact_name', rowIndex)"
+                               type="text"
+                               [value]="value"
+                        />
+                    </ng-template>
+
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{'email' | translate }}" prop="email">
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                        <span title="Double click to edit"
+                              (dblclick)="editing[rowIndex] = true"
+                              *ngIf="!editing[rowIndex]">
+                            {{ value }}
+                        </span>
+
+                        <input *ngIf="editing[rowIndex]"
+                               (blur)="updateValue($event, 'email', rowIndex)"
+                               type="text"
+                               [value]="value"
+                        />
+
+                    </ng-template>
+
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{'phone' | translate }}" prop="phone">
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                        <span title="Double click to edit"
+                              (dblclick)="editing[rowIndex] = true"
+                              *ngIf="!editing[rowIndex]">
+                            {{ value }}
+                        </span>
+
+                        <input *ngIf="editing[rowIndex]"
+                               (blur)="updateValue($event, 'phone', rowIndex)"
+                               type="text"
+                               [value]="value"
+                        />
+
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{'address' | translate }}" prop="address" >
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                        <span title="Double click to edit"
+                              (dblclick)="editing[rowIndex] = true"
+                              *ngIf="!editing[rowIndex]">
+                            {{ value }}
+                        </span>
+
+                        <input *ngIf="editing[rowIndex]"
+                               (blur)="updateValue($event, 'address', rowIndex)"
+                               type="text"
+                               [value]="value"
+                        />
+
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="{{'cuil' | translate }}" prop="cuil" >
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                        <span title="Double click to edit"
+                              (dblclick)="editing[rowIndex] = true"
+                              *ngIf="!editing[rowIndex]">
+                            {{ value }}
+                        </span>
+
+                        <input *ngIf="editing[rowIndex]"
+                               (blur)="updateValue($event, 'cuil', rowIndex)"
+                               type="text"
+                               [value]="value"
+                        />
+
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Actions" >
+                    <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+
+                        <button mat-icon-button mat-sm-button color="primary" (click)="saveItem(rowIndex)"
+                                *ngIf="editing[rowIndex]">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button mat-icon-button mat-sm-button color="accent" matTooltip="{{ 'detail' | translate }}"
+                                (click)="showDetail(rowIndex)">
+                            <mat-icon>zoom_in</mat-icon>
+                        </button>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </mat-card-content>
+
+    </div>
+
+</div>
+
+<perfect-scrollbar class="sidebar-right ps" *ngIf="viewCustomerDetail"
+                   [@animate]="{value:'*',params:{x:'60px'}}"
+                   (mouseenter)="disableScroll($event)"
+                   (mouseleave)="enableScroll($event)"
+>
+
+    <mat-card-title class="m-0" style="width: 850px">
+        <div class="card-title-text" fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <span>{{selectedProvider.name}}</span>
+            <div fxFlex></div>
+            <button class="card-control " mat-icon-button routerLink="/customer/view/{{selectedProvider.id}}" >
+                <mat-icon>zoom_in</mat-icon>
+            </button>
+
+            <button
+                    class="card-control"
+                    mat-icon-button
+                    (click)="viewCustomerDetail = false">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <app-customer-overview [(customer)]="selectedProvider"
+                           (cancel)="cancelLateralForm()"
+                           (saved)="savedCustomer()"></app-customer-overview>
+</perfect-scrollbar>

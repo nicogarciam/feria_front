@@ -1,0 +1,99 @@
+/*---- sales list -----*/
+.product-sidenav {
+  width: 15rem;
+  padding: .333rem;
+  background: transparent !important;
+}
+.product-sidenav .product-nav-list .mat-list-item-content > a > span {
+  font-size: .875rem;
+}
+
+.product-sidenav .mat-list-item-content .mat-icon {
+  margin-right: 8px;
+}
+
+.product-toolbar {
+  height: 40px !important;
+}
+.product-toolbar .mat-toolbar-row {
+  height: 40px !important;
+}
+
+
+.show-on-open {
+  display: none !important;
+}
+
+.mat-expanded {
+  .show-on-open {
+    display: inherit !important;
+  }
+  .hide-on-open {
+    display: none !important;
+  }
+  .mat-expansion-panel-header {
+    margin-bottom: 1rem;
+  }
+}
+
+.sidebar-product {
+  position: absolute;
+  top: 60px;
+  padding: 1em;
+  right: 0;
+  height: calc(100vh - 120px);
+  z-index: 999;
+  background: #fff;
+  box-shadow: 0px 0px 80px 50px rgba(206, 213, 225, 0.2);
+}
+
+.messages-wrap {
+  padding: .333rem;
+  min-height: 800px;
+  .mat-expansion-panel-header-title {
+    align-items: center;
+  }
+  .mat-expansion-panel-header-description {
+    align-items: center;
+  }
+
+  .mail-checkbox.mat-checkbox {
+    position: relative;
+    width: 20px;
+    height: 22px;
+    overflow: hidden;
+    margin-right: 8px;
+    .mat-checkbox-layout {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+  .product-face {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+  }
+}
+
+[dir=rtl] {
+  .product-sidenav .mat-list-item-content .mat-icon {
+    margin-right: 0;
+    margin-left: 8px;
+  }
+  .messages-wrap {
+    .mail-checkbox {
+      margin-right: 0;
+      margin-left: .5rem;
+      .mat-checkbox-inner-container {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 959px) {
+  .product-sidenav {
+    background: inherit !important;
+  }
+}

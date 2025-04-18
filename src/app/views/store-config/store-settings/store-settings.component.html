@@ -1,0 +1,132 @@
+<mat-card class="p-0">
+    <mat-tab-group #tabGroup [(selectedIndex)]="tabIndex">
+
+        <mat-tab label="{{'settings' | translate }}">
+            <mat-card-content class="mt-1">
+                <form [formGroup]="itemForm" (ngSubmit)="submit()">
+                    <div fxLayout="row" fxLayoutAlign="space-between start">
+                        <div fxFlex class="p-1" style="border-right: 1px solid #e6e6e6;">
+                            <mat-form-field class="full-width">
+                                <input
+                                        matInput
+                                        name="name"
+                                        placeholder="{{'store.name' | translate }}"
+                                        value=""
+                                        formControlName="name"
+                                required>
+                            </mat-form-field>
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <mat-form-field fxFlex="35">
+                                    <mat-label>{{'city' | translate }}</mat-label>
+                                    <mat-select formControlName="city" [compareWith]="compareFn">
+                                        <mat-option *ngFor="let city of cities" [value]="city">
+                                            <span class="mr-1"> {{city.name}} </span>
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="60">
+                                    <input
+                                            matInput
+                                            name="address"
+                                            placeholder="{{'address' | translate }}"
+                                            value=""
+                                            formControlName="address">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <mat-form-field fxFlex="46">
+                                    <input
+                                            matInput
+                                            name="instagram"
+                                            placeholder="{{'instagram' | translate }}"
+                                            formControlName="instagram"
+                                            value="">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="46">
+                                    <input
+                                            matInput
+                                            name="facebook"
+                                            placeholder="{{'facebook' | translate }}"
+                                            formControlName="facebook"
+                                            value="">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <mat-form-field fxFlex="46">
+                                    <input
+                                            matInput
+                                            name="email"
+                                            placeholder="{{'email' | translate }}"
+                                            value=""
+                                            formControlName="email"
+                                    required email>
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="46">
+                                    <input
+                                            matInput
+                                            name="phone"
+                                            placeholder="{{'phone' | translate }}"
+                                            value=""
+                                            formControlName="phone">
+                                </mat-form-field>
+                            </div>
+
+                            <mat-form-field class="full-width">
+                                <mat-label>{{'description' | translate }}
+                                    / {{'social.objetive' | translate }}</mat-label>
+                                <textarea matInput name="description"
+                                          formControlName="description"></textarea>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <button mat-raised-button color="primary" [disabled]="itemForm?.invalid">{{'save' | translate }}</button>
+                </form>
+            </mat-card-content>
+        </mat-tab>
+        <mat-tab label="{{'products' | translate}}">
+            <ng-template matTabContent>
+
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="{{'discounts' | translate}}">
+            <ng-template matTabContent>
+                <app-discount-crud></app-discount-crud>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="{{'banks.accounts' | translate}}">
+            <ng-template matTabContent>
+                <app-bank-account-crud></app-bank-account-crud>
+            </ng-template>
+        </mat-tab>
+
+        <mat-tab label="{{'preferences' | translate}}" >
+            <ng-template matTabContent>
+                <mat-card-content>
+                    <div class="mb-1 mt-1">
+                        <mat-checkbox> Get weekly news in your email.</mat-checkbox>
+                    </div>
+                    <div class="mb-1">
+                        <mat-checkbox> Get notification when someone follows you.</mat-checkbox>
+                    </div>
+                    <div class="mb-1">
+                        <mat-checkbox> Get email when someone follows you.</mat-checkbox>
+                    </div>
+                    <div class="mb-1">
+                        <p>Choose your admin panel color schemes.</p>
+                        <mat-radio-group fxLayout="column" fxLayoutGap="4px">
+                            <mat-radio-button value="indigo">Indigo</mat-radio-button>
+                            <mat-radio-button value="blue">Blue</mat-radio-button>
+                            <mat-radio-button value="pink">Pink</mat-radio-button>
+                            <mat-radio-button value="purple">Purple</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <button mat-raised-button color="primary">{{'save' | translate }}</button>
+                </mat-card-content>
+            </ng-template>
+
+        </mat-tab>
+    </mat-tab-group>
+</mat-card>

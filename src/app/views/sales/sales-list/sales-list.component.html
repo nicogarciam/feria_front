@@ -1,0 +1,184 @@
+<!-- FILTERS -->
+<div [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">
+    <div style="position: -webkit-sticky; position: sticky;left: 0px">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div fxLayout="row" fxLayoutAlign=" center">
+                <div class="mr-1 ml-1">{{ 'query' | translate }}</div>
+                <div class="mr-1">
+                    <mat-form-field>
+                        <mat-date-range-input
+                                [formGroup]="dateRange"
+                                [rangePicker]="dateRangeP"
+                                [comparisonStart]="dateRange.value.from"
+                                [comparisonEnd]="dateRange.value.to">
+                            <input matStartDate placeholder="{{'from' | translate}}" formControlName="from">
+                            <input matEndDate placeholder="{{'to' | translate}}" formControlName="to">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="dateRangeP"></mat-datepicker-toggle>
+                        <mat-date-range-picker #dateRangeP></mat-date-range-picker>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="mr-1">{{ 'paxs' | translate }}</div>
+                <div class="mr-1">
+                    <mat-form-field appearance="legacy" style="width: 60px">
+                        <input matInput>
+                        <mat-icon matSuffix>group</mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <button mat-icon-button color="primary" (click)="getSalesFromServer()"
+                        [disabled]="loadingSales">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+
+
+                <div class="ml-1 mr-1">
+                    <input type="text" placeholder="{{'search' | translate}}" (input)="filter($event)"
+                           class="search default-bg full-width"/>
+                </div>
+
+                <mat-spinner *ngIf="loadingSales" diameter="22"></mat-spinner>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="end center">
+
+                <!--             TOOLBAR -->
+                <mat-toolbar class="booking-toolbar" [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">
+
+                    <button *ngFor="let filter of filters_state"
+                            class="ml-1" mat-raised-button color="{{filter.selected ? 'primary': ''}}"
+                            matBadge="{{ filter.cant}}" matBadgeColor="accent" (click)="filterState(filter)"
+                    >
+                        {{ filter.name | translate}}
+                    </button>
+
+                </mat-toolbar>
+                <!--             // TOOLBAR-->
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!-- // FILTERS -->
+
+<!-- TOOLBAR -->
+<!--<mat-toolbar color="primary" class="sales-toolbar" [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">-->
+<!--    <button mat-icon-button matTooltip="Move to trash">-->
+<!--        <mat-icon>delete</mat-icon>-->
+<!--    </button>-->
+<!--    <button mat-icon-button matTooltip="Mark as important" class="">-->
+<!--        <mat-icon>folder_special</mat-icon>-->
+<!--    </button>-->
+<!--    <button mat-icon-button matTooltip="Move to archive">-->
+<!--        <mat-icon>archive</mat-icon>-->
+<!--    </button>-->
+<!--    <button mat-icon-button matTooltip="Report spam">-->
+<!--        <mat-icon>error</mat-icon>-->
+<!--    </button>-->
+<!--</mat-toolbar>-->
+<!-- // TOLLBAR-->
+
+<!-- LIST -->
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+        <ngx-datatable
+                #table
+                class="material ml-0 mr-0"
+                [rows]="rows"
+                [columnMode]="'force'"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [scrollbarH]="true"
+                [limit]="10"
+                [rowHeight]="55"
+                [loadingIndicator]="loadingSales"
+                [messages]="{emptyMessage: 'Nada por aca' }"
+        >
+            <ngx-datatable-column name="{{'code' | translate }}" [width]="40">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.id}}-{{ row?.code }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'owner' | translate }}" [width]="230" prop="customer.name">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <ng-container *ngIf="row?.customer">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <div fxLayout="column" class="mr-1 text-18" style="width: 150px">
+                                {{ row.customer?.name}}
+                            </div>
+                            <div fxLayout="column">
+                                <small>{{ row.customer?.phone}}</small>
+                                <small>{{ row.customer?.email}}</small>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="row?.customer">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <div fxLayout="column" class="mr-1 text-18" style="width: 150px">
+                                {{ row.customer?.name}}
+                            </div>
+                            <div fxLayout="column">
+                                <small>{{ row.customer?.phone}}</small>
+                                <small>{{ row.customer?.email}}</small>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'checkin' | translate }}" [width]="40" prop="date_in" [comparator]="compareDates">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <small> {{ row.date_sale | date : 'dd/MM/yyyy'  }} </small>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'checkout' | translate }}" [width]="40" prop="date_out" [comparator]="compareDates">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <small> {{ row.date_pay | date : 'dd/MM/yyyy'  }} </small>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="{{'state' | translate }}" [width]="40"  prop="booking_state.state">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <mat-card class="m-0 p-4 text-12">{{ row.booking_state?.state | translate}}</mat-card>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'amount' | translate }}" [width]="50" prop="total_price">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="text-blue">{{ row.total_price | currency: 'ar$' : 'symbol' }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="{{'actions' | translate }}" [width]="30" [sortable]="false">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <button mat-icon-button routerLink="/bookings/view/{{row.id}}"
+                            matTooltip="{{ 'detail' | translate }}">
+                        <mat-icon>zoom_in</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="addPayPopup(row)" matTooltip="{{ 'pay' | translate }}">
+                        <mat-icon>payments</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="deleteSale(row)" matTooltip="{{'delete' | translate}}">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </mat-card-content>
+</mat-card>
+
+
+<!-- // LIST -->
+
+
+<!--    PANEL LATERAL-->
+<div class="sidebar-booking" *ngIf="viewRightSidebar"
+     [@animate]="{value:'*',params:{x:'60px'}}">
+
+
+</div>
+
+<!-- // PANEL LATERAL -->

@@ -1,0 +1,164 @@
+<div class="card-title-text p-0 m-0" mat-dialog-title>
+    <div fxFlex fxLayout="column">
+        <div fxFlex>{{data.title}}</div>
+    </div>
+    <span fxFlex></span>
+    <button class="card-control" mat-icon-button (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<form [formGroup]="itemForm" (ngSubmit)="submit()">
+    <div fxLayout="column">
+
+<!--        <div fxLayout="row wrap" fxLayout.lt-sm="column">-->
+
+<!--            <div fxFlex="100" class="pr-1">-->
+
+<!--                <mat-form-field class="full-width">-->
+<!--                    <input type="text" placeholder="Huesped" aria-label="huesped" matInput-->
+<!--                           formControlName="guest_search"-->
+<!--                           [matAutocomplete]="auto"-->
+<!--                           (focusin)="componentMethod($event)">-->
+
+<!--                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayAccountFn">-->
+<!--                        <mat-option *ngIf="isLoading" class="pt-20">-->
+<!--                            <mat-spinner diameter="16"></mat-spinner>-->
+<!--                        </mat-option>-->
+<!--                        <mat-option *ngFor="let g of filteredGuests" [value]="g">-->
+<!--                            <mat-icon [style.fontSize]="'25px'">person</mat-icon>-->
+<!--                            <span class="mr-1"> {{g.name}}, {{g.address}} </span>-->
+<!--                            <b class="mr-1">{{g.email }} </b>-->
+<!--                            <b class="mr-1"> dni: {{g.dni }}</b>-->
+<!--                        </mat-option>-->
+<!--                    </mat-autocomplete>-->
+<!--                </mat-form-field>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div fxLayout="row wrap">
+            <div fxFlex="30">
+                <fieldset class="form-group" style="border: none">
+                    {{imageError}}
+                    <div class="custom-file fileInputProfileWrap">
+                        <div class="img-space">
+                            <mat-card class="mat-elevation-z2 p-0 m-0" *ngIf="_fileToUpload?.isUploading">
+                                {{ _fileToUpload?.file?.name }}
+                                {{ _fileToUpload?.file?.size / 1024 / 1024 | number:'.2' }} MB
+                                <div class="progress-bar" role="progressbar"
+                                     [ngStyle]="{ 'width': _fileToUpload?.progress + '%' }"></div>
+                                <mat-progress-bar
+                                        class=""
+                                        color="primary"
+                                        mode="determinate"
+                                        [value]="_fileToUpload?.progress">
+                                </mat-progress-bar>
+
+                                <mat-icon *ngIf="_fileToUpload?.isSuccess" color="primary">check</mat-icon>
+                                <mat-icon *ngIf="_fileToUpload?.isCancel" color="accent">cancel</mat-icon>
+                                <mat-icon *ngIf="_fileToUpload?.isError" color="warn">error</mat-icon>
+
+                            </mat-card>
+                            <ng-container>
+                                <img [src]="_provider?.photo" *ngIf="_provider?.photo"/>
+                                <img src="/assets/images/no_image.png" *ngIf="!_provider?.photo"/>
+                            </ng-container>
+                            <span>
+                                <button mat-icon-button>
+                                    <input type="file" ng2FileSelect [uploader]="imageService.uploader"
+                                           class="fileInputProfile">
+                                    <mat-icon>add_photo_alternate</mat-icon>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+            <div fxFlex="60" fxLayout="row wrap">
+                <div fxFlex="50" class="pr-1">
+                    <mat-form-field class="full-width" >
+                        <input  [matAutocomplete]="autoName"
+                                matInput
+                                name="name"
+                                formControlName="name"
+                                placeholder="{{'name' | translate }}"
+                                (blur)="selectProvider($event)"
+                                required
+                                appAutoGrow >
+
+                        <mat-autocomplete #autoName="matAutocomplete" [displayWith]="selectProviderFn">
+                            <mat-option *ngIf="isLoading" class="pt-20">
+                                <mat-spinner diameter="16"></mat-spinner>
+                            </mat-option>
+                            <mat-option *ngFor="let c of filteredItems" [value]="c">
+                                <mat-icon [style.fontSize]="'25px'">person</mat-icon>
+                                <small class="mr-1"> {{c.name}}, {{c.address}} </small>
+                                <small class="mr-1">{{c.email }} </small>
+                                <small class="mr-1"> cuil: {{c.cuil }}</small>
+                            </mat-option>
+                        </mat-autocomplete>
+
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50" class="pr-1">
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                name="cuil"
+                                formControlName="cuil"
+                                placeholder="{{'cuil' | translate }}">
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex="50" class="pr-1">
+                    <mat-form-field class="full-width" >
+                        <input
+                                matInput
+                                name="email"
+                                formControlName="email"
+                                placeholder="{{'email' | translate }}"
+                                required>
+                    </mat-form-field>
+
+                </div>
+                <div fxFlex="50" class="pr-1">
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                name="phone"
+                                formControlName="phone"
+                                placeholder="{{'phone' | translate }}">
+                    </mat-form-field>
+
+                </div>
+                <div fxFlex="50" class="pr-1">
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                name="address"
+                                formControlName="address"
+                                placeholder="{{'address' | translate }}">
+                    </mat-form-field>
+
+                </div>
+                <div fxFlex="50" class="pr-1">
+                    <mat-form-field class="full-width">
+                        <input
+                                matInput
+                                name="contact"
+                                formControlName="contact_name"
+                                placeholder="{{'contact' | translate }}">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div fxFlex="100" class="mt-1">
+            <button mat-raised-button color="primary" [disabled]="itemForm.invalid">{{"SAVE" | translate }}</button>
+            <span fxFlex></span>
+            <button mat-button color="warn" type="button"
+                    (click)="dialogRef.close(false)">{{"cancel" | translate }}</button>
+        </div>
+    </div>
+
+</form>

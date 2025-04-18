@@ -1,0 +1,91 @@
+<div class="m-333">
+    <button mat-raised-button class="mb-05" color="primary"
+            (click)="openPayPopUp({}, true)">{{"ADD" | translate }} {{"pay" | translate }}
+    </button>
+</div>
+
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+        <ngx-datatable
+                class="material ml-0 mr-0"
+                [rows]="items"
+                [columnMode]="'force'"
+                [headerHeight]="40"
+                [footerHeight]="40"
+                [scrollbarH]="false"
+                [limit]="10"
+                [rowHeight]="40"
+                [loadingIndicator]="loading"
+                [messages]="{emptyMessage: 'Nada por aca' }"
+        >
+            <ngx-datatable-column name="{{'date' | translate }}" prop="pay_date"  [width]="80">
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span> {{ row?.pay_date | date : 'dd/MM/yyyy'}} </span>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'payer' | translate }}" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.customer }}
+                    <ng-container *ngIf="row.guest" >
+                        <div fxLayout="row" style="width: 150px">
+                            {{ row.guest?.name}}
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="row.customer" >
+                        <div fxLayout="row" style="width: 150px">
+                            {{ row.customer?.name}}
+                        </div>
+                    </ng-container>
+
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'type' | translate }}" prop="type"  [width]="80">
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span>{{ row?.type | translate }} </span>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'pay.method' | translate }}" prop="pay_method_dsc"  [width]="80">
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span>{{ row?.pay_method_dsc | translate }} </span>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'reference' | translate }}" prop="pay_ref" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.pay_ref }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="{{'ref.detail' | translate }}" prop="ref_detail" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.ref_detail }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'state' | translate }}" prop="state">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.state }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column class="align-right" name="{{'amount' | translate }}" prop="amount" >
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span>{{ row?.amount  | currency:'$'}} </span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column class="align-right" name="{{'user' | translate }}" prop="user" >
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <small>{{ row?.user}} </small>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="{{'actions' | translate }}" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                <!--    <button mat-icon-button mat-sm-button color="primary" routerLink="/pays/profile/{{row.membership.account.id}}/overview">
+                           <mat-icon>person_search</mat-icon>
+                         </button>-->
+                    <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="openPayPopUp(row)"><mat-icon>edit</mat-icon></button>
+                    <button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)"><mat-icon>delete</mat-icon></button>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </mat-card-content>
+</mat-card>

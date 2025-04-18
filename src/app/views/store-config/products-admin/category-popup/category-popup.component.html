@@ -1,0 +1,85 @@
+<div mat-dialog-title fxLayout="row wrap" fxLayoutAlign="space-between center">
+    <h1 matDialogTitle>{{data.title}}</h1>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<mat-card-content class="p-0">
+    <div fxLayout="column wrap" fxLayout.lt-sm="column">
+        <mat-card class="p-05" >
+            <mat-card-content class="p-0">
+                <form [formGroup]="itemForm" (ngSubmit)="submit()">
+                    <div fxLayout="column" fxLayoutAlign="space-between stretch">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <mat-form-field class="mr-1" style="width: 150px">
+                                <input
+                                        matInput
+                                        name="name"
+                                        formControlName="name"
+                                        placeholder="{{'name' | translate }}"
+                                        required>
+                            </mat-form-field>
+
+                            <div fxFlex></div>
+
+<!--                            <mat-form-field >-->
+<!--                                <input-->
+<!--                                        matInput-->
+<!--                                        name="color"-->
+<!--                                        placeholder="color"-->
+<!--                                        [(colorPicker)]="color"-->
+<!--                                        [style.background]="color"-->
+<!--                                />-->
+<!--                            </mat-form-field>-->
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <mat-form-field class="mr-1" style="width: 450px">
+                                <mat-label>{{'capacity.desc' | translate }}</mat-label>
+                                <textarea matInput name="capacity_desc"
+                                          formControlName="capacity_desc"></textarea>
+                            </mat-form-field>
+                            <button mat-raised-button color="primary" class="mb-05"
+                                    [disabled]="itemForm.invalid">{{"save" | translate }}</button>
+                        </div>
+
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="p-0" >
+            <mat-card-content class="p-0">
+                <ngx-datatable
+                        class="material ml-0 mr-0"
+                        [rows]="items"
+                        [columnMode]="'force'"
+                        [sortType]="sortType.multi"
+                        [headerHeight]="40"
+                        [footerHeight]="40"
+                        [limit]="10"
+                        [rowHeight]="40">
+                    <ngx-datatable-column name="{{'name' | translate }}" [maxWidth]="150">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row?.name }}
+                        </ng-template>
+                    </ngx-datatable-column>
+
+                    <ngx-datatable-column name="Actions" [maxWidth]="100">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="edit(row)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</mat-card-content>
+
+
+
+

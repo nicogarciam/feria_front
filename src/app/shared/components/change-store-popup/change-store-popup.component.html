@@ -1,0 +1,25 @@
+<div class="card-title-text p-0 m-0" mat-dialog-title>
+    <div fxFlex fxLayout="column">
+        <div fxFlex>{{'select.hotel' | translate}}</div>
+    </div>
+    <span fxFlex></span>
+    <button class="card-control" mat-icon-button (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<mat-spinner *ngIf="isLoading" diameter="18"></mat-spinner>
+
+<mat-card *ngFor="let h of stores">
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <div>
+            {{h.name}}
+            <mat-hint>{{h.address}}</mat-hint>
+        </div>
+        <button mat-icon-button (click)="selectHotel(h)" color="primary" [disabled]="jwtAuth.getStore().id === h.id">
+            <mat-icon>check_circle</mat-icon>
+        </button>
+    </div>
+</mat-card>
+
+

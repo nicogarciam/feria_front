@@ -1,0 +1,75 @@
+<div fxLayout="row" fxLayoutAlign="flex-start center" class="p-05">
+    <!-- <span fxFlex></span> -->
+    <button mat-raised-button class="mr-05" color="primary"
+            (click)="openPopUp({}, true)">{{"accommodations" | translate }}
+    </button>
+    <button mat-raised-button class="mr-05" color="primary"
+            (click)="openAccommodationTypePopUp({})">{{"accommodation.types" | translate }}
+    </button>
+    <button mat-mini-fab (click)="getItems()" color="basic">
+        <mat-icon>refresh</mat-icon>
+    </button>
+
+</div>
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+        <ngx-datatable
+                [loadingIndicator]="loadingItems"
+                class="material ml-0 mr-0"
+                [rows]="items"
+                [columnMode]="'force'"
+                [headerHeight]="40"
+                [footerHeight]="40"
+                [scrollbarH]="true"
+                [limit]="20"
+                [rowHeight]="40">
+            <ngx-datatable-column name="{{'code' | translate }}" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.code }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'name' | translate }}" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.name }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'floor' | translate }}" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.floor }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'capacity' | translate }}">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.capacity }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'type' | translate }}" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.accommodation_type?.name }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'state' | translate }}" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.state }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Actions" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <button mat-icon-button mat-sm-button color="primary" class="mr-05" (click)="openPopUp(row)"
+                            matTooltip="{{ 'edit' | translate }}">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button mat-sm-button color="warn" class="mr-05" (click)="deleteItem(row)"
+                            matTooltip="{{ 'delete' | translate }}">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button mat-sm-button color="accent" (click)="copyItem(row)"
+                            matTooltip="{{ 'copy' | translate }}">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </mat-card-content>
+</mat-card>

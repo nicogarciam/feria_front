@@ -1,0 +1,43 @@
+<div mat-dialog-content>
+
+    <form   [formGroup]="signinForm" (ngSubmit)="signin()"
+            fxLayout="column" >
+        <!-- headline -->
+        <div class="form-headline text-center mb-32">
+            <h1 class="font-weight-light">{{'signin' | translate }}</h1>
+        </div>
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>{{'email' | translate }}</mat-label>
+            <input
+                    matInput
+                    formControlName="email"
+                    type="email"
+                    name="email"
+                    placeholder="{{'email' | translate }}"
+                    (focusin)="componentMethod($event)"
+                    required
+            />
+        </mat-form-field>
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Password</mat-label>
+            <input
+                    matInput
+                    formControlName="password"
+                    type="password"
+                    name="password"
+                    placeholder="********"
+                    required
+            />
+        </mat-form-field>
+        <p *ngIf="errorMsg" class="text-center"><small class="text-red">{{errorMsg | translate}}</small></p>
+        <div class="mb-24" fxLayout="column" fxLayoutGap="16px">
+<!--            <mat-spinner *ngIf="loading"></mat-spinner>-->
+            <button-loading
+                    [loading]="loading"
+                    color="accent"
+            >{{"login" | translate }}</button-loading>
+<!--            <button mat-raised-button color="primary" [disabled]="signinForm.invalid">{{"login" | translate }}</button>-->
+            <button mat-button  color="warn" (click)="onNoClick()">{{'no.thanks' | translate}}</button>
+        </div>
+    </form>
+</div>

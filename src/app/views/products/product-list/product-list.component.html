@@ -1,0 +1,205 @@
+<!-- FILTERS -->
+<div [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">
+    <div style="position: -webkit-sticky; position: sticky;left: 0px">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div fxLayout="row" fxLayoutAlign=" center">
+                <div class="mr-1 ml-1">{{ 'query' | translate }}</div>
+                <div class="mr-1">
+                    <mat-form-field>
+                        <mat-date-range-input
+                                [formGroup]="dateRange"
+                                [rangePicker]="dateRangeP"
+                                [comparisonStart]="dateRange.value.from"
+                                [comparisonEnd]="dateRange.value.to">
+                            <input matStartDate placeholder="{{'from' | translate}}" formControlName="from">
+                            <input matEndDate placeholder="{{'to' | translate}}" formControlName="to">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="dateRangeP"></mat-datepicker-toggle>
+                        <mat-date-range-picker #dateRangeP></mat-date-range-picker>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="ml-1 mr-1">
+                    <input type="text" placeholder="{{'search' | translate}}" (input)="filter($event)"
+                           class="search default-bg full-width"/>
+                </div>
+
+
+                <div>
+                    <select (change)="pegaSizeChange($event.target.value)" class="page-limit">
+                        <option
+                                *ngFor="let option of pageSizeOptions"
+                                [value]="option.value"
+                                [selected]="option.value == pageable.per_page"
+                        >
+                            {{option.value}} {{'per.page' | translate}}
+                        </option>
+                    </select>
+                </div>
+
+                <mat-form-field class="p-0 ml-1 mr-1" style="width: 200px" required>
+                    <mat-label>{{ 'states' | translate }}</mat-label>
+                    <mat-select [formControl]="states_selected_form" (selectionChange)="changeStateFilter($event)" multiple>
+                        <mat-option [value]="0">
+                            {{ 'all' | translate }}
+                        </mat-option>
+                        <mat-option *ngFor="let st of productStates" [value]="st.id">
+                            {{ st.name | translate }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-spinner *ngIf="loadingProducts" diameter="22" class="mr-1"></mat-spinner>
+
+                <button mat-mini-fab (click)="getProductsFromServer()" color="primary">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="end center">
+                <!-- TOOLBAR -->
+                <mat-toolbar class="product-toolbar" [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">
+
+                    <button *ngFor="let filter of filters_state"
+                            class="ml-1" mat-raised-button color="{{filter.selected ? 'primary': ''}}"
+                            matBadge="{{ filter.cant}}" matBadgeColor="accent" (click)="filterState(filter)"
+                    >
+                        {{ filter.name | translate}}
+                    </button>
+
+                </mat-toolbar>
+                <!-- // TOOLBAR-->
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!-- // FILTERS -->
+
+
+<!-- LIST -->
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+        <ngx-datatable
+            #productsTable
+            class="material ml-0 mr-0"
+            [rows]="rows"
+            [columnMode]="ColumnMode.force"
+            [headerHeight]="40"
+            [footerHeight]="40"
+            [sortType]="SortType.multi"
+            [scrollbarH]="true"
+            [limit]="pageable.per_page"
+            [rowHeight]="40"
+            [externalPaging]="true"
+            [count]="pageable.total"
+            [offset]="pageable.current_page - 1"
+            (page)="setPage($event)"
+            [loadingIndicator]="loadingProducts"
+            [rowClass]="getRowClass"
+            >
+
+            <ngx-datatable-column  name="{{'code' | translate }}" [maxWidth]="60">
+                <ng-template let-row="row" ngx-datatable-cell-template >
+                    {{ row?.code }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'provider' | translate }}" [maxWidth]="200">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.provider.name }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'description' | translate }}"
+                                  >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.description }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'category' | translate }}" [maxWidth]="200">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.category?.name }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'state' | translate }}" [maxWidth]="100">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.state?.name }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'cost' | translate }}" [sortable]="false" [maxWidth]="150"
+                                  [cellClass]="'align-right'" [headerClass]="'align-right'">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.cost | currency :'ARS':'symbol':'1.0-1'}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'price' | translate }}" [sortable]="false"  [maxWidth]="150"
+                                  [cellClass]="'align-right'" [headerClass]="'align-right'">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.price | currency:'ARS':'symbol':'1.0-1'}}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="{{'actions' | translate }}" [maxWidth]="200" [sortable]="false"
+                                  [headerClass]="'align-right'" [cellClass]="'no-padding align-right'">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+
+                    <button mat-icon-button (click)="addToCart(row)" *ngIf="disponible(row)">
+                        <mat-icon>add_shopping_cart</mat-icon>
+                    </button>
+
+
+                    <button mat-icon-button (click)="editProduct(row)"
+                            matTooltip="{{ 'edit' | translate }}" >
+                        <mat-icon >
+                            edit
+                        </mat-icon>
+                    </button>
+
+<!--                    <button mat-icon-button (click)="saleProduct(row)"-->
+<!--                            matTooltip="{{ 'sale' | translate }}" >-->
+<!--                        <mat-icon >-->
+<!--                            point_of_sale-->
+<!--                        </mat-icon>-->
+<!--                    </button>-->
+
+                    <button mat-icon-button routerLink="/products/view/{{row.id}}"
+                            matTooltip="{{ 'detail' | translate }}">
+                        <mat-icon >zoom_in</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="deleteProduct(row)" matTooltip="{{'delete' | translate}}">
+                        <mat-icon >delete</mat-icon>
+                    </button>
+                </ng-template>
+            </ngx-datatable-column>
+
+        </ngx-datatable>
+    </mat-card-content>
+</mat-card>
+
+
+<!-- // LIST -->
+
+
+<!--   PANEL LATERAL&ndash-->
+<div class="sidebar-product" *ngIf="viewABMRightSidebar"
+     [@animate]="{value:'*',params:{x:'60px'}}">
+    <app-product-lateral-form [(product)]="selectedProduct" (cancel)="cancelLateralForm()" (saved)="savedProduct()">
+
+    </app-product-lateral-form>
+
+</div>
+<!-- // PANEL LATERAL -->
+
+<!--   PANEL LATERAL&ndash-->
+<div class="sidebar-product" *ngIf="viewSaleRightSidebar"
+     [@animate]="{value:'*',params:{x:'60px'}}">
+    <app-sale-lateral-form [(product)]="selectedProduct" (cancel)="cancelLateralForm()" (saved)="savedProduct()">
+
+    </app-sale-lateral-form>
+
+</div>
+
+<!-- // PANEL LATERAL -->

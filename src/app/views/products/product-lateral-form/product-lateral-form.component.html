@@ -1,0 +1,112 @@
+<div class="ps ps-active-y" fxLayout="row" fxLayoutAlign="start start">
+    <form [formGroup]="itemForm">
+        <div fxLayout="column" fxLayoutAlign="start stretch" style="width: 550px">
+            <mat-card-title class="m-0">
+                <div class="card-title-text" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                    <span>{{ 'product' | translate}} {{_product.code}}</span>
+                    <mat-form-field class="p-0 ml-1" style="width: 140px" required>
+                        <mat-select formControlName="state_id" >
+                            <mat-option *ngFor="let st of productStates" [value]="st.id">
+                                {{ st.name | translate}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button class="card-control " mat-icon-button routerLink="/products/view/{{_product.id}}">
+                        <mat-icon>zoom_in</mat-icon>
+                    </button>
+                    <button
+                            class="card-control"
+                            mat-icon-button
+                            (click)="cancelSelection()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </mat-card-title>
+
+
+            <div class="border-bottom p-05 m-0 mb-1">
+                <div class="border-bottom pb-1 mb-1">
+                    <div fxLayout="column nowrap" fxLayoutAlign="space-between ">
+                        <div>
+                            <form>
+                                <mat-form-field class="full-width">
+                                    <input type="text" placeholder="{{'search.or.add.provider' | translate}}"
+                                           matInput
+                                           [formControl]="provider_search"
+                                           [matAutocomplete]="autoProvider"
+                                           appAutoGrow>
+
+                                    <mat-autocomplete #autoProvider="matAutocomplete" [displayWith]="displayProviderFn">
+                                        <mat-option *ngIf="loadingProviders" class="pt-05">
+                                            <mat-spinner diameter="16"></mat-spinner>
+                                        </mat-option>
+                                        <mat-option class="pb-05" [value]="'new'">
+                                            <mat-icon [style.fontSize]="'25px'">add</mat-icon>
+                                            <span class="mr-1">Nuevo</span>
+                                        </mat-option>
+                                        <mat-option *ngFor="let p of filteredProviders" [value]="p"
+                                                    [style.fontSize]="'15px'">
+                                            <mat-icon [style.fontSize]="'25px'">person</mat-icon>
+                                            <span class="mr-1"> {{p.name}}, {{p.address}} </span>
+                                            <b class="mr-1">{{p.email }} </b>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </form>
+
+                            <div *ngIf="_product.provider">
+                                <div class="card-title-text">{{_product.provider.name}}, {{_product.provider.email}}</div>
+
+                            </div>
+                        </div>
+                        <div fxFlex.lt-md="auto" fxFlex="50" class="product-photos-wrap">
+                            <div class="gallery-thumbnails" [@animate]="{value:'*',params:{delay: '100ms', x:'-100px'}}">
+                                <img class="mat-elevation-z1" [ngClass]="{'active': image.state === '1'}" *ngFor="let image of photoGallery" [src]="image.url"
+                                     (click)="changeState(image)">
+                            </div>
+                            <div class="gallery-photo" [@animate]="{value:'*',params:{delay: '100ms', y:'50px'}}">
+                                <img class="mat-elevation-z2" *ngFor="let image of photoGallery" [src]="image.url" alt="" [@fadeInOut]="image.state">
+                            </div>
+                        </div>
+
+                        <mat-form-field class="p-0 ml-1" fxFlex="50">
+                            <mat-label> {{ 'category' | translate}}</mat-label>
+                            <mat-select formControlName="category_id" required>
+                                <mat-option *ngFor="let cat of categories" [value]="cat.id">
+                                    {{ cat.name | translate}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="">
+                            <textarea matInput placeholder="{{ 'description' | translate}}" cols="10"
+                                      formControlName="description">
+                            </textarea>
+                        </mat-form-field>
+                        <div fxLayout="row nowrap" fxLayoutAlign="space-between ">
+                            <mat-form-field class="">
+                                <input matInput placeholder="{{ 'sale.price' | translate}}" type="number"
+                                       formControlName="price">
+                            </mat-form-field>
+                            <mat-form-field class="">
+                                <input matInput placeholder="{{ 'cost' | translate}}" type="number"
+                                       formControlName="cost">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <mat-spinner *ngIf="loading" diameter="18"></mat-spinner>
+
+            <div class="bg-white" fxLayout="row" fxLayoutAlign="space-between center">
+                <button mat-flat-button color="accent" (click)="cancelSelection()"
+                        [disabled]="loading">{{ 'close' | translate}}</button>
+                <button mat-flat-button color="warn" (click)="deleteProduct()"
+                        [disabled]="loading">{{ 'delete' | translate}}</button>
+                <button mat-flat-button color="primary" (click)="saveProduct()"
+                        [disabled]="loading">{{ 'save' | translate}}</button>
+            </div>
+        </div>
+    </form>
+</div>

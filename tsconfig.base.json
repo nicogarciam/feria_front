@@ -1,0 +1,37 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "module": "es2020",
+    "outDir": "./dist/out-tsc",
+    "baseUrl": "src",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+//    "target": "ES6",
+//    "target": "es2015",
+    "target": "es2017",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@services/*": ["app/shared/services/*"],
+      "@components/*": ["app/shared/components/*"],
+      "@environments/*": ["environments/*"],
+      "@models/*": ["app/shared/models/*"],
+      "@animations/*": ["app/shared/animations/*"],
+      "@helpers/*": ["app/shared/helpers/*"],
+      "@interfaces/*": ["app/shared/interfaces/*"]
+    }
+
+//    "lib": [
+//      "es2016",
+//      "dom"
+//    ]
+  }
+}

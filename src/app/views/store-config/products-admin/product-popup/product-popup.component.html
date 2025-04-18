@@ -1,0 +1,79 @@
+<div mat-dialog-title fxLayout="row wrap" fxLayoutAlign="space-between center">
+    <h1>{{data.title}}</h1>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<form [formGroup]="itemForm" (ngSubmit)="submit()">
+    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100">
+            <mat-form-field fxFlex="20">
+                <input
+                        matInput
+                        name="code"
+                        placeholder="{{'code' | translate }}"
+                        value=""
+                        formControlName="code"
+                        required>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="70">
+                <input
+                        matInput
+                        name="name"
+                        placeholder="{{'name' | translate }}"
+                        value=""
+                        formControlName="name"
+                        required>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100">
+            <mat-form-field fxFlex="45">
+                <mat-label>{{'type' | translate }}</mat-label>
+                <mat-select formControlName="accommodation_type" [compareWith]="compareFn" required>
+                    <mat-option *ngFor="let type of accommodationTypes" [value]="type">
+                        <span class="mr-1"> {{type.name}} </span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="24" required>
+                <input
+                        matInput
+                        name="capacity"
+                        placeholder="{{'max.capacity' | translate }}"
+                        formControlName="capacity"
+                        value="">
+            </mat-form-field>
+            <mat-form-field fxFlex="24" required>
+                <input
+                        matInput
+                        name="floor"
+                        placeholder="{{'floor' | translate }}"
+                        formControlName="floor"
+                        value="">
+            </mat-form-field>
+        </div>
+
+        <mat-form-field class="full-width">
+            <mat-label>{{'description' | translate }}</mat-label>
+            <textarea matInput name="description"
+                      formControlName="description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <mat-label>{{'capacity.desc' | translate }}</mat-label>
+            <textarea matInput name="capacity_desc"
+                      formControlName="capacity_desc"></textarea>
+        </mat-form-field>
+
+        <div fxFlex="100" class="mt-1">
+            <button mat-raised-button color="primary" [disabled]="itemForm.invalid">{{'save' | translate }}</button>
+            <span fxFlex></span>
+            <button mat-button color="warn" type="button"
+                    (click)="dialogRef.close(false)">{{'cancel' | translate }}</button>
+        </div>
+
+    </div>
+
+</form>

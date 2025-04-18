@@ -1,0 +1,61 @@
+<div class="sidebar-panel">
+    <div id="scroll-area" [perfectScrollbar] class="navigation-hold" fxLayout="column">
+        <div class="sidebar-hold">
+
+            <!-- App Logo -->
+            <div class="branding">
+                <img src="{{jwtAuth.store.logo}}" alt="" class="app-logo" *ngIf="jwtAuth.store && jwtAuth.store.logo">
+
+                <img src="assets/images/icons/logo.png" alt="" class="app-logo" *ngIf="(!jwtAuth.store || !jwtAuth.store.logo)">
+                <span class="app-logo-text">FeriAR</span>
+
+                <span style="margin: auto" *ngIf="layoutConf.sidebarStyle !== 'compact'"></span>
+<!--                <div-->
+<!--                class="sidebar-compact-switch"-->
+<!--                [ngClass]="{active: layoutConf.sidebarCompactToggle}"-->
+<!--                (click)="toggleCollapse()"-->
+<!--                *ngIf="layoutConf.sidebarStyle !== 'compact'"><span></span></div>-->
+            </div>
+
+            <!-- Sidebar user -->
+<!--            <div class="app-user">-->
+<!--                <div class="app-user-photo">-->
+<!--                <img src="assets/images/face-7.jpg" class="mat-elevation-z1" alt="">-->
+<!--                </div>-->
+<!--                <span class="app-user-name mb-05">-->
+<!--                <mat-icon class="icon-xs text-muted">lock</mat-icon> -->
+<!--                {{jwtAuth?.user?.displayName}}-->
+<!--                </span>-->
+<!--                &lt;!&ndash; Small buttons &ndash;&gt;-->
+<!--                <div class="app-user-controls">-->
+<!--                <button -->
+<!--                class="text-muted"-->
+<!--                mat-icon-button -->
+<!--                mat-xs-button-->
+<!--                [matMenuTriggerFor]="appUserMenu">-->
+<!--                    <mat-icon>settings</mat-icon>-->
+<!--                </button>-->
+<!--                <button -->
+<!--                class="text-muted"-->
+<!--                mat-icon-button -->
+<!--                mat-xs-button-->
+<!--                matTooltip="Inbox"-->
+<!--                routerLink="/inbox">-->
+<!--                  <mat-icon>email</mat-icon>-->
+<!--                </button>-->
+<!--                <button -->
+<!--                class="text-muted"-->
+<!--                mat-icon-button -->
+<!--                mat-xs-button-->
+<!--                matTooltip="Sign Out"-->
+<!--                routerLink="/sessions/signin">-->
+<!--                    <mat-icon>exit_to_app</mat-icon>-->
+<!--                </button>-->
+
+<!--                </div>-->
+<!--            </div>-->
+            <!-- Navigation -->
+            <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle"></app-sidenav>
+        </div>
+    </div>
+</div>
