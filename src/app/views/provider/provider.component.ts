@@ -117,7 +117,7 @@ export class ProviderComponent implements OnInit, OnDestroy {
 
     savedCustomer() {
         this.viewCustomerDetail = false;
-        this.selectedProvider = new Customer();
+        this.selectedProvider = null;
     }
 
     saveItem(rowIndex: any) {

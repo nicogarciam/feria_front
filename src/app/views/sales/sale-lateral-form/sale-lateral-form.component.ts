@@ -84,6 +84,7 @@ export class SaleLateralFormComponent implements OnInit, OnDestroy {
             this._product = value;
             this.new_state = new FormControl(this._product.state_id);
             this.buildForm(this._product);
+            this.productChange.emit(this._product);
         }
     }
 
@@ -147,21 +148,21 @@ export class SaleLateralFormComponent implements OnInit, OnDestroy {
     buildForm(item: IProduct) {
 
         this.itemForm = this.fb.group({
-            id: [item.id],
-            code: [item.code, [Validators.required]],
-            name: [item.name, [Validators.required]],
-            description: [item.description],
-            category_id: [item.category_id, [Validators.required]],
-            provider_id: [item.provider_id, [Validators.required]],
-            state_id: [item.state_id, [Validators.required]],
+            id: this.fb.control(item.id),
+            code: this.fb.control(item.code, [Validators.required]),
+            name: this.fb.control(item.name, [Validators.required]),
+            description: this.fb.control(item.description),
+            category_id: this.fb.control(item.category_id, [Validators.required]),
+            provider_id: this.fb.control(item.provider_id, [Validators.required]),
+            state_id: this.fb.control(item.state_id, [Validators.required]),
 
-            color: [item.color],
-            size: [item.size],
-            price: [item.price, [Validators.required]],
-            cost: [item.cost, [Validators.required]],
-            note: [item.note],
+            color: this.fb.control(item.color),
+            size: this.fb.control(item.size),
+            price: this.fb.control(item.price, [Validators.required]),
+            cost: this.fb.control(item.cost, [Validators.required]),
+            note: this.fb.control(item.note),
 
-            date_sale: [moment(), [Validators.required]],
+            date_sale: this.fb.control(moment(), [Validators.required])
 
         })
     }
@@ -200,7 +201,7 @@ export class SaleLateralFormComponent implements OnInit, OnDestroy {
     }
 
 
-    displayCustomerFn = (item?: ICustomer) => {
+    displayCustomerFn = (item?: any) => {
         if (item && item === 'new') {
             this.addCustomer({}, true);
         } else if (item) {

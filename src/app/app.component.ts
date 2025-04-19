@@ -27,7 +27,7 @@ registerLocaleData(localeEn, 'en');
   ]
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  appTitle = 'AlojAR';
+  appTitle = 'FeriAr';
   pageTitle = '';
 
   selectedLanguage = 'es';

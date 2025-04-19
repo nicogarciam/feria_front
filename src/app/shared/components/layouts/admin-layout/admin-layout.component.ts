@@ -39,6 +39,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   public layoutConf: any = {};
   public adminContainerClasses: any = {};
 
+  public notificationPanel: any = null;
   constructor(
     private router: Router,
     public translate: TranslateService,

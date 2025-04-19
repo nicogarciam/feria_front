@@ -10,8 +10,8 @@
                         <mat-date-range-input
                                 [formGroup]="dateRange"
                                 [rangePicker]="dateRangeP"
-                                [comparisonStart]="dateRange.value.from"
-                                [comparisonEnd]="dateRange.value.to">
+                                [comparisonStart]="dateRange.value?.from"
+                                [comparisonEnd]="dateRange.value?.to">
                             <input matStartDate placeholder="{{'from' | translate}}" formControlName="from">
                             <input matEndDate placeholder="{{'to' | translate}}" formControlName="to">
                         </mat-date-range-input>
@@ -28,7 +28,7 @@
 
 
                 <div>
-                    <select (change)="pegaSizeChange($event.target.value)" class="page-limit">
+                    <select (change)="pegaSizeChange($event)" class="page-limit">
                         <option
                                 *ngFor="let option of pageSizeOptions"
                                 [value]="option.value"

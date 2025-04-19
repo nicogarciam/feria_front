@@ -29,7 +29,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
     public cart: CartItem[];
     public cartData: any;
 
-
     constructor(
         private fb: FormBuilder,
         private snackBar: MatSnackBar,
@@ -86,10 +85,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
     buildFilterForm(filterData: any = {}) {
         this.filterForm = this.fb.group({
-            search: [''],
-            category: ['all'],
-            minPrice: [filterData.minPrice],
-            maxPrice: [filterData.maxPrice]
+            search: this.fb.control(''),
+            category: this.fb.control('all'),
+            minPrice: this.fb.control(filterData.minPrice),
+            maxPrice: this.fb.control(filterData.maxPrice)
         })
     }
 

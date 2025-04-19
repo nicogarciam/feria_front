@@ -56,8 +56,8 @@
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <div fxLayout="row" fxLayoutAlign="start center">
-                                <div class="mr-1">{{_product.state | translate}}</div>
+                            <div fxLayout="row" fxLayoutAlign="start center" *ngIf="_product.state">
+                                <div class="mr-1">{{_product.state.name | translate}}</div>
                             </div>
 
                         </mat-panel-title>

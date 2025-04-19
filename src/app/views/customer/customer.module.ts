@@ -66,5 +66,6 @@ import {MatTooltipModule} from "@angular/material/tooltip";
         MatTooltipModule,
     ],
   declarations: [CustomerComponent, CustomerOverviewComponent, CustomerSettingsComponent]
+  , exports: [CustomerOverviewComponent]
 })
 export class CustomerModule { }

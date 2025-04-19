@@ -22,7 +22,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { StarRatingModule } from 'angular-star-rating';
 
 import { ProductsComponent } from './products/products.component';
 import { ShopService } from './shop.service';
@@ -67,8 +66,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         TranslateModule,
         MatAutocompleteModule,
         MatProgressSpinnerModule,
-        MatDatepickerModule,
-        StarRatingModule
+        MatDatepickerModule
     ],
     declarations: [
         ProductsComponent,

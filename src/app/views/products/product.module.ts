@@ -84,8 +84,7 @@ import {SaleLateralFormComponent} from "../sales/sale-lateral-form/sale-lateral-
         ProductComponent,
         ProductListComponent,
         ProductViewComponent,
-        ProductLateralFormComponent,
-        SaleLateralFormComponent
+        ProductLateralFormComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

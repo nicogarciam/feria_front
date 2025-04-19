@@ -95,8 +95,8 @@
                       <small class="text-muted">({{product.ratings?.ratingCount || 0}})</small>
                     </div>
                     <div class="price">
-                      <span>{{product?.price?.sale | currency:'USD'}}</span>
-                      <del class="text-muted">{{product?.price?.previous | currency:'USD'}}</del>
+                      <span>{{product?.price | currency:'USD'}}</span>
+                      <del class="text-muted">{{0.0 | currency:'USD'}}</del>
                     </div>
   
                   </div>
@@ -114,7 +114,7 @@
                   <div class="more-actions mb-1">
                     <div class="product-rating">
                       
-                      <small class="text-muted">({{product.ratings?.ratingCount || 0}})</small>
+                      <small class="text-muted">({{product.ratings?.ratingCount}})</small>
                     </div>
                     <span fxFlex></span>
                     <button mat-icon-button>

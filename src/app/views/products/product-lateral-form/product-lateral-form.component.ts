@@ -215,7 +215,7 @@ export class ProductLateralFormComponent implements OnInit, OnDestroy {
     }
 
 
-    displayCustomerFn = (item?: ICustomer) => {
+    displayCustomerFn = (item?: any) => {
         if (item && item === 'new') {
             this.addCustomer({}, true);
         } else if (item) {
@@ -223,14 +223,18 @@ export class ProductLateralFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    displayProviderFn = (item?: ICustomer) => {
-        if (item && item === 'new') {
-            this.addProvider({}, true);
-        } else if (item) {
-            this._product.provider = item;
-            this._product.provider_id = item.id;
-        }
-    }
+     displayProviderFn = (item?: any) => {
+         if (item && item === 'new') {
+             this.addProvider({}, true);
+             return '';
+         } else if (item) {
+             this._product.provider = item;
+             this._product.provider_id = item.id;
+             return item.name;
+         } else {
+             return '';
+         }
+     }
 
 
     public productStateCompare = function (option, value): boolean {

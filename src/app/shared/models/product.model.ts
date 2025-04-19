@@ -11,6 +11,7 @@ export interface IProduct {
   id?: number;
   code?: string;
   name?: string;
+  subtitle?: string;
   description?: string;
   store?: IStore;
   store_id?: number;
@@ -22,7 +23,7 @@ export interface IProduct {
   state?: IProductState;
   color?: string;
   size?: string;
-  // price?: number;
+  price?: number;
   cost?: number;
   sale?: ISale;
   note?: string;
@@ -32,7 +33,6 @@ export interface IProduct {
   _id?: string;
   // category?: string;
   tags?: string[];
-  price?: number;
   ratings?: {
     rating: number,
     ratingCount: number
