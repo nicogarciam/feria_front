@@ -91,8 +91,8 @@
                 <div class="actions">
                   <div class="price-rating">
                     <div class="product-rating" *ngIf="viewMode === 'grid-view'">
-                      <star-rating [rating]="product.ratings.rating" [starType]="'svg'" [readOnly]="true" [size]="'small'" [staticColor]="'ok'"></star-rating>
-                      <small class="text-muted">({{product.ratings.ratingCount}})</small>
+                      
+                      <small class="text-muted">({{product.ratings?.ratingCount || 0}})</small>
                     </div>
                     <div class="price">
                       <span>{{product?.price?.sale | currency:'USD'}}</span>
@@ -113,8 +113,8 @@
                 <div class="more-info">
                   <div class="more-actions mb-1">
                     <div class="product-rating">
-                      <star-rating [starType]="'svg'" [readOnly]="true" [size]="'medium'" [staticColor]="'ok'" [rating]="4.63"></star-rating>
-                      <small class="text-muted">(140)</small>
+                      
+                      <small class="text-muted">({{product.ratings?.ratingCount || 0}})</small>
                     </div>
                     <span fxFlex></span>
                     <button mat-icon-button>

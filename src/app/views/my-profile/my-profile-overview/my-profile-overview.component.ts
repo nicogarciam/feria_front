@@ -1,14 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IAccount} from '../../../shared/models/account.model';
-import {IPay} from '../../../shared/models/pay.model';
+import {IAccount} from '@models/account.model';
+import {IPay} from '@models/pay.model';
 import {MatDialog} from '@angular/material/dialog';
-import {AppLoaderService} from '../../../shared/services/app-loader/app-loader.service';
+import {AppLoaderService} from '@services/app-loader/app-loader.service';
 import {TranslateService} from '@ngx-translate/core';
 import {BehaviorSubject} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
-import {PayService} from '../../../shared/services/entities/pay.service';
+import {PayService} from '@services/entities/pay.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {egretAnimations} from '../../../shared/animations/egret-animations';
+import {egretAnimations} from '@animations/egret-animations';
 import {AccountService} from "@services/entities/account.service";
 
 @Component({

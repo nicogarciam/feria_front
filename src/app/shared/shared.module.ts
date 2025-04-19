@@ -1,5 +1,7 @@
-import {NgModule} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {StarRatingModule} from 'angular-star-rating';
 
 // SERVICES
 import {ThemeService} from '@services/theme.service';
@@ -28,7 +30,8 @@ import {CartQuery} from "@services/cart/cart.query";
         SharedComponentsModule,
         SharedPipesModule,
         SharedDirectivesModule,
-        CurrencyMaskModule
+        CurrencyMaskModule,
+        StarRatingModule
     ],
     providers: [
         ThemeService,
@@ -47,7 +50,8 @@ import {CartQuery} from "@services/cart/cart.query";
     exports: [
         SharedComponentsModule,
         SharedPipesModule,
-        SharedDirectivesModule
+        SharedDirectivesModule,
+        StarRatingModule
     ]
 })
 export class SharedModule {

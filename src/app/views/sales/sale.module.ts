@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -17,7 +17,6 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
-import {ChartsModule} from 'ng2-charts';
 import {FileUploadModule} from 'ng2-file-upload';
 import {SaleComponent} from './sale.component';
 import {BookingRoutes} from './sale.routing';
@@ -64,7 +63,6 @@ import {SaleLateralFormComponent} from "./sale-lateral-form/sale-lateral-form.co
         MatProgressBarModule,
         FlexLayoutModule,
         NgxDatatableModule,
-        ChartsModule,
         FileUploadModule,
         SharedPipesModule,
         SharedDirectivesModule,
@@ -88,6 +86,6 @@ import {SaleLateralFormComponent} from "./sale-lateral-form/sale-lateral-form.co
         SalesListComponent
     ],
     declarations: [SaleComponent, SelectorComponent, SalesListComponent,
-        SaleViewComponent, CustomerPopupComponent]
+        SaleViewComponent, CustomerPopupComponent, SaleLateralFormComponent]
 })
 export class SaleModule { }

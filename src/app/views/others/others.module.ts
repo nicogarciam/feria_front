@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +17,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { ChartsModule } from 'ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
@@ -46,7 +45,6 @@ import { OthersRoutes } from './others.routing';
     MatProgressBarModule,
     FlexLayoutModule,
     NgxDatatableModule,
-    ChartsModule,
     FileUploadModule,
     SharedModule,
     RouterModule.forChild(OthersRoutes)
@@ -56,6 +54,7 @@ import { OthersRoutes } from './others.routing';
     AppPricingComponent,
     AppUsersComponent,
     AppBlankComponent
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class OthersModule { }

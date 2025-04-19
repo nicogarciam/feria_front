@@ -2,9 +2,10 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "baseUrl": "",
     "types": [
-      "googlemaps", "gapi","gapi.auth2"
+      "googlemaps",
+      "gapi",
+      "gapi.auth2"
     ],
     "paths": {
       "@services/*": ["app/shared/services/*"],
@@ -20,5 +21,7 @@
     "main.ts",
     "polyfills.ts"
   ],
-  "experimentalDecorators": false
+  "include": [
+    "src/**/*.d.ts"
+  ]
 }

@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -17,7 +17,6 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
-import {ChartsModule} from 'ng2-charts';
 import {FileUploadModule} from 'ng2-file-upload';
 import {MyProfileComponent} from './my-profile.component';
 import {MyProfileOverviewComponent} from './my-profile-overview/my-profile-overview.component';
@@ -49,17 +48,21 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
         MatProgressBarModule,
         FlexLayoutModule,
         NgxDatatableModule,
-        ChartsModule,
         FileUploadModule,
         SharedPipesModule,
-        RouterModule.forChild(MyProfileRoutes),
         TranslateModule,
+        RouterModule.forChild(MyProfileRoutes),
         MatProgressSpinnerModule,
         MatDatepickerModule,
         ReactiveFormsModule,
         MatSelectModule,
         MatButtonToggleModule
     ],
-  declarations: [MyProfileComponent, MyProfileOverviewComponent, MyProfileSettingsComponent]
+    declarations: [
+        MyProfileComponent,
+        MyProfileOverviewComponent,
+        MyProfileSettingsComponent
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class MyProfileModule { }

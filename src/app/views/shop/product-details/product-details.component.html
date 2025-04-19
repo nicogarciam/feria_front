@@ -21,8 +21,11 @@
     <h1 class="title">{{product?.name}}</h1>
     <div class="main-info mb-1">
       <p class="mb-05" [ngStyle]="{maxWidth: '450px'}">{{product?.description}}</p>
-      <p class="text-muted p-line"><strong>Category:</strong> <span class="mat-color-default">{{product?.category.name}}</span></p>
-
+      <p class="text-muted p-line"><strong>Category:</strong> <span class="mat-color-default">{{product?.category?.name}}</span></p>
+      <div class="product-rating mb-1">
+      
+        <small class="text-muted">({{product?.ratings?.ratingCount || 0}} reviews)</small>
+      </div>
     </div>
     <div class="product-options">
       <div class="opt-radio mb-1">

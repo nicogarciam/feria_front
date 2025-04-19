@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -73,7 +73,6 @@ import {SaleLateralFormComponent} from "../sales/sale-lateral-form/sale-lateral-
         ReactiveFormsModule,
         MatSelectModule,
         MatButtonToggleModule,
-        MatProgressSpinnerModule,
         MatAutocompleteModule,
         MatExpansionModule,
         MatTooltipModule,
@@ -81,7 +80,13 @@ import {SaleLateralFormComponent} from "../sales/sale-lateral-form/sale-lateral-
         PerfectScrollbarModule,
         SharedMaterialModule
     ],
-    declarations: [ProductComponent, ProductListComponent,
-        ProductViewComponent, ProductLateralFormComponent, SaleLateralFormComponent]
+    declarations: [
+        ProductComponent,
+        ProductListComponent,
+        ProductViewComponent,
+        ProductLateralFormComponent,
+        SaleLateralFormComponent
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProductModule { }

@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -17,7 +17,6 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
-import {ChartsModule} from 'ng2-charts';
 import {FileUploadModule} from 'ng2-file-upload';
 import {HotelConfigRoutes} from './store-config.routing';
 import {StoreConfigComponent} from './store-config.component';
@@ -55,7 +54,6 @@ import {StoreSettingsComponent} from "./store-settings/store-settings.component"
         MatProgressBarModule,
         FlexLayoutModule,
         NgxDatatableModule,
-        ChartsModule,
         FileUploadModule,
         RouterModule.forChild(HotelConfigRoutes),
         ReactiveFormsModule,
@@ -74,7 +72,8 @@ import {StoreSettingsComponent} from "./store-settings/store-settings.component"
         ProductAdminComponent, ProductPopupComponent, CategoryPopupComponent,
         BankAccountCrudComponent,
         DiscountCrudComponent
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class StoreConfigModule {
 }
