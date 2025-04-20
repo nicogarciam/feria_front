@@ -54,7 +54,7 @@ export class NewSale implements ISaleState {
 
 export class SaleConfirmed implements ISaleState {
 
-    action = 'checkin';
+    action = 'pay';
 
     constructor(o?: Partial<ISaleState>) {
         Object.assign(this, o);
@@ -69,7 +69,7 @@ export class SaleConfirmed implements ISaleState {
     }
 }
 export class SaleCanceled implements ISaleState {
-    action = 'pay';
+    action = 'close';
     constructor(o?: Partial<ISaleState>) {
         Object.assign(this, o);
     }
@@ -111,13 +111,29 @@ export class SaleClosed implements ISaleState {
     }
 }
 
+export class SaleCart implements ISaleState {
+    action = 'confirm';
+    constructor(o?: Partial<ISaleState>) {
+        Object.assign(this, o);
+    }
+
+    cambiarEstado(): void {
+        // Cambiar el estado de la tarea a "completa"
+    }
+
+    toString(): string {
+        return SaleStateEnum.CART;
+    }
+}
+
 
 enum SaleStateEnum {
-    NEW = 'new',
-    CONFIRMED = 'confirmed',
-    CANCELED= 'canceled',
-    PAID= 'paid',
-    CLOSED= 'CLOSED',
+    NEW = 'new', // 1
+    CART = 'cart', // 5
+    CONFIRMED = 'confirmed', // 2
+    CANCELED= 'canceled', // 4
+    PAID= 'paid', // 3
+    CLOSED= 'CLOSED', // 6
 }
 
 
@@ -151,6 +167,11 @@ export let saleStateFactory = {
     'CLOSED': new SaleClosed({
         date_from: moment(),
         name: 'closed',
+        color: "#6d6d6e"
+    }),
+    'CART': new SaleClosed({
+        date_from: moment(),
+        name: 'cart',
         color: "#6d6d6e"
     })
 }

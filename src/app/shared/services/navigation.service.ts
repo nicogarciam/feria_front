@@ -85,6 +85,13 @@ export class NavigationService {
       state: 'customers'
     },
     {
+      name: 'providers',
+      type: 'link',
+      tooltip: 'providers',
+      icon: 'badge',
+      state: 'providers'
+    },
+    {
       name: 'pays',
       type: 'link',
       tooltip: 'pays',

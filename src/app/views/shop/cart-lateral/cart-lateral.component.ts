@@ -135,6 +135,10 @@ export class CartLateralComponent implements OnInit, OnDestroy {
         this.getItemSub = [];
     }
 
+    closeCart() {
+
+    }
+
     saveCart() {
 
         if (this.customer_search.invalid || this.date_sale.invalid) {
@@ -177,7 +181,7 @@ export class CartLateralComponent implements OnInit, OnDestroy {
 
     }
 
-    displayCustomerFn = (item?: ICustomer) => {
+    displayCustomerFn = (item?: any) => {
         if (item && item === 'new') {
             this.addCustomer({}, true);
         } else if (item) {
@@ -206,4 +210,5 @@ export class CartLateralComponent implements OnInit, OnDestroy {
 
 
     }
+
 }

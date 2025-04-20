@@ -96,7 +96,7 @@ export class CustomerOverviewComponent implements OnInit, OnDestroy {
 
     getBalance() {
         const options = {
-            'for': {'customer_id': this.customer.id, 'hotel_id': this.jwtAuth.getStore().id},
+            'for': {'customer_id': this.customer.id, 'store_id': this.jwtAuth.getStore().id},
             'date_from':  moment().subtract(1, 'M').startOf('month').startOf('hour').toISOString(),
             'date_to': moment().endOf('month').endOf('hour').toISOString(),
         }
@@ -121,12 +121,11 @@ export class CustomerOverviewComponent implements OnInit, OnDestroy {
                     this.loadingSales = false;
                 },
                 (error) => {
-                    this.error.error(error);
                     this.loadingSales = false;
+                    this.error.error(error);
                 }
             ));
     }
-
 
 
     getPays() {

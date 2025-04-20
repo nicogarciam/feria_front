@@ -11,6 +11,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <div fxFlex></div>
                     <button class="card-control " mat-icon-button routerLink="/products/view/{{_product.id}}">
                         <mat-icon>zoom_in</mat-icon>
                     </button>
@@ -22,7 +23,6 @@
                     </button>
                 </div>
             </mat-card-title>
-
 
             <div class="border-bottom p-05 m-0 mb-1">
                 <div class="border-bottom pb-1 mb-1">
@@ -55,13 +55,15 @@
                             </form>
 
                             <div *ngIf="_product.provider">
+                                <small>{{ 'provider' | translate}}</small>
                                 <div class="card-title-text">{{_product.provider.name}}, {{_product.provider.email}}</div>
 
                             </div>
                         </div>
                         <div fxFlex.lt-md="auto" fxFlex="50" class="product-photos-wrap">
                             <div class="gallery-thumbnails" [@animate]="{value:'*',params:{delay: '100ms', x:'-100px'}}">
-                                <img class="mat-elevation-z1" [ngClass]="{'active': image.state === '1'}" *ngFor="let image of photoGallery" [src]="image.url"
+                                <img class="mat-elevation-z1" [ngClass]="{'active': image.state === '1'}"
+                                     *ngFor="let image of photoGallery" [src]="image.url"
                                      (click)="changeState(image)">
                             </div>
                             <div class="gallery-photo" [@animate]="{value:'*',params:{delay: '100ms', y:'50px'}}">
@@ -69,7 +71,7 @@
                             </div>
                         </div>
 
-                        <mat-form-field class="p-0 ml-1" fxFlex="50">
+                        <mat-form-field class="p-0" fxFlex="50">
                             <mat-label> {{ 'category' | translate}}</mat-label>
                             <mat-select formControlName="category_id" required>
                                 <mat-option *ngFor="let cat of categories" [value]="cat.id">

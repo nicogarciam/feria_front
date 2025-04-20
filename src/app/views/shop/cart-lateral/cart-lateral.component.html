@@ -95,7 +95,7 @@
 <!--                        </mat-form-field>-->
 
                         <mat-form-field>
-                            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                            <input matInput [matDatepicker]="picker" placeholder="Fecha del carrito">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
@@ -108,15 +108,16 @@
                     <span fxFlex></span>
                     <button mat-raised-button color="primary" [disabled]="loading">{{ 'cancel' | translate }}</button>
                     <button mat-raised-button color="warn" [disabled]="loading">{{ 'checkout' | translate }}</button>
-                    <button mat-raised-button color="warn" [disabled]="loading || !this.customer_search.invalid " (click)="saveCart()">{{ 'save' | translate }}</button>
+                    <button mat-raised-button color="warn" [disabled]="loading" 
+                    (click)="saveCart()">{{ 'save' | translate }}</button>
                 </mat-card-actions>
             </mat-card>
         </div>
     </div>
     <div *ngIf="cartEmpty" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
         <mat-card class="text-center">
-            <p>Your cart is empty</p>
-            <button mat-raised-button color="accent" >{{ 'cancel' | translate }}</button>
+            <p>Tu Carrito esta Vacio</p>
+            <button mat-raised-button color="accent" (click)="closeCart()" >{{ 'cancel' | translate }}</button>
         </mat-card>
     </div>
 </div>

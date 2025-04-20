@@ -1,6 +1,9 @@
-<div fxLayout="row wrap">
+<div fxLayout="row wrap" class="p-05">
+    <div fxFlex="100" fxFlex.gt-sm="90" class="pl-05">
+        <h1>{{ 'customers' | translate }}</h1>
+    </div>
 
-    <div fxFlex="100" fxFlex.gt-sm="90">
+    <div fxFlex="100" fxFlex.gt-sm="100">
         <div class="ml-1">
             <mat-form-field>
                 <input matInput placeholder="{{'search' | translate}}" (input)="filter($event)">
@@ -118,7 +121,7 @@
                     </ng-template>
                 </ngx-datatable-column>
 
-                <ngx-datatable-column name="Actions" >
+                <ngx-datatable-column name="{{'actions' | translate }}" >
                     <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
 
                         <button mat-icon-button mat-sm-button color="primary" (click)="saveItem(rowIndex)"

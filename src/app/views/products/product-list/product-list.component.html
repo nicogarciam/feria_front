@@ -145,7 +145,8 @@
                                   [headerClass]="'align-right'" [cellClass]="'no-padding align-right'">
                 <ng-template let-row="row" ngx-datatable-cell-template>
 
-                    <button mat-icon-button (click)="addToCart(row)" *ngIf="disponible(row)">
+                    <button mat-icon-button (click)="addToCart(row)" *ngIf="disponible(row)"
+                            matTooltip="{{ 'add.to.cart' | translate }}">
                         <mat-icon>add_shopping_cart</mat-icon>
                     </button>
 

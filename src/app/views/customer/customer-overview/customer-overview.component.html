@@ -58,8 +58,7 @@
                 <mat-card class="p-0" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
                     <mat-card-title class="">
                         <div class="card-title-text">
-                            <div class="mr-1">{{'account' | translate }}</div>
-
+                            <div class="mr-1">{{'client.account' | translate }} </div>
                             <div>{{ balance?.state | translate }}</div>
                             <span fxFlex></span>
                             <button mat-icon-button class="card-control" (click)="getBalance()"
@@ -75,7 +74,7 @@
                             <div fxFlex [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
                                 <mat-card>
                                     <mat-card-title fxLayoutAlign="start center">
-                                        <small class="text-muted">{{'to' | translate }} {{ balance?.date_to | momentFormat : 'dd/MM/yyyy'  }}</small>
+                                        <small class="text-muted">{{'from' | translate }} {{ balance?.date_to | momentFormat : 'DD/MM/yyyy'  }}</small>
                                         <span fxFlex></span>
                                         <mat-spinner diameter="12" *ngIf="loadingBalance"></mat-spinner>
                                         <h3 *ngIf="!loadingBalance" class="text-blue">
@@ -87,7 +86,7 @@
                             <div fxFlex [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
                                 <mat-card>
                                     <mat-card-title fxLayoutAlign="start center">
-                                        <small class="text-muted">{{'to' | translate }} {{ balance?.date_from | momentFormat : 'dd/MM/yyyy'  }}</small>
+                                        <small class="text-muted">{{'to' | translate }} {{ balance?.date_from | momentFormat : 'DD/MM/yyyy'  }}</small>
                                         <span fxFlex></span>
                                         <mat-spinner diameter="12" *ngIf="loadingBalance"></mat-spinner>
                                         <h3 *ngIf="!loadingBalance" >
@@ -107,7 +106,7 @@
 
                             <div class="p-05 border-bottom-light" fxLayout="row nowrap" fxLayoutAlign="space-between center"
                                  *ngFor="let mo of balance?.movements" >
-                                <div fxFlex="10"> {{ mo.date | momentFormat: 'dd/MM/yyyy'  }} </div>
+                                <div fxFlex="10"> {{ mo.date | momentFormat: 'DD/MM/yyyy'  }} </div>
                                 <div fxFlex="20"> {{ mo.concept}} </div>
                                 <div fxFlex="5">
                                     <mat-icon *ngIf="mo.type == 'CREDIT'" color="primary">trending_up</mat-icon>
@@ -118,7 +117,7 @@
                             </div>
 
                             <div class="p-05 border-top-normal" fxLayout="row nowrap" fxLayoutAlign="space-between center" *ngIf="!loadingBalance">
-                                <div fxFlex="10"> {{ balance?.date_to | momentFormat : 'dd/MM/yyyy'  }} </div>
+                                <div fxFlex="10"> {{ balance?.date_to | momentFormat : 'DD/MM/yyyy'  }} </div>
                                 <div fxFlex="20"> {{ 'previous' | translate}} </div>
                                 <div fxFlex="5"> - </div>
                                 <div fxFlex="20"> - </div>
@@ -151,14 +150,12 @@
                                 <h4>{{'no.sales.found' | translate }}</h4>
                             </mat-list-item>
 
-                                <div class="p-1 border-bottom-light" fxLayout="row wrap" fxLayoutAlign="space-between center" *ngFor="let sa of sales">
-                                    <small>{{sa.sale_state.name | translate}}</small>
+                            <div *ngFor="let sa of sales" class="p-1 border-bottom-light" fxLayout="row wrap" fxLayoutAlign="space-between center" >
+                                <small> {{ sa.date_sale | momentFormat : 'DD/MM/yyyy'  }} </small>
+                                <small>{{sa.sale_state.name | translate}}</small>
+                                <div >{{ sa.total_price | currency: 'ar$' : 'symbol' }}</div>
 
-                                    <small> {{ sa.date_sale | momentFormat : 'dd/MM/yyyy'  }} </small>
-
-                                    <div >{{ sa.total_price | currency: 'ar$' : 'symbol' }}</div>
-
-                                </div>
+                            </div>
                                 <!--            <mat-chip mat-sm-chip [color]="'warn'" [selected]="ac.isOpen">{{ac.isOpen ? 'active' : 'closed'}}</mat-chip>-->
 
 

@@ -43,7 +43,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.options = {
-            hotel_id: this.jwtAuth.getStore().id
+            store_id: this.jwtAuth.getStore().id
         }
         this.getItems();
 
@@ -82,7 +82,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
         // update the rows
         this.rows = temp;
     }
-
 
     updateValue(event, cell, rowIndex) {
         this.rows[rowIndex][cell] = event.target.value;

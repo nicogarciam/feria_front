@@ -54,13 +54,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       password: password,
       username: new FormControl(),
       confirmPassword: confirmPassword,
-      agreed: new FormControl('', (control: FormControl) => {
-        const agreed = control.value;
-        if (!agreed) {
-          return { agreed: true }
-        }
-        return null;
-      })
+      agreed: new FormControl('')
 
     })
   }

@@ -13,9 +13,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ChartsModule } from 'ng2-charts';
-import { NgxEchartsModule } from 'ngx-echarts';
-import * as echarts from 'echarts';
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
@@ -40,10 +37,6 @@ import {MatInputModule} from '@angular/material/input';
         MatTableModule,
         MatGridListModule,
         FlexLayoutModule,
-        ChartsModule,
-        NgxEchartsModule.forRoot({
-            echarts
-        }),
         NgxDatatableModule,
         SharedPipesModule,
         RouterModule.forChild(DashboardRoutes),
