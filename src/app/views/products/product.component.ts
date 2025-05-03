@@ -11,7 +11,7 @@ import {egretAnimations} from '@animations/egret-animations';
 import {JwtAuthService} from '@services/auth/jwt-auth.service';
 
 @Component({
-    selector: 'app-sales',
+    selector: 'app-product',
     templateUrl: './product.component.html',
     styleUrls: ['./product.component.css'],
     animations: egretAnimations
@@ -34,6 +34,9 @@ export class ProductComponent implements OnInit, OnDestroy {
                 private loader: AppLoaderService,
                 private snack: MatSnackBar, private t: TranslateService,
                 public jwtAuth: JwtAuthService) {
+        console.log("ProductComponent");
+        console.log('ProductComponent initialized');
+
     }
 
     ngOnInit() {

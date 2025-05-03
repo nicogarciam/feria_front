@@ -56,7 +56,7 @@ export class PayPopupComponent implements OnInit {
 
         this.sale = data.sale;
 
-        const concept = this.sale ? this.t.instant('pay') + ' ' + this.t.instant('booking') + ' ' + this.sale.code : '';
+        const concept = this.sale ? this.t.instant('pay') + ' ' + this.t.instant('store') + ' ' + this.sale.code : '';
         this.pay = new Pay({
             pay_date: moment(),
             pay_method: 'cash',
@@ -78,7 +78,7 @@ export class PayPopupComponent implements OnInit {
     ngOnInit() {
         this.pay_types = payTypes;
         this.pay.user_id = this.authService.user.id;
-        this.bankAccountService.query({hotel_id: this.authService.getStore().id}).subscribe(res => {
+        this.bankAccountService.query({store_id: this.authService.getStore().id}).subscribe(res => {
                 this.banksAccounts = res.body;
             },
             error => {

@@ -1,7 +1,7 @@
 import {Routes} from '@angular/router';
 import {StoreConfigComponent} from './store-config.component';
 
-export const HotelConfigRoutes: Routes = [
+export const ConfigRoutes: Routes = [
     {
         path: "",
         component: StoreConfigComponent,

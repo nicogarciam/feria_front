@@ -1,6 +1,6 @@
 import { Injectable, Inject, Renderer2, RendererFactory2, EventEmitter } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import  { getQueryParam } from '../helpers/url.helper';
+import { getQueryParam } from '@helpers/url.helper';
 
 export interface ITheme {
   name: string,
@@ -10,9 +10,9 @@ export interface ITheme {
 
 @Injectable()
 export class ThemeService {
-  public onThemeChange :EventEmitter<ITheme> = new EventEmitter();
+  public onThemeChange: EventEmitter<ITheme> = new EventEmitter();
 
-  public egretThemes :ITheme[]  = [{
+  public egretThemes: ITheme[]  = [{
     "name": "egret-dark-purple",
     "baseColor": "#9c27b0",
     "isActive": false
@@ -64,10 +64,10 @@ export class ThemeService {
     this.onThemeChange.emit(this.activatedTheme);
   }
 
-  flipActiveFlag(themeName:string) {
+  flipActiveFlag(themeName: string) {
     this.egretThemes.forEach((t) => {
       t.isActive = false;
-      if(t.name === themeName) {
+      if (t.name === themeName) {
         t.isActive = true;
         this.activatedTheme = t;
       }
@@ -76,12 +76,12 @@ export class ThemeService {
 
   // *********** ONLY FOR DEMO **********
   setThemeFromQuery() {
-    let themeStr = getQueryParam('theme');
+    const themeStr = getQueryParam('theme');
     try {
       this.activatedTheme = JSON.parse(themeStr);
       console.log(this.activatedTheme);
       
       this.flipActiveFlag(this.activatedTheme.name);
-    } catch(e) {}
+    } catch (e) {}
   }
 }

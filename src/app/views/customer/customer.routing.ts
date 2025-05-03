@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { CustomerComponent } from "./customer.component";
 
-export const MyProfileRoutes: Routes = [
+export const CustomerRoutes: Routes = [
   {
     path: '',
     component: CustomerComponent,

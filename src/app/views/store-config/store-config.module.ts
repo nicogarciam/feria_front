@@ -18,13 +18,12 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {FileUploadModule} from 'ng2-file-upload';
-import {HotelConfigRoutes} from './store-config.routing';
+import {ConfigRoutes} from './store-config.routing';
 import {StoreConfigComponent} from './store-config.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatSelectModule} from '@angular/material/select';
 import {SharedPipesModule} from '../../shared/pipes/shared-pipes.module';
-import {SharedMaterialModule} from '../../shared/shared-material.module';
-import {SharedComponentsModule} from '@components/shared-components.module';
+import {SharedComponentsModule} from '../../shared/components/shared-components.module';
 import {CurrencyMaskModule} from "ng2-currency-mask";
 import {ColorPickerModule} from "ngx-color-picker";
 import { BankAccountCrudComponent } from './bank-account/bank-account-crud/bank-account-crud.component';
@@ -34,6 +33,15 @@ import {ProductAdminComponent} from "./products-admin/product-admin.component";
 import {ProductPopupComponent} from "./products-admin/product-popup/product-popup.component";
 import {CategoryPopupComponent} from "./products-admin/category-popup/category-popup.component";
 import {StoreSettingsComponent} from "./store-settings/store-settings.component";
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
     imports: [
@@ -55,16 +63,24 @@ import {StoreSettingsComponent} from "./store-settings/store-settings.component"
         FlexLayoutModule,
         NgxDatatableModule,
         FileUploadModule,
-        RouterModule.forChild(HotelConfigRoutes),
+        RouterModule.forChild(ConfigRoutes),
         ReactiveFormsModule,
         MatSelectModule,
         TranslateModule,
         SharedPipesModule,
-        SharedMaterialModule,
         SharedComponentsModule,
         CurrencyMaskModule,
         ColorPickerModule,
-        CustomFormsModule
+        CustomFormsModule,
+        MatFormFieldModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatTooltipModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatDatepickerModule,
+        MatNativeDateModule
     ],
     declarations: [
         StoreConfigComponent,

@@ -91,6 +91,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
                 private cartService: CartService, private productStateService: ProductStateService) {
         this.pageable.page = 0;
         this.pageable.per_page = 20;
+        console.log("ProductComponent");
     }
 
     ngOnInit(): void {

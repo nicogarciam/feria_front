@@ -15,8 +15,8 @@
       <tbody>
         <tr *ngFor="let item of cart">
           <td><button mat-icon-button color="warn" (click)="removeProduct(item)"><mat-icon>close</mat-icon></button> </td>
-          <td><img class="cart-thumbnail" [src]="item.product.photo" style="cursor: pointer" [routerLink]="['/shop/products', item.product._id]"></td>
-          <td><span style="cursor: pointer" [routerLink]="['/shop/products', item.product._id]">{{item.product.name}}</span></td>
+          <td><img class="cart-thumbnail" [src]="item.product.photo" style="cursor: pointer" [routerLink]="['/shop/shop-product', item.product._id]"></td>
+          <td><span style="cursor: pointer" [routerLink]="['/shop/shop-product', item.product._id]">{{item.product.name}}</span></td>
           <td>{{item.product.price.sale | currency}}</td>
           <td><input class="quantity-input default-bg" id="quantity" min="1" name="quantity" type="number" (change)="onQuantityChange()" [(ngModel)]="item.data.quantity"></td>
           <td>{{item.product.price.sale * item.data.quantity | currency}}</td>

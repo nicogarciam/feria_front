@@ -56,6 +56,9 @@
                 <button mat-mini-fab (click)="getProductsFromServer()" color="primary">
                     <mat-icon>refresh</mat-icon>
                 </button>
+
+                <button mat-flat-button class="ml-1" color="primary" routerLink="/products/add">
+                    {{ 'add.product' | translate}}</button>
             </div>
 
             <div fxLayout="row" fxLayoutAlign="end center">

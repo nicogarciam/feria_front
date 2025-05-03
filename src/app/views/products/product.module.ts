@@ -1,4 +1,4 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -20,14 +20,13 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ChartsModule} from 'ng2-charts';
 import {FileUploadModule} from 'ng2-file-upload';
 import {ProductComponent} from './product.component';
-import {BookingRoutes} from './product.routing';
+import {ProductsRoutes} from './product.routing';
 import {SharedPipesModule} from '../../shared/pipes/shared-pipes.module';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {DragToSelectModule} from "ngx-drag-to-select";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {SharedDirectivesModule} from "../../shared/directives/shared-directives.module";
 import {MatExpansionModule} from "@angular/material/expansion";
@@ -35,16 +34,25 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {CurrencyMaskModule} from "ng2-currency-mask";
-import {SharedMaterialModule} from "../../shared/shared-material.module";
 import {ProductListComponent} from "./product-list/product-list.component";
 import {ProductViewComponent} from "./product-view/product-view.component";
 import {ProductLateralFormComponent} from "./product-lateral-form/product-lateral-form.component";
-import {SaleLateralFormComponent} from "../sales/sale-lateral-form/sale-lateral-form.component";
+import {ProductFormComponent} from './product-form/product-form.component';
+import {ProductAddComponent} from './product-add/product-add.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDividerModule} from '@angular/material/divider';
+import {SharedComponentsModule} from "@components/shared-components.module";
 
 @NgModule({
     imports: [
-        DragToSelectModule.forRoot(),
         CommonModule,
+        RouterModule.forChild(ProductsRoutes),
         CurrencyMaskModule,
         FormsModule,
         MatListModule,
@@ -66,7 +74,6 @@ import {SaleLateralFormComponent} from "../sales/sale-lateral-form/sale-lateral-
         FileUploadModule,
         SharedPipesModule,
         SharedDirectivesModule,
-        RouterModule.forChild(BookingRoutes),
         TranslateModule,
         MatProgressSpinnerModule,
         MatDatepickerModule,
@@ -78,13 +85,23 @@ import {SaleLateralFormComponent} from "../sales/sale-lateral-form/sale-lateral-
         MatTooltipModule,
         MatToolbarModule,
         PerfectScrollbarModule,
-        SharedMaterialModule
+        MatFormFieldModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatNativeDateModule,
+        MatDividerModule,
+        SharedComponentsModule
     ],
     declarations: [
         ProductComponent,
         ProductListComponent,
         ProductViewComponent,
-        ProductLateralFormComponent
+        ProductLateralFormComponent,
+        ProductFormComponent,
+        ProductAddComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

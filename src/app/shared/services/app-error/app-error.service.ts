@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 import { AppErrorComponent } from './app-error.component';
 import {TranslateService} from '@ngx-translate/core';
 
-interface confirmData {
+interface ConfirmData {
   title?: string,
   msg?: string,
   detail?: string;
-  error?:any;
+  error?: any;
 }
 
 @Injectable()
@@ -42,7 +42,7 @@ export class AppErrorService {
 
 
 
-  public error(error: any, data: confirmData = {}): Observable<boolean> {
+  public error(error: any, data: ConfirmData = {}): Observable<boolean> {
     if (error.status === 404) {
       return null;
     }

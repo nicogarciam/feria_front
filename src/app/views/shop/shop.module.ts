@@ -23,7 +23,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgxPaginationModule } from 'ngx-pagination';
 
-import { ProductsComponent } from './products/products.component';
+import { ShopProductsComponent } from './shop-products/shop-products.component';
 import { ShopService } from './shop.service';
 import { ShopRoutes } from './shop.routing';
 import { ProductDetailsComponent } from './product-details/product-details.component';
@@ -39,6 +39,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 @NgModule({
     imports: [
         CommonModule,
+        RouterModule.forChild(ShopRoutes),
         FormsModule,
         ReactiveFormsModule,
         FlexLayoutModule,
@@ -61,7 +62,6 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         MatSidenavModule,
         NgxPaginationModule,
         NgxDatatableModule,
-        RouterModule.forChild(ShopRoutes),
         SharedDirectivesModule,
         TranslateModule,
         MatAutocompleteModule,
@@ -69,7 +69,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         MatDatepickerModule
     ],
     declarations: [
-        ProductsComponent,
+        ShopProductsComponent,
         ProductDetailsComponent,
         CartComponent, CheckoutComponent,
         CartLateralComponent

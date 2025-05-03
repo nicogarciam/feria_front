@@ -20,7 +20,16 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@services/*": ["src/app/shared/services/*"],
+      "@components/*": ["src/app/shared/components/*"],
+      "@environments/*": ["src/environments/*"],
+      "@models/*": ["src/app/shared/models/*"],
+      "@animations/*": ["src/app/shared/animations/*"],
+      "@helpers/*": ["src/app/shared/helpers/*"],
+      "@interfaces/*": ["src/app/shared/interfaces/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

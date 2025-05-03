@@ -3,7 +3,7 @@ import {SelectorComponent} from "./selector/selector.component";
 import {SalesListComponent} from "./sales-list/sales-list.component";
 import {SaleViewComponent} from "./sale-view/sale-view.component";
 
-export const BookingRoutes: Routes = [
+export const SalesRoutes: Routes = [
   {
     path: '',
     component: SalesListComponent,

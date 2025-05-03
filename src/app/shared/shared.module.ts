@@ -1,6 +1,5 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {TranslateModule} from '@ngx-translate/core';
 
 // SERVICES
 import {ThemeService} from '@services/theme.service';
@@ -15,13 +14,10 @@ import {SharedComponentsModule} from '@components/shared-components.module';
 import {SharedPipesModule} from './pipes/shared-pipes.module';
 import {SharedDirectivesModule} from './directives/shared-directives.module';
 import {ImageService} from '@services/image.service';
-import {GoogleMapsAPIWrapper} from '@agm/core';
-import {GeocodeService} from '@services/geocode-service';
 import {CurrencyMaskModule} from "ng2-currency-mask";
 import {AppErrorService} from "@services/app-error/app-error.service";
 import {GoogleSigninService} from "@services/social/google-signin";
-import {CartStore} from "@services/cart/cart.store";
-import {CartQuery} from "@services/cart/cart.query";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
     imports: [
@@ -29,7 +25,8 @@ import {CartQuery} from "@services/cart/cart.query";
         SharedComponentsModule,
         SharedPipesModule,
         SharedDirectivesModule,
-        CurrencyMaskModule
+        CurrencyMaskModule,
+        TranslateModule.forChild()
     ],
     providers: [
         ThemeService,
@@ -41,14 +38,13 @@ import {CartQuery} from "@services/cart/cart.query";
         AppErrorService,
         AppLoaderService,
         ImageService,
-        GoogleMapsAPIWrapper,
-        GeocodeService,
         GoogleSigninService,
     ],
     exports: [
         SharedComponentsModule,
         SharedPipesModule,
-        SharedDirectivesModule
+        SharedDirectivesModule,
+        TranslateModule
     ]
 })
 export class SharedModule {

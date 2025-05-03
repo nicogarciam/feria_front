@@ -13,7 +13,6 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {ErrorHandlerService} from '@services/error-handler.service';
 import {TokenInterceptor} from './shared/interceptors/token.interceptor';
-import {AgmCoreModule} from '@agm/core';
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 
 
@@ -42,12 +41,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     }),
 
     MatMomentDateModule,
-    RouterModule.forRoot(rootRouterConfig, { useHash: false }),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAdONJGSnCX3XRu6MKpTqDxQxOH4vRyRqw',
-      libraries: ['places'],
-      apiVersion: 'quarterly'
-    })
+    RouterModule.forRoot(rootRouterConfig, {
+      useHash: false,
+      onSameUrlNavigation: 'reload'
+
+    }),
   ],
   declarations: [AppComponent],
   providers: [

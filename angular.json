@@ -21,9 +21,7 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "src/assets/styles/app.scss",
-              "node_modules/ngx-drag-to-select/ngx-drag-to-select.css",
-              "node_modules/css-star-rating/css/star-rating.css"
+              "src/assets/styles/app.scss"
             ],
             "scripts": [],
             "vendorChunk": true,

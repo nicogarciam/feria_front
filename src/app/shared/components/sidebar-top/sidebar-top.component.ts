@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 // import PerfectScrollbar from 'perfect-scrollbar';
-import { NavigationService } from "../../../shared/services/navigation.service";
+import { NavigationService } from "@services/navigation.service";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -31,7 +31,7 @@ export class SidebarTopComponent implements OnInit, OnDestroy, AfterViewInit {
     // if(this.sidebarPS) {
     //   this.sidebarPS.destroy();
     // }
-    if( this.menuItemsSub ) {
+    if ( this.menuItemsSub ) {
       this.menuItemsSub.unsubscribe()
     }
   }

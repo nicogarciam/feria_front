@@ -38,7 +38,6 @@ export class BankAccountService {
 
     query(req?: any): Observable<ArrayResponseType> {
         const options = createRequestOption(req);
-        // console.log("Pays Service . Query: ", req );
         return this.http
             .get<IBankAccount[]>(this.resourceUrl, {params: options, observe: 'response'})
             .pipe(map((res: ArrayResponseType) => res));

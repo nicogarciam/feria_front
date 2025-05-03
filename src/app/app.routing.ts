@@ -4,13 +4,9 @@ import { AuthLayoutComponent } from '@components/layouts/auth-layout/auth-layout
 import { AuthGuard } from './shared/guards/auth.guard';
 
 export const rootRouterConfig: Routes = [
+
   {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  },
-  {
-    path: 'home',
+    path: 'login',
     redirectTo: 'sessions/signin',
     pathMatch: 'full'
   },
@@ -46,14 +42,14 @@ export const rootRouterConfig: Routes = [
         data: { title: 'my.entity'}
       },
       {
-        path: 'products',
-        loadChildren: () => import('./views/products/product.module').then(m => m.ProductModule),
-        data: { title: 'products'}
-      },
-      {
         path: 'shop',
         loadChildren: () => import('./views/shop/shop.module').then(m => m.ShopModule),
         data: { title: 'Shop', breadcrumb: 'SHOP'}
+      },
+      {
+        path: 'products',
+        loadChildren: () => import('./views/products/product.module').then(m => m.ProductModule),
+        data: { title: 'products', breadcrumb: 'PRODUCTS'}
       },
       {
         path: 'my-profile',
@@ -67,17 +63,19 @@ export const rootRouterConfig: Routes = [
       },
       {
         path: 'sales',
-        loadChildren: () => import('./views/sales/sale.module').then(m => m.SaleModule)
+        loadChildren: () => import('./views/sales/sale.module').then(m => m.SaleModule),
+        data: { title: 'sales'}
       },
       {
         path: 'customers',
-        loadChildren: () => import('./views/customer/customer.module').then(m => m.CustomerModule)
+        loadChildren: () => import('./views/customer/customer.module').then(m => m.CustomerModule),
+        data: { title: 'customers'}
       },
       {
         path: 'providers',
-        loadChildren: () => import('./views/provider/provider.module').then(m => m.ProviderModule)
+        loadChildren: () => import('./views/provider/provider.module').then(m => m.ProviderModule),
+        data: { title: 'providers'}
       }
-
     ]
   },
   {

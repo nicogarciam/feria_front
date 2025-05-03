@@ -24,6 +24,7 @@ export interface IProduct {
   color?: string;
   size?: string;
   price?: number;
+  fee?: number;
   cost?: number;
   sale?: ISale;
   note?: string;

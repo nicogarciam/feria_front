@@ -21,15 +21,15 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ChartsModule} from 'ng2-charts';
 import {FileUploadModule} from 'ng2-file-upload';
 import {ProviderComponent} from './provider.component';
-import {MyProfileRoutes} from './provider.routing';
+import {ProviderRouting} from './provider.routing';
 import {SharedPipesModule} from '../../shared/pipes/shared-pipes.module';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {ProviderOverviewComponent} from "./customer-overview/provider-overview.component";
-import {ProviderSettingsComponent} from "./customer-settings/provider-settings.component";
+import {ProviderOverviewComponent} from "./provider-overview/provider-overview.component";
+import {ProviderSettingsComponent} from "./provider-settings/provider-settings.component";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {MatTooltipModule} from "@angular/material/tooltip";
@@ -59,7 +59,7 @@ import {CustomerModule} from "../customer/customer.module";
         ChartsModule,
         FileUploadModule,
         SharedPipesModule,
-        RouterModule.forChild(MyProfileRoutes),
+        RouterModule.forChild(ProviderRouting),
         TranslateModule,
         MatProgressSpinnerModule,
         MatDatepickerModule,
@@ -69,8 +69,6 @@ import {CustomerModule} from "../customer/customer.module";
         PerfectScrollbarModule,
         MatTooltipModule,
         MatAutocompleteModule,
-        RouterModule.forChild(MyProfileRoutes),
-        CustomerModule
     ],
   declarations: [ProviderComponent,  ProviderPopupComponent, ProviderOverviewComponent, ProviderSettingsComponent]
 })

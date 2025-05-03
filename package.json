@@ -22,7 +22,6 @@
   },
   "private": true,
   "dependencies": {
-    "@agm/core": "1.1.0",
     "@angular/animations": "12.2.17",
     "@angular/cdk": "^12.2.13",
     "@angular/common": "12.2.17",
@@ -36,7 +35,7 @@
     "@angular/platform-browser": "12.2.17",
     "@angular/platform-browser-dynamic": "12.2.17",
     "@angular/router": "12.2.17",
-    "@datorama/akita": "^5.0.5",
+    "@datorama/akita": "^5.3.0",
     "@datorama/akita-ngdevtools": "^5.0.3",
     "@ngu/carousel": "7.0.0",
     "@ngx-translate/core": "13.0.0",
@@ -46,6 +45,7 @@
     "@types/google-one-tap": "^1.2.2",
     "angular-calendar": "0.31.0",
     "angular-in-memory-web-api": "0.11.0",
+    "angular-star-rating": "^5.0.0",
     "angular2-qrscanner": "^1.0.7",
     "chart.js": "^2.9.4",
     "classlist.js": "1.1.20150312",
@@ -75,9 +75,9 @@
     "rxjs": "6.6.7",
     "rxjs-compat": "6.1.0",
     "tinycolor2": "^1.4.1",
-    "tslib": "^2.0.0",
+    "tslib": "^1.14.1",
     "web-animations-js": "^2.3.2",
-    "zone.js": "^0.12.0"
+    "zone.js": "^0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "12.2.18",

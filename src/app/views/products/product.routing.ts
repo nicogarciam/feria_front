@@ -1,15 +1,26 @@
 import { Routes } from '@angular/router';
-import {ProductComponent} from "./product.component";
 import {ProductViewComponent} from "./product-view/product-view.component";
 import {ProductListComponent} from "./product-list/product-list.component";
+import {ProductAddComponent } from './product-add/product-add.component';
+import {ProductComponent} from "./product.component";
 
-export const BookingRoutes: Routes = [
+export const ProductsRoutes: Routes = [
   {
     path: '',
     component: ProductListComponent,
-  },
-  {
-    path: 'view/:productID',
-    component: ProductViewComponent
+    children: [
+      {
+        path: '',
+        component: ProductListComponent,
+      },
+      {
+        path: 'add',
+        component: ProductAddComponent
+      },
+      {
+        path: 'view/:productID',
+        component: ProductViewComponent
+      }
+    ]
   }
 ];

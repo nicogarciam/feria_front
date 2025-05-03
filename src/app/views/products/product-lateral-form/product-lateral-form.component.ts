@@ -69,6 +69,7 @@ export class ProductLateralFormComponent implements OnInit, OnDestroy {
 
     categories: ICategory[] = [];
     public photoGallery: any[] = [{url: '', state: '0'}];
+    public previewImage: string | null = null;
 
     discounts: IDiscount[];
 
@@ -391,5 +392,18 @@ export class ProductLateralFormComponent implements OnInit, OnDestroy {
         })
     }
 
+    onFileSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+                this.previewImage = e.target.result;
+                // Agregar la imagen a la galería
+                this.photoGallery.push({ url: e.target.result, state: '0' });
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 
 }

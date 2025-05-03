@@ -20,12 +20,16 @@ import {TranslateModule} from '@ngx-translate/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {PayCrudComponent} from './pay-crud.component';
 import {MatSelectModule} from '@angular/material/select';
-import {SharedMaterialModule} from '../../shared/shared-material.module';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {PaysRoutes} from './pay.routing';
-import {PayService} from '@services/entities/pay.service';
-
+import {PayService} from '../../shared/services/entities/pay.service';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
     imports: [
@@ -49,9 +53,14 @@ import {PayService} from '@services/entities/pay.service';
         RouterModule.forChild(PaysRoutes),
         MatDatepickerModule,
         MatSelectModule,
-        SharedMaterialModule,
         MatProgressSpinnerModule,
         MatAutocompleteModule,
+        MatFormFieldModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatNativeDateModule,
+        MatDividerModule
     ],
   declarations: [PayCrudComponent],
   providers: [PayService],

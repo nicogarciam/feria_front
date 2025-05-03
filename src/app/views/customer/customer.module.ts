@@ -20,7 +20,7 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ChartsModule} from 'ng2-charts';
 import {FileUploadModule} from 'ng2-file-upload';
 import {CustomerComponent} from './customer.component';
-import {MyProfileRoutes} from './customer.routing';
+import {CustomerRoutes} from './customer.routing';
 import {SharedPipesModule} from '../../shared/pipes/shared-pipes.module';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -55,7 +55,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
         ChartsModule,
         FileUploadModule,
         SharedPipesModule,
-        RouterModule.forChild(MyProfileRoutes),
+        RouterModule.forChild(CustomerRoutes),
         TranslateModule,
         MatProgressSpinnerModule,
         MatDatepickerModule,

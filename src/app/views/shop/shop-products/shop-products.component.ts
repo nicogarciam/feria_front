@@ -11,12 +11,12 @@ import {CartItem} from "@models/cartItem";
 import {ShopService} from "../shop.service";
 
 @Component({
-    selector: 'app-products',
-    templateUrl: './products.component.html',
-    styleUrls: ['./products.component.scss'],
+    selector: 'app-shop-products',
+    templateUrl: './shop-products.component.html',
+    styleUrls: ['./shop-products.component.scss'],
     animations: [egretAnimations]
 })
-export class ProductsComponent implements OnInit, OnDestroy {
+export class ShopProductsComponent implements OnInit, OnDestroy {
     public isSideNavOpen: boolean;
     public viewMode = 'grid-view';
     public currentPage: any;

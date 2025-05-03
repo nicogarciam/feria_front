@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ProductsComponent } from './products/products.component';
+import { ShopProductsComponent } from './shop-products/shop-products.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
@@ -8,9 +8,9 @@ export const ShopRoutes: Routes = [{
   path: '',
   children: [{
     path: '',
-    component: ProductsComponent
+    component: ShopProductsComponent
   }, {
-    path: 'products/:id',
+    path: 'shop-product/:id',
     component: ProductDetailsComponent,
     data: { title: 'Detail', breadcrumb: 'Detail' }
   }, {

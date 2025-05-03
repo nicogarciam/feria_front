@@ -29,8 +29,8 @@ export class ProviderComponent implements OnInit, OnDestroy {
     overviewOn = true;
     settingsOn = false;
     getItemSub: Subscription[] = [];
-    viewCustomerDetail = false;
-    selectedProvider: IProvider;
+    viewDetail = false;
+    selectedItem: IProvider;
     rows: IProvider[] = [];
     itemsFilter: IProvider[] = [];
     editing = {};
@@ -45,7 +45,7 @@ export class ProviderComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.options = {
-            hotel_id: this.jwtAuth.getStore().id
+            store_id: this.jwtAuth.getStore().id
         }
         this.getItems();
 
@@ -112,12 +112,12 @@ export class ProviderComponent implements OnInit, OnDestroy {
     }
 
     cancelLateralForm() {
-        this.viewCustomerDetail = false;
+        this.viewDetail = false;
     }
 
-    savedCustomer() {
-        this.viewCustomerDetail = false;
-        this.selectedProvider = null;
+    savedItem() {
+        this.viewDetail = false;
+        this.selectedItem = null;
     }
 
     saveItem(rowIndex: any) {
@@ -178,7 +178,7 @@ export class ProviderComponent implements OnInit, OnDestroy {
     }
 
     showDetail(rowIndex: number) {
-        this.selectedProvider = this.rows[rowIndex];
-        this.viewCustomerDetail = true;
+        this.selectedItem = this.rows[rowIndex];
+        this.viewDetail = true;
     }
 }

@@ -16,7 +16,8 @@ export interface IProvider {
   entity?: Store;
   cuil?: string,
   city_id?: number,
-  contact_name?: string
+  contact_name?: string,
+  fee?: number,
 }
 
 export class Provider implements IProvider {
