@@ -55,6 +55,21 @@
                         </div>
                     </div>
 
+                    <!-- AI Feature Detection -->
+                    <div fxLayout="column" fxLayoutGap="10px" class="mt-1">
+                        <button mat-stroked-button color="accent" (click)="detectFeatures()" [disabled]="photoGallery.length === 0">
+                            <mat-icon>auto_awesome</mat-icon> {{ 'detect_features' | translate }}
+                        </button>
+                        <div *ngIf="detectedFeatures.length > 0" class="mt-05">
+                            <h4 class="mat-subheading-1">{{ 'detected_features' | translate }}:</h4>
+                            <mat-chip-listbox aria-label="Detected features">
+                                <mat-chip-option *ngFor="let feature of detectedFeatures" selected>
+                                    {{feature}}
+                                </mat-chip-option>
+                            </mat-chip-listbox>
+                            <!-- Add input fields for editing features if needed -->
+                        </div>
+                    </div>
 
                     <mat-form-field class="p-0 mt-1" fxFlex="50">
                         <mat-label> {{ 'category' | translate }}</mat-label>
@@ -70,6 +85,21 @@
                                   formControlName="description">
                         </textarea>
                     </mat-form-field>
+
+                    <!-- Price Suggestion -->
+                    <div fxLayout="column" fxLayoutGap="10px" class="mt-1">
+                        <button mat-stroked-button color="primary" (click)="searchPriceSuggestions()">
+                            <mat-icon>search</mat-icon> {{ 'search_price_suggestions' | translate }}
+                        </button>
+                        <div *ngIf="suggestedPrices.length > 0" class="mt-05">
+                            <h4 class="mat-subheading-1">{{ 'suggested_prices' | translate }}:</h4>
+                            <mat-chip-listbox aria-label="Suggested prices">
+                                <mat-chip-option *ngFor="let price of suggestedPrices" (click)="itemForm.get('price').setValue(price)">
+                                    {{price | currency:'USD':'symbol':'1.2-2'}}
+                                </mat-chip-option>
+                            </mat-chip-listbox>
+                        </div>
+                    </div>
 
                     <div fxLayout="row nowrap" fxLayoutAlign="space-between" fxLayout.lt-lg="column">
                         <mat-form-field class="mr-1">

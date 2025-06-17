@@ -50,6 +50,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     public imageSelected: GalleryImage | null = null;
     public defaultImage = 'assets/images/no-image.png';
 
+    public detectedFeatures: string[] = [];
+    public suggestedPrices: number[] = [];
+
 
     public previewImage: string | null = null;
 
