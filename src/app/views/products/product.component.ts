@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {IAccount} from '@models/account.model';
-import {AccountService} from '@services/entities/account.service';
 import {HttpResponse} from '@angular/common/http';
-import {AppLoaderService} from '@services/app-loader/app-loader.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {egretAnimations} from '@animations/egret-animations';
-import {JwtAuthService} from '@services/auth/jwt-auth.service';
+import {egretAnimations} from "@animations/egret-animations";
+import {IAccount} from "@models/account.model";
+import {AppLoaderService} from "@services/app-loader/app-loader.service";
+import {JwtAuthService} from "@services/auth/jwt-auth.service";
+import {AccountService} from "@services/entities/account.service";
 
 @Component({
     selector: 'app-product',
@@ -34,8 +34,6 @@ export class ProductComponent implements OnInit, OnDestroy {
                 private loader: AppLoaderService,
                 private snack: MatSnackBar, private t: TranslateService,
                 public jwtAuth: JwtAuthService) {
-        console.log("ProductComponent");
-        console.log('ProductComponent initialized');
 
     }
 

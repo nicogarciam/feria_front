@@ -1,6 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterModule} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -20,7 +20,6 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ChartsModule} from 'ng2-charts';
 import {FileUploadModule} from 'ng2-file-upload';
 import {ProductComponent} from './product.component';
-import {ProductsRoutes} from './product.routing';
 import {SharedPipesModule} from '../../shared/pipes/shared-pipes.module';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -48,11 +47,13 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDividerModule} from '@angular/material/divider';
 import {SharedComponentsModule} from "@components/shared-components.module";
+import {ProductRoutingModule} from "./product-routing.module";
+import {ProductEditComponent} from "./product-edit/product-edit.component";
 
 @NgModule({
     imports: [
         CommonModule,
-        RouterModule.forChild(ProductsRoutes),
+        ProductRoutingModule,
         CurrencyMaskModule,
         FormsModule,
         MatListModule,
@@ -102,7 +103,9 @@ import {SharedComponentsModule} from "@components/shared-components.module";
         ProductLateralFormComponent,
         ProductFormComponent,
         ProductAddComponent,
+        ProductEditComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class ProductModule { }
+export class ProductModule {
+}

@@ -3,17 +3,17 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {FileItem, ParsedResponseHeaders} from 'ng2-file-upload';
-import {egretAnimations} from "@animations/egret-animations";
-import {ImageService} from '@services/image.service';
-import {AppLoaderService} from '@services/app-loader/app-loader.service';
 import {Observable} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {APP_DATE_FORMATS, AppDateAdapter} from '@helpers/format-datepicker';
 import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
+import {APP_DATE_FORMATS, AppDateAdapter} from "@helpers/format-datepicker";
+import {egretAnimations} from "@animations/egret-animations";
 import {IProvider, Provider} from "@models/provider.model";
 import {ProviderService} from "@services/entities/provider.service";
+import {AppLoaderService} from "@services/app-loader/app-loader.service";
+import {ImageService} from "@services/image.service";
 
 @Component({
     selector: 'app-provider-popup',

@@ -6,7 +6,6 @@ import {CartStore} from "./cart.store";
 @Injectable({ providedIn: 'root' })
 export class CartService {
 
-
     constructor(private cartStore: CartStore) {
     }
 
@@ -21,7 +20,7 @@ export class CartService {
 
 
     public remove(cartItem: CartItem) {
-      this.cartStore.remove(cartItem.id)
+      this.cartStore.remove(cartItem.id);
     }
 
     changeProductState({ id, newStateId }) {

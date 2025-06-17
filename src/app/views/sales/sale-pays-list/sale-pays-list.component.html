@@ -1,0 +1,56 @@
+<mat-card class="p-0" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
+    <mat-card-title class="">
+        <div class="card-title-text">
+            <mat-icon class="mr-05">payments</mat-icon>
+
+            {{ 'pays' | translate }}
+            <span fxFlex></span>
+            <button mat-icon-button class="card-control" (click)="getSalePays()">
+                <mat-icon>refresh</mat-icon>
+            </button>
+            <button mat-icon-button (click)="addPayPopup()" class="card-control">
+                <mat-icon>add_circle_outline</mat-icon>
+            </button>
+        </div>
+        <mat-divider></mat-divider>
+    </mat-card-title>
+    <mat-card-content class="p-0">
+        <ngx-datatable
+                class="material ml-0 mr-0 fullscreen"
+                [rows]="_pays"
+                [columnMode]="'force'"
+                [headerHeight]="40"
+                [footerHeight]="40"
+                [scrollbarH]="false"
+                [limit]="10"
+                [rowHeight]="40"
+                [loadingIndicator]="loading"
+                [messages]="{emptyMessage: 'Nada por aca' }"
+        >
+            <ngx-datatable-column name="{{'date' | translate }}" prop="pay_date" [width]="80">
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span> {{ row?.pay_date | date : 'dd/MM/yyyy' }} </span>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="{{'type' | translate }}" prop="type" [width]="80">
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span>{{ row?.type | translate }} </span>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column class="align-right" name="{{'amount' | translate }}" prop="amount">
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span>{{ row?.amount  | currency:'$' }} </span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="{{'actions' | translate }}" [width]="20">
+                <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                    <button mat-icon-button class="card-control" color="warn">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+
+    </mat-card-content>
+</mat-card>

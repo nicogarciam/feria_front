@@ -20,7 +20,7 @@ import {PayPopupComponent} from "@components/pays/pay-popup/pay-popup.component"
 import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "@helpers/format-datepicker";
 import {egretAnimations} from "@animations/egret-animations";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {IPay} from "@models/pay.model";
 import {LayoutService} from "@services/layout.service";
 import {CustomerService} from "@services/entities/customer.service";
@@ -39,29 +39,25 @@ import {ICustomer} from "@models/customer.model";
 export class ProductViewComponent implements OnInit, OnDestroy {
 
     public getItemSub: Subscription[] = [];
-    customer_search = new FormControl(false);
 
-    filteredCustomers: ICustomer[] = [];
 
     new_state = new FormControl(false);
     loading = false;
     _product: IProduct = new Product({});
-    products: IProduct[];
-
-    saleStates: ISaleState[];
 
     loadingSale = true;
     loadingPays = true;
 
+    public photoGallery: any[] = [{url: '', state: '0'}];
+
     loadingStates = false;
 
-    @Output() saleChange = new EventEmitter();
     @Output() cancel = new EventEmitter();
     @Output() saved = new EventEmitter();
 
 
     @Input()
-    saleID;
+    productID;
 
 
     @Input()
@@ -73,27 +69,26 @@ export class ProductViewComponent implements OnInit, OnDestroy {
         if (value !== undefined) {
             this._product = value;
             this.new_state = new FormControl(this._product.state_id);
-            this.saleChange.emit(this._product);
         }
     }
     
-    constructor(private fb: FormBuilder, private confirmService: AppConfirmService, private errorService: AppErrorService,
+    constructor(private fb: FormBuilder, private confirmService: AppConfirmService,
+                private errorService: AppErrorService, private route: ActivatedRoute,
                 private loader: AppLoaderService, private productService: ProductService,
-                private router: ActivatedRoute,
-                private t: TranslateService, private snack: MatSnackBar, private storeService: StoreService,
-                private dialog: MatDialog, private payService: PayService,  public layout: LayoutService,
-                private customerService: CustomerService) {
+                private t: TranslateService, public layout: LayoutService,
+                private snack: MatSnackBar, private router: Router) {
     }
 
     ngOnInit() {
 
         this.loader.open();
         this.layout.setProperty({useBreadcrumb: true})
-        this.saleID = this.router.snapshot.params.bookingID;
+        this.productID = this.route.snapshot.params.productID;
         this.getItemSub.push(
-            this.productService.find(this.saleID)
+            this.productService.find(this.productID)
             .subscribe((res) => {
                     (this.product = res.body);
+                    this.initGallery(this.product);
                     this.loader.close();
                 },
                 (error) => {
@@ -111,13 +106,53 @@ export class ProductViewComponent implements OnInit, OnDestroy {
     }
 
 
+
+
+    initGallery(product: IProduct) {
+        if (!product.gallery) {
+            return;
+        }
+        this.photoGallery = product.gallery.map(i => {
+            return {
+                url: i,
+                state: '0'
+            }
+        });
+        if (this.photoGallery[0]) {
+            this.photoGallery[0].state = '1';
+        }
+    }
+
+    editProduct(product: IProduct) {
+
+
+    }
+
+    deleteProduct() {
+        this.loading = true;
+        this.confirmService.confirm({title: this.t.instant('confirm.delete'), message: this.t.instant('delete.confirmation.message')})
+            .subscribe(res => {
+                if (res) {
+                    this.productService.delete(this._product.id).subscribe(value1 => {
+                            this.loading = false;
+                            this.router.navigate(['/products']);
+                        },
+                        error => {
+                            this.loading = false;
+                            this.errorService.error(error);
+                            this.snack.open('Ocurrio un error, intente mas tarde', 'OK', {duration: 4000});
+                        });
+                } else {
+                    this.loading = false;
+                }
+            })
+    }
+
+
     ngOnDestroy() {
         this.getItemSub.forEach(sub => sub.unsubscribe());
         this.getItemSub = [];
         this.layout.setProperty({useBreadcrumb: false})
     }
-
-
-    
 
 }

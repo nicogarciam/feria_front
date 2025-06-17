@@ -8,15 +8,13 @@ import {SearchModule} from '../search/search.module';
 import {SharedPipesModule} from '../pipes/shared-pipes.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {SharedDirectivesModule} from '../directives/shared-directives.module';
-import {ShopModule} from '../../views/shop/shop.module';
-
 // Material Imports
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatCardModule} from "@angular/material/card";
 import {MatChipsModule} from "@angular/material/chips";
-import {MatRippleModule, MatNativeDateModule} from "@angular/material/core";
+import {MatNativeDateModule, MatRippleModule} from "@angular/material/core";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatExpansionModule} from "@angular/material/expansion";
@@ -80,7 +78,14 @@ import {DayOfWeekComponent} from './day-of-week/day-of-week.component';
 import {CarouselComponent} from './carousel/carousel.component';
 import {PayPopupComponent} from './pays/pay-popup/pay-popup.component';
 import {ChangeStorePopupComponent} from './change-store-popup/change-store-popup.component';
-import {ProviderItemComponent} from './provider-item/provider-item.component';
+import {ProviderItemComponent} from '@components/providers/provider-item/provider-item.component';
+import {CartLateralComponent} from "./cart-lateral/cart-lateral.component";
+import {MovementPopupComponent} from "@components/movement-popup/movement-popup.component";
+import {SelectProviderComponent} from "@components/providers/select-provider/select-provider.component";
+import {ProviderPopupComponent} from "@components/providers/provider-popup/provider-popup.component";
+import {CurrencyMaskModule} from "ng2-currency-mask";
+import {ProductTableComponent} from "@components/products/product-table/product-table.component";
+import {NgxDatatableModule} from "@swimlane/ngx-datatable";
 
 const components = [
     HeaderTopComponent,
@@ -108,7 +113,12 @@ const components = [
     CarouselComponent,
     PayPopupComponent,
     ChangeStorePopupComponent,
-    ProviderItemComponent
+    ProviderItemComponent,
+    CartLateralComponent,
+    MovementPopupComponent,
+    ProviderPopupComponent,
+    SelectProviderComponent,
+    ProductTableComponent
 ]
 
 @NgModule({
@@ -124,7 +134,6 @@ const components = [
         SharedDirectivesModule,
         ReactiveFormsModule,
         FileUploadModule,
-        ShopModule,
         // Material Modules
         MatCheckboxModule,
         MatButtonModule,
@@ -162,7 +171,9 @@ const components = [
         MatRippleModule,
         MatBadgeModule,
         MatBottomSheetModule,
-        MatDividerModule
+        MatDividerModule,
+        CurrencyMaskModule,
+        NgxDatatableModule
     ],
     declarations: [
         components,

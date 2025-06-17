@@ -64,7 +64,7 @@ export class StoreService {
 
   findSaleStates(entityId: number): Observable<HttpResponse<ISaleState[]>> {
     return this.http
-        .get<ISaleState[]>(`${this.resourceUrl}/${entityId}/booking_states`, {observe: 'response'})
+        .get<ISaleState[]>(`${this.resourceUrl}/${entityId}/sale_states`, {observe: 'response'})
         .pipe(map((res: HttpResponse<ISaleState[]>) => res));
   }
 

@@ -1,10 +1,8 @@
-import {throwError as observableThrowError, Observable} from 'rxjs';
+import {combineLatest, Observable, of, throwError as observableThrowError} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {IProduct} from '@models/product.model';
 import {FormGroup} from '@angular/forms';
-
-import {of, combineLatest} from 'rxjs';
-import {startWith, debounceTime, delay, map, switchMap} from 'rxjs/operators';
+import {debounceTime, delay, map, startWith, switchMap} from 'rxjs/operators';
 import {CartItem} from "@models/cartItem";
 import {ProductDB} from "../../shared/inmemory-db/products";
 
@@ -30,6 +28,7 @@ export class ShopService {
     }
 
     public addToCart(cartItem: CartItem): Observable<CartItem[]> {
+
         let index = -1;
         this.cart.forEach((item, i) => {
             if (item.product.id === cartItem.product.id) {

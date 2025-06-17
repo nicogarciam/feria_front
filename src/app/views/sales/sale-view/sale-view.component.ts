@@ -25,6 +25,9 @@ import {IPay} from "@models/pay.model";
 import {LayoutService} from "@services/layout.service";
 import {CustomerService} from "@services/entities/customer.service";
 import {ICustomer} from "@models/customer.model";
+import {HttpResponse} from "@angular/common/http";
+import {IProductState} from "@models/product-state.model";
+import {ProductStateService} from "@services/entities/productState.service";
 
 @Component({
     selector: 'app-sales-view',
@@ -44,13 +47,13 @@ export class SaleViewComponent implements OnInit, OnDestroy {
     filteredCustomers: ICustomer[] = [];
     garageSelected = new FormControl();
     new_state = new FormControl(false);
-    loading = false;
+    loading = true;
     _sale: ISale = new Sale({guests: []});
     saleStates: ISaleState[] = [];
     _saleStates: ISaleState[] = [];
     products: IProduct[];
+    productStates: IProductState[] = [];
 
-    loadingSale = true;
     loadingPays = true;
     loadingStates = false;
     loadingProducts = false;
@@ -62,8 +65,7 @@ export class SaleViewComponent implements OnInit, OnDestroy {
     @Output() saved = new EventEmitter();
 
 
-    @Input()
-    saleID;
+    @Input() saleID;
 
 
     @Input()
@@ -73,26 +75,29 @@ export class SaleViewComponent implements OnInit, OnDestroy {
 
     set sale(value: ISale) {
         if (value !== undefined) {
+            console.log("set sale");
             this._sale = value;
-            this.new_state = new FormControl(this._sale.sale_state.id);
-            this.updateBookingData();
+            this.new_state = new FormControl(this._sale.sale_state);
+            this.updateSaleData();
             this.saleChange.emit(this._sale);
         }
     }
     
-    constructor(private fb: FormBuilder, private confirmService: AppConfirmService, private errorService: AppErrorService,
+    constructor(private fb: FormBuilder, private confirmService: AppConfirmService,
+                private errorService: AppErrorService,
                 private loader: AppLoaderService, private productService: ProductService,
                 private saleService: SaleService, private router: ActivatedRoute,
                 private t: TranslateService, private snack: MatSnackBar, private storeService: StoreService,
-                private dialog: MatDialog, private payService: PayService,  public layout: LayoutService,
-                private customerService: CustomerService) {
+                private payService: PayService,  public layout: LayoutService,
+                private customerService: CustomerService, private productStateService: ProductStateService) {
     }
 
     ngOnInit() {
-
+        this.getStoreSaleStates();
+        this.getProductStates();
         this.loader.open();
         this.layout.setProperty({useBreadcrumb: true})
-        this.saleID = this.router.snapshot.params.bookingID;
+        this.saleID = this.router.snapshot.params.saleID;
         this.getItemSub.push(
             this.saleService.find(this.saleID)
             .subscribe((res) => {
@@ -126,23 +131,32 @@ export class SaleViewComponent implements OnInit, OnDestroy {
 
     }
 
-    updateBookingData() {
-        this.getSalePays();
-        this.getBSaleStates();
-        this.getStoreSaleStates();
-        this.getSaleProducts();
+    updateSaleData() {
+        this.getSaleStates();
     }
     
 
     getStoreSaleStates() {
         this.getItemSub.push(
-            this.storeService.findSaleStates(this._sale.store_id).subscribe(res => {
+            this.storeService.findSaleStates(this._sale.store_id)
+                .subscribe(res => {
                     this.saleStates = res.body
                 },
                 error => this.errorService.error(error)));
     }
 
-    calculateBookingTotalPrice() {
+    private getProductStates() {
+        this.getItemSub.push(this.productStateService.query()
+            .subscribe((res: HttpResponse<IProductState[]>) => {
+                    (this.productStates = res.body || [])
+                },
+                (error) => {
+                    console.log(error);
+                }
+            ));
+    }
+
+    calculateSaleTotalPrice() {
         this.calculateTotalPrice(this._sale);
     }
 
@@ -150,7 +164,7 @@ export class SaleViewComponent implements OnInit, OnDestroy {
         return _sale.total_price;
     }
 
-    public bookingStateCompare = function (option, value): boolean {
+    public saleStateCompare = function (option, value): boolean {
         return option.id === value.state_id;
     }
 
@@ -228,7 +242,7 @@ export class SaleViewComponent implements OnInit, OnDestroy {
         this.layout.setProperty({useBreadcrumb: false})
     }
 
-    // BOOKING ACCOMMODATIONS
+    // SALE PRODUCTS
     private getSaleProducts() {
         this.loadingProducts = true;
         this.getItemSub.push(
@@ -245,8 +259,16 @@ export class SaleViewComponent implements OnInit, OnDestroy {
             ));
     }
 
-    // BOOKING STATES
-    getBSaleStates() {
+    changeItemProductState(event, item: IProduct) {
+        item.state_id = event.value;
+    };
+
+    removeProduct(cartItem: IProduct) {
+        this._sale.products = this._sale.products.filter(item => item.id !== cartItem.id);
+    }
+
+    // SALE STATES
+    getSaleStates() {
         this.loadingStates = true;
         this.getItemSub.push(
             this.saleService.queryStates(this._sale.id, null)
@@ -262,58 +284,10 @@ export class SaleViewComponent implements OnInit, OnDestroy {
             ));
     }
 
-
-    // PAYS
-    getSalePays() {
-        this.loadingPays = true;
-        this.getItemSub.push(
-            this.payService.query({'booking_id': this._sale.id})
-            .subscribe(res => {
-                    (this._sale.pays = res.body || []);
-                    this.loadingPays = false;
-                },
-                (error) => {
-                    console.log(error);
-                    this.errorService.error(error);
-                    this.loadingPays = false;
-                }
-            ));
+    compareFn(o1: any, o2: any) {
+        console.log(o2);
+        return o1 != null && o2 != null ? (o1.id === o2.id) : false;
     }
 
-    addPayPopup() {
-        const dialogRef: MatDialogRef<any> = this.dialog.open(PayPopupComponent, {
-            width: '820px',
-            disableClose: true,
-            data: {booking: this._sale}
-        })
-        dialogRef.afterClosed()
-            .subscribe(res => {
-                if (!res) {
-                    return;
-                }
-                this.getSalePays();
-                this.snack.open(this.t.instant('saved.success'), 'OK', {duration: 4000})
-            })
-    }
-
-    deletePay(pay: IPay) {
-        const message = this.t.instant('delete') + ' ' + this.t.instant('pays') + ' ?'
-        this.getItemSub.push(
-            this.confirmService.confirm({title: this.t.instant('are.you.sure'), message: message})
-            .subscribe(res => {
-                if (res) {
-                    this.getItemSub.push(this.payService.delete(pay.id)
-                        .subscribe(item => {
-                                this.getSalePays();
-                                this.snack.open(this.t.instant('deleted'), 'OK', {duration: 4000})
-                            },
-                            (error => {
-                                this.loadingPays = false;
-                                this.snack.open(this.t.instant('error'), 'Ups!', {duration: 4000})
-                            })))
-                }
-            }));
-    }
-    
 
 }

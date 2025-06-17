@@ -30,7 +30,7 @@ import {ProductStateService} from "@services/entities/productState.service";
 import {HttpResponse} from "@angular/common/http";
 import {CategoryService} from "@services/entities/category.service";
 import {JwtAuthService} from "@services/auth/jwt-auth.service";
-import {ProviderPopupComponent} from "@components/provider-popup/provider-popup.component";
+import {ProviderPopupComponent} from "@components/providers/provider-popup/provider-popup.component";
 
 @Component({
     selector: 'app-product-lateral-form',

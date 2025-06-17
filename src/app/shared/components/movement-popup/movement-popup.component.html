@@ -1,0 +1,55 @@
+<div class="card-title-text p-0 m-0" mat-dialog-title>
+    <div fxFlex fxLayout="column">
+        <div fxFlex>{{ data.title }}</div>
+    </div>
+    <span fxFlex></span>
+    <button class="card-control" mat-icon-button (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<mat-dialog-content>
+    <form [formGroup]="itemForm">
+        <div fxLayout="column" fxLayoutAlign="start">
+            <h1>{{ 'provider' | translate }}</h1>
+            <app-select-provider [selectedProvider]="_movement?.provider" [layout]="'row'">
+            </app-select-provider>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center" class="mt-1">
+                <mat-form-field  style="width: 100px">
+                    <mat-label>{{ 'date' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="date" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field style="width: 300px">
+                    <mat-label>{{ 'concept' | translate }}</mat-label>
+                    <textarea matInput formControlName="concept" required></textarea>
+                </mat-form-field>
+                <mat-form-field  style="width: 100px">
+                    <mat-label>{{ 'type' | translate }}</mat-label>
+                    <mat-select formControlName="type" required>
+                        <mat-option value="CREDIT">{{'CREDIT' | translate}}</mat-option>
+                        <mat-option value="DEBIT">{{'DEBIT' | translate}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field  style="width: 230px">
+                    <mat-label>{{ 'amount' | translate }}</mat-label>
+                    <input matInput
+                           formControlName="amount"
+                           currencyMask
+                           [options]="{ thousands: '.', decimal: ',' }"
+                           required>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">{{ 'cancel' | translate }}</button>
+    <button mat-raised-button color="primary"
+            [disabled]="!itemForm.valid"
+            (click)="submit()">
+        {{ 'save' | translate }}
+    </button>
+</mat-dialog-actions>
+

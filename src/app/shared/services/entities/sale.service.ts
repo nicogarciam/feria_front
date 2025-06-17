@@ -34,7 +34,7 @@ export class SaleService {
             .put<ISale>(this.resourceUrl + '/' + copy.id, copy, {observe: 'response'})
             .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
-    
+
 
     find(id: number): Observable<EntityResponseType> {
         return this.http
@@ -59,9 +59,9 @@ export class SaleService {
         return this.http.get<[]>(this.resourceUrl + "/resume", {params: options, observe: 'response'});
     }
 
-    myBookings(): Observable<EntityArrayResponseType>  {
+    mySales(): Observable<EntityArrayResponseType> {
         return this.http
-            .get<ISale[]>( environment.apiURL + "/my_bookings", {observe: 'response'})
+            .get<ISale[]>(environment.apiURL + "/my_sales", {observe: 'response'})
             .pipe(
                 (map(
                     (res: EntityArrayResponseType) =>
@@ -69,6 +69,7 @@ export class SaleService {
                 ))
             );
     }
+
 
     delete(id: number): Observable<HttpResponse<{}>> {
         return this.http.delete(`${this.resourceUrl}/${id}`, {observe: 'response'});
@@ -97,10 +98,11 @@ export class SaleService {
     }
 
 
-
     protected convertDateFromClient(ent: ISale): ISale {
-        const b: ISale = new Sale({...ent, store: null, state: null,
-            customer_id: ent.customer?.id, customer: null, pays: null});
+        const b: ISale = new Sale({
+            ...ent, store: null, state: null,
+            customer_id: ent.customer?.id, customer: null, pays: null
+        });
 
         return b;
 
@@ -121,6 +123,7 @@ export class SaleService {
                 ));
 
     }
+
 
     protected convertDateArrayStatesFromServer(res: HttpResponse<ISaleState[]>): HttpResponse<ISaleState[]> {
         if (res.body) {

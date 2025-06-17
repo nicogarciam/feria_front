@@ -7,8 +7,8 @@
                     <div class="custom-file fileInputProfileWrap">
                         <div class="img-space">
                             <ng-container>
-                                <img [src]="_customer?.photo" *ngIf="_customer?.photo"/>
-                                <img src="/assets/images/no_image.png" *ngIf="!_customer?.photo"/>
+                                <img [src]="_provider?.photo" *ngIf="_provider?.photo"/>
+                                <img src="/assets/images/no_image.png" *ngIf="!_provider?.photo"/>
                             </ng-container>
                             <span>
                                     <button mat-icon-button>
@@ -22,8 +22,8 @@
                 </fieldset>
             </div>
             <div class="profile-title text-center mb-1">
-                <div class="main-title">{{_customer?.name}}</div>
-                <div class="subtitle mb-05">{{_customer?.email}}</div>
+                <div class="main-title">{{_provider?.name}}</div>
+                <div class="subtitle mb-05">{{_provider?.email}}</div>
             </div>
 
         </mat-card>
@@ -32,17 +32,22 @@
             <mat-card-title>{{'contact.information' | translate }}</mat-card-title>
             <mat-card-content class="pt-0">
                 <mat-list>
+
+                    <mat-list-item>
+                        <mat-icon class="mr-1">money_off</mat-icon>
+                        {{_provider?.fee}} %
+                    </mat-list-item>
                     <mat-list-item>
                         <mat-icon class="mr-1">email</mat-icon>
-                        {{_customer?.email}}
+                        {{_provider?.email}}
                     </mat-list-item>
                     <mat-list-item>
                         <mat-icon class="mr-1">phone</mat-icon>
-                        {{_customer?.phone}}
+                        {{_provider?.phone}}
                     </mat-list-item>
                     <mat-list-item>
                         <mat-icon class="mr-1">add_location</mat-icon>
-                        {{_customer?.address}}
+                        {{_provider?.address}}
                     </mat-list-item>
 
                 </mat-list>
@@ -54,14 +59,15 @@
         <div fxLayout="row wrap">
             <div fxLayout="column" fxFlex="100" fxFlex.gt-md="100">
 
-                <!-- MOVES -->
+                <!-- Balance -->
                 <mat-card class="p-0" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
                     <mat-card-title class="">
                         <div class="card-title-text">
                             <div class="mr-1">{{'account' | translate }}</div>
 
-                            <div>{{ balance?.state | translate }}</div>
+                            <div>la cuenta del proveedor tiene: {{ balance?.state | translate }}</div>
                             <span fxFlex></span>
+
                             <button mat-icon-button class="card-control" (click)="getBalance()"
                             matTooltip="{{ 'refresh' | translate}}">
                                 <mat-icon>refresh</mat-icon>
@@ -71,31 +77,55 @@
                     </mat-card-title>
 
                     <mat-card-content class="p-0" >
+
+                        <div>
+                            <mat-card>
+                                <div fxLayout="row nowrap" fxLayoutAlign="start center">
+                                    <small class="text-muted">{{'balance' | translate }}</small>
+                                    <span fxFlex></span>
+                                    <h3 *ngIf="!loadingBalance" >
+                                        {{ balance?.balance_final | currency: 'ar$' : 'symbol' }}
+                                    </h3>
+                                    <mat-spinner diameter="12" *ngIf="loadingBalance"></mat-spinner>
+                                </div>
+                            </mat-card>
+                        </div>
                         <div fxLayout="row wrap">
-                            <div fxFlex [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
+                            <div fxFlex>
                                 <mat-card>
                                     <mat-card-title fxLayoutAlign="start center">
-                                        <small class="text-muted">{{'to' | translate }} {{ balance?.date_to | momentFormat : 'dd/MM/yyyy'  }}</small>
+                                        <small class="text-muted">{{'from' | translate }} {{ balance?.date_from | momentFormat : 'd/MM/yyyy'  }}</small>
                                         <span fxFlex></span>
                                         <mat-spinner diameter="12" *ngIf="loadingBalance"></mat-spinner>
-                                        <h3 *ngIf="!loadingBalance" class="text-blue">
-                                            {{ balance?.balance_final | currency: 'ar$' : 'symbol' }}
-                                        </h3>
                                     </mat-card-title>
                                 </mat-card>
                             </div>
-                            <div fxFlex [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
+                            <div fxFlex >
                                 <mat-card>
                                     <mat-card-title fxLayoutAlign="start center">
-                                        <small class="text-muted">{{'to' | translate }} {{ balance?.date_from | momentFormat : 'dd/MM/yyyy'  }}</small>
+                                        <small class="text-muted">{{'to' | translate }} {{ balance?.date_to | momentFormat : 'd/MM/yyyy'  }}</small>
                                         <span fxFlex></span>
-                                        <mat-spinner diameter="12" *ngIf="loadingBalance"></mat-spinner>
-                                        <h3 *ngIf="!loadingBalance" >
-                                            {{ balance?.balance_prev | currency: 'ar$' : 'symbol' }}
-                                        </h3>
                                     </mat-card-title>
                                 </mat-card>
                             </div>
+                        </div>
+                        <div class="p-1">
+                            <mat-card-title class="">
+                                <div class="card-title-text">
+                                    <div class="mr-1">{{'movements' | translate }}</div>
+                                    <span fxFlex></span>
+
+                                    <button mat-icon-button class="card-control" (click)="getBalance()"
+                                            matTooltip="{{ 'refresh' | translate}}">
+                                        <mat-icon>refresh</mat-icon>
+                                    </button>
+                                    <button mat-icon-button class="card-control ml-1"
+                                            (click)="openMovementPopUp(true)" [matTooltip]="('add.movement' | translate) ">
+                                        <mat-icon>add_circle_outline</mat-icon>
+                                    </button>
+                                </div>
+                            </mat-card-title>
+
                         </div>
                         <mat-list class="compact-list mb-1">
                             <mat-list-item *ngIf="loadingBalance">
@@ -104,12 +134,19 @@
                             <mat-list-item class="" *ngIf="!loadingBalance && balance?.movements?.length == 0">
                                 <h4>{{'no.movements.found' | translate }}</h4>
                             </mat-list-item>
+                            <mat-list-item class="" *ngIf="!loadingBalance && balance?.movements?.length > 0">
+                                <div fxFlex="11"><small>{{'date' | translate  }}</small></div>
+                                <div fxFlex="40"><small>{{'concept' | translate  }}</small></div>
+                                <div fxFlex="2"><small>{{'type' | translate  }}</small></div>
+                                <div fxFlex="20" class="text-right"><small>{{'amount' | translate  }}</small></div>
+                                <div fxFlex="20" class="text-right"><small>{{'balance' | translate  }}</small></div>
+                            </mat-list-item>
 
                             <div class="p-05 border-bottom-light" fxLayout="row nowrap" fxLayoutAlign="space-between center"
                                  *ngFor="let mo of balance?.movements" >
-                                <div fxFlex="10"> {{ mo.date | momentFormat: 'dd/MM/yyyy'  }} </div>
-                                <div fxFlex="20"> {{ mo.concept}} </div>
-                                <div fxFlex="5">
+                                <div fxFlex="11"> <small>{{ mo.date | momentFormat: 'd/MM/yyyy'  }}</small></div>
+                                <div fxFlex="40">{{ mo.concept}} </div>
+                                <div fxFlex="2">
                                     <mat-icon *ngIf="mo.type == 'CREDIT'" color="primary">trending_up</mat-icon>
                                     <mat-icon *ngIf="mo.type == 'DEBIT'" color="warn">trending_down</mat-icon>
                                 </div>
@@ -118,10 +155,9 @@
                             </div>
 
                             <div class="p-05 border-top-normal" fxLayout="row nowrap" fxLayoutAlign="space-between center" *ngIf="!loadingBalance">
-                                <div fxFlex="10"> {{ balance?.date_to | momentFormat : 'dd/MM/yyyy'  }} </div>
-                                <div fxFlex="20"> {{ 'previous' | translate}} </div>
-                                <div fxFlex="5"> - </div>
-                                <div fxFlex="20"> - </div>
+                                <div fxFlex="20"> {{ 'balance.to' | translate}}</div>
+                                <div fxFlex="20"> {{ balance?.date_from | momentFormat : 'd/MM/yyyy'  }} </div>
+                                <div fxFlex></div>
                                 <div fxFlex="20" class="text-right">{{ balance?.balance_prev | currency: 'ar$' : 'symbol' }}</div>
                             </div>
 
@@ -130,99 +166,9 @@
                 </mat-card>
 
 
-                <!-- sales -->
+                <!-- Products -->
                 <mat-card class="p-0" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
-                    <mat-card-title class="">
-                        <div class="card-title-text">
-                            {{'sales' | translate }}
-                            <span fxFlex></span>
-                            <button mat-icon-button class="card-control">
-                                <mat-icon>add_circle_outline</mat-icon>
-                            </button>
-                        </div>
-                        <mat-divider></mat-divider>
-                    </mat-card-title>
-                    <mat-card-content class="p-0">
-                        <mat-list class="compact-list mb-1">
-                            <mat-list-item *ngIf="loadingSales">
-                                <mat-spinner diameter="16"></mat-spinner>
-                            </mat-list-item>
-                            <mat-list-item class="" *ngIf="!loadingSales && sales.length == 0">
-                                <h4>{{'no.sales.found' | translate }}</h4>
-                            </mat-list-item>
-
-                                <div class="p-1 border-bottom-light" fxLayout="row wrap" fxLayoutAlign="space-between center" *ngFor="let sa of sales">
-                                    <small>{{sa.sale_state.name | translate}}</small>
-
-                                    <small> {{ sa.date_sale | momentFormat : 'dd/MM/yyyy'  }} </small>
-
-                                    <div >{{ sa.total_price | currency: 'ar$' : 'symbol' }}</div>
-
-                                </div>
-                                <!--            <mat-chip mat-sm-chip [color]="'warn'" [selected]="ac.isOpen">{{ac.isOpen ? 'active' : 'closed'}}</mat-chip>-->
-
-
-                        </mat-list>
-                    </mat-card-content>
-                </mat-card>
-
-
-                <!-- PAYS-->
-
-                <mat-card class="p-0" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
-                    <mat-card-title class="">
-                        <div class="card-title-text">
-                            {{'pays' | translate }}
-                            <span fxFlex></span>
-                            <button mat-icon-button class="card-control" (click)="getPays()">
-                                <mat-icon>refresh</mat-icon>
-                            </button>
-                            <button mat-icon-button class="card-control" (click)="addPayPopup()">
-                                <mat-icon>add_circle_outline</mat-icon>
-                            </button>
-                        </div>
-                        <mat-divider></mat-divider>
-                    </mat-card-title>
-                    <mat-card-content class="p-0">
-
-                        <ngx-datatable
-                                class="material ml-0 mr-0 fullscreen"
-                                [rows]="pays"
-                                [columnMode]="'force'"
-                                [headerHeight]="40"
-                                [footerHeight]="40"
-                                [scrollbarH]="false"
-                                [limit]="10"
-                                [rowHeight]="40"
-                                [loadingIndicator]="loadingPays"
-                                [messages]="{emptyMessage: 'Nada por aca' }"
-                        >
-                            <ngx-datatable-column name="{{'date' | translate }}" prop="pay_date"  [width]="80">
-                                <ng-template ngx-datatable-cell-template let-row="row">
-                                <span> {{ row?.pay_date | date : 'dd/MM/yyyy'}} </span>
-                                </ng-template>
-                            </ngx-datatable-column>
-                            <ngx-datatable-column name="{{'type' | translate }}" prop="type"  [width]="80">
-                                <ng-template ngx-datatable-cell-template let-row="row">
-                                <span>{{ row?.type | translate }} </span>
-                                </ng-template>
-                            </ngx-datatable-column>
-                            <ngx-datatable-column class="align-right" name="{{'amount' | translate }}" prop="amount" >
-                                <ng-template ngx-datatable-cell-template let-row="row">
-                                    <span>{{ row?.amount  | currency:'$'}} </span>
-                                </ng-template>
-                            </ngx-datatable-column>
-
-                            <ngx-datatable-column name="{{'actions' | translate }}" [width]="20">
-                                <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
-                                    <button mat-icon-button class="card-control" color="warn">
-                                        <mat-icon>delete</mat-icon>
-                                    </button>
-                                </ng-template>
-                            </ngx-datatable-column>
-                        </ngx-datatable>
-
-                    </mat-card-content>
+                    <app-product-table [layout]="'compact'" [perPage]="5"></app-product-table>
                 </mat-card>
 
             </div>

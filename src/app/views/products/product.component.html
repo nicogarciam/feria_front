@@ -1,11 +1,3 @@
-<div fxLayout="row wrap">
-    <div fxFlex="100" *ngIf="jwtAuth?.user?.logins < 1" [@animate]="{value:'*',params:{scale:'.9',delay:'600ms'}}">
-        <mat-card class="amber-A200 amber-A200-fg px-16 py-24 ng-star-inserted" >
-            <mat-icon>mark_chat_read</mat-icon> <span class="mat-display-1 ml-1">{{'welcome.message.title' | translate}}</span>
-            <p style="font-size: 20px">{{'welcome.message'  | translate}}</p>
-        </mat-card>
-    </div>
-
-    <router-outlet></router-outlet>
-
+<div class="product-root">
+     <router-outlet></router-outlet>
 </div>

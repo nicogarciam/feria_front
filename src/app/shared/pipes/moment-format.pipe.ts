@@ -8,7 +8,6 @@ export class MomentFormatPipe implements PipeTransform {
   }
 
   transform(value: Date | moment.Moment | undefined, dateFormat: string): any {
-
-    return moment(value).format(dateFormat);
+    return value !== undefined ? moment(value).format(dateFormat) : '';
   }
 }

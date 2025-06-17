@@ -43,8 +43,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatMomentDateModule,
     RouterModule.forRoot(rootRouterConfig, {
       useHash: false,
-      onSameUrlNavigation: 'reload'
-
+      onSameUrlNavigation: 'reload',
     }),
   ],
   declarations: [AppComponent],

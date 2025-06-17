@@ -70,9 +70,10 @@
 <!--      </div>-->
 <!--    </mat-sidenav>-->
 
-
       <mat-sidenav #cartPanel mode="over" style="width: 600px" class="" position="end">
-        <app-cart-lateral></app-cart-lateral>
+          <app-cart-lateral [cartPanel]="cartPanel" ></app-cart-lateral>
       </mat-sidenav>
+
+
   </mat-sidenav-container>
 </div>

@@ -1,6 +1,4 @@
 import {Component, OnInit, Input, Type} from '@angular/core';
-import {IProduct} from "@models/product.model";
-import {FormControl} from "@angular/forms";
 import {IProvider} from "@models/provider.model";
 
 
@@ -18,6 +16,20 @@ export class ProviderItemComponent implements OnInit {
 
 
   _provider: IProvider
+  _layout = { layout: 'row', align: 'space-between center'};
+
+  @Input()
+  get layout(): any {
+    return this._layout;
+  }
+
+  set layout(value: any) {
+    if (value !== undefined) {
+      this._layout = value === 'row' ? { layout: 'row', align: 'space-between center'} :
+          { layout: 'column', align: 'space-between start'};
+    }
+  }
+
 
   @Input()
   get provider(): IProvider {
@@ -37,7 +49,6 @@ export class ProviderItemComponent implements OnInit {
   }
 
   openProvider() {
-    console.log(this.provider);
   }
 
 }

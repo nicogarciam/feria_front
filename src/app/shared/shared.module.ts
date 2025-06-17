@@ -18,6 +18,7 @@ import {CurrencyMaskModule} from "ng2-currency-mask";
 import {AppErrorService} from "@services/app-error/app-error.service";
 import {GoogleSigninService} from "@services/social/google-signin";
 import {TranslateModule} from "@ngx-translate/core";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import {TranslateModule} from "@ngx-translate/core";
         SharedPipesModule,
         SharedDirectivesModule,
         CurrencyMaskModule,
-        TranslateModule.forChild()
+        TranslateModule.forChild(),
+        MatIconModule
     ],
     providers: [
         ThemeService,
@@ -40,11 +42,13 @@ import {TranslateModule} from "@ngx-translate/core";
         ImageService,
         GoogleSigninService,
     ],
+    declarations: [
+    ],
     exports: [
         SharedComponentsModule,
         SharedPipesModule,
         SharedDirectivesModule,
-        TranslateModule
+        TranslateModule,
     ]
 })
 export class SharedModule {

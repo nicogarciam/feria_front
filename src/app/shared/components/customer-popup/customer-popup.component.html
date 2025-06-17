@@ -135,10 +135,10 @@
         </div>
 
         <div fxFlex="100" class="mt-1">
-            <button mat-raised-button color="primary" [disabled]="itemForm.invalid">{{"SAVE" | translate }}</button>
-            <span fxFlex></span>
             <button mat-button color="warn" type="button"
                     (click)="dialogRef.close(false)">{{"cancel" | translate }}</button>
+            <span fxFlex></span>
+            <button mat-raised-button color="primary" [disabled]="itemForm.invalid">{{"save" | translate }}</button>
         </div>
     </div>
 

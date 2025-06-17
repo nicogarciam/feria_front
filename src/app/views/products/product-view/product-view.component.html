@@ -1,13 +1,20 @@
 <mat-toolbar color="primary" class="booking-toolbar" [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">
-    <button mat-icon-button matTooltip="{{ 'mark.as.important' | translate}}" class="">
-        <mat-icon>folder_special</mat-icon>
+
+    <button mat-icon-button
+            routerLink="/products/add" [matTooltip]="('add.product' | translate) ">
+        <mat-icon>add_circle_outline</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="{{ 'save' | translate}}" class="" >
-        <mat-icon>save</mat-icon>
+
+    <button mat-icon-button routerLink="/products/edit/{{product.id}}"
+            matTooltip="{{ 'edit' | translate }}">
+        <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="{{ 'delete' | translate}}">
+
+    <button mat-icon-button (click)="deleteProduct()" matTooltip="{{'delete' | translate}}">
         <mat-icon>delete</mat-icon>
     </button>
+
+
 </mat-toolbar>
 
 <div fxLayout="row wrap">
@@ -16,184 +23,51 @@
     <div fxLayout="column" fxFlex="100" fxFlex.gt-md="60">
         <!-- DETAIL -->
         <mat-card class="p-1">
-            <mat-card-title>
-                <div class="card-title-text" fxLayout="row" fxLayoutAlign="space-between center">
-                    {{'sales' | translate }}
-                    <span fxFlex></span>
-                    <mat-form-field class="p-0 ml-1" style="width: 140px">
 
-                        <mat-select [formControl]="new_state" >
-                            <mat-option *ngFor="let st of saleStates" [value]="st.id">
-                                {{ st.name | translate}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+            <div class="product-details-wrap m-333" fxLayout="row wrap" fxLayout.lt-md="column">
+
+                <div fxFlex.lt-md="auto" fxFlex="50" class="product-photos-wrap">
+                    <div class="gallery-thumbnails" [@animate]="{value:'*',params:{delay: '100ms', x:'-100px'}}">
+                        <img class="mat-elevation-z1" [ngClass]="{'active': image.state === '1'}"
+                             *ngFor="let image of photoGallery" [src]="image.url"
+                             (click)="changeState(image)">
+                    </div>
+                    <div class="gallery-photo" [@animate]="{value:'*',params:{delay: '100ms', y:'50px'}}">
+                        <img class="mat-elevation-z2" *ngFor="let image of photoGallery" [src]="image.url" alt=""
+                             [@fadeInOut]="image.state">
+                    </div>
                 </div>
-            </mat-card-title>
 
-            <mat-card-content class="p-05 mb-0 ">
-                <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                    <!--    DETAIL    -->
-                    <div class="pr-1"  fxLayout="column" fxLayoutAlign="start stretch" fxFlex="50">
+                <div fxFlex="50" class="product-content-wrap"
+                     [@animate]="{value:'*',params:{delay: '100ms', x:'50px'}}">
 
+                    <h1 class="title">{{ product?.description }}</h1>
+                    <div class="main-info mb-1">
+                        <p class="mb-05" [ngStyle]="{maxWidth: '450px'}">{{ product?.description }}</p>
+                        <p class="text-muted p-line">
+                            <strong>{{ 'category' | translate }} </strong>
+                            <span class="mat-color-default"> {{ product?.category?.name }}</span>
+                        </p>
+                        <div class="product-rating mb-1">
+                            <small class="text-muted">({{ product?.ratings?.ratingCount || 0 }} reviews)</small>
+                        </div>
+                    </div>
+
+                    <div>
                         <div>
-                            <ng-container *ngIf="_product?.sale" >
-                                <div fxLayout="column" style="width: 150px">
-                                    {{ _product.sale?.date_sale}}
-                                </div>
-                                <div fxLayout="column" style="width: 200px">
-                                    <small>{{ _product.sale?.customer?.name}}</small>
-                                    <small>{{ _product.sale?.customer?.email}}</small>
-                                </div>
-                            </ng-container>
-
+                            <strong>{{ 'provider' | translate }}: </strong> {{ product?.provider?.name }}
+                        </div>
+                        <div>
+                            <strong>{{ 'state' | translate }}: </strong> {{ product?.state?.name }}
                         </div>
                     </div>
+
+                    <h1>
+                        {{ product?.price | currency:'ARS':'symbol':'1.0-1' }}
+                    </h1>
                 </div>
-            </mat-card-content>
+            </div>
 
-            <mat-accordion>
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <div fxLayout="row" fxLayoutAlign="start center" *ngIf="_product.state">
-                                <div class="mr-1">{{_product.state.name | translate}}</div>
-                            </div>
-
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-
-                    <div class="timeline">
-                        <div class="timeline-item" *ngFor="let state of saleStates">
-                            <div class="timeline-badge">
-                                <mat-icon class="icon-badge mat-bg-warn {{state.state}}">settings</mat-icon>
-                            </div>
-                            <div class="timeline-body">
-                                <div class="timeline-body-top" fxLayout="row">
-                                    <b> {{state.date_from | momentFormat : 'dd/MM/yyyy hh:mm:ss'}}
-                                        - {{state.state | translate}} </b> &nbsp;
-                                    <span class="text-muted mr-1 ml-1"> {{state.date_from?.toDate() | relativeTime}}</span>
-                                    <b *ngIf="state.date_to"> {{ 'to' | translate }} {{state.date_to | momentFormat : 'dd/MM/yyyy hh:mm:ss'}}</b>
-                                </div>
-                                <div class="timeline-body-content">
-                                    <p>{{state.event | translate}}</p>
-                                    <span class="text-muted">{{state.user_email}} </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </mat-expansion-panel>
-
-            </mat-accordion>
         </mat-card>
-    </div>
-
-    <!-- SALE--><!-- CUSTOMER --><!-- PAYS-->
-    <div fxLayout="column" fxFlex="100" fxFlex.gt-md="40">
-        <!-- sale -->
-        <mat-card class="p-0">
-            <mat-card-title >
-                <div class="card-title-text">
-                    <mat-icon class="mr-05">family_restroom</mat-icon>
-                    {{'sale' | translate }}
-                    <span fxFlex></span>
-
-                </div>
-                <mat-divider></mat-divider>
-            </mat-card-title>
-            <mat-card-content class="p-0">
-                <mat-list class="compact-list mb-1">
-                    <mat-list-item *ngIf="loadingSale">
-                        <mat-spinner diameter="16"></mat-spinner>
-                    </mat-list-item>
-                    <mat-list-item class="" *ngIf="!loadingSale && !_product.sale">
-                        <h4>{{'no.customer.found' | translate }}</h4>
-                    </mat-list-item>
-
-                </mat-list>
-            </mat-card-content>
-        </mat-card>
-        <!-- END sale-->
-
-        <!-- PAYS-->
-        <mat-card class="p-0" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
-            <mat-card-title class="">
-                <div class="card-title-text">
-                    <mat-icon class="mr-05">payments</mat-icon>
-
-                    {{'pays' | translate }}
-                    <span fxFlex></span>
-<!--                    <button mat-icon-button class="card-control" (click)="getSalePays()">-->
-<!--                        <mat-icon>refresh</mat-icon>-->
-<!--                    </button>-->
-<!--                    <button mat-icon-button (click)="addPayPopup()" class="card-control">-->
-<!--                        <mat-icon>add_circle_outline</mat-icon>-->
-<!--                    </button>-->
-                </div>
-                <mat-divider></mat-divider>
-            </mat-card-title>
-            <mat-card-content class="p-0">
-<!--                <mat-list class="compact-list mb-1">-->
-<!--                    <mat-list-item *ngIf="loadingPays">-->
-<!--                        <mat-spinner diameter="16"></mat-spinner>-->
-<!--                    </mat-list-item>-->
-<!--                    <mat-list-item class="" *ngIf="!loadingPays && _booking.pays?.length == 0">-->
-<!--                        <h4>{{'no.pays.found' | translate }}</h4>-->
-<!--                    </mat-list-item>-->
-<!--                    <mat-list-item *ngFor="let p of _booking.pays">-->
-<!--                        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">-->
-<!--                            <small fxFlex>{{ p?.pay_date | date : 'dd/MM/yyyy'}}</small>-->
-<!--                            <small fxFlex>{{ p?.type | translate }} </small>-->
-<!--                            <small fxFlex>{{ p?.concept}} </small>-->
-<!--                            <small class="text-muted mr-1" fxFlex>{{ p?.amount  | currency:'$'}}</small>-->
-<!--                            <button mat-icon-button class="card-control" color="warn" (click)="deletePay(p)">-->
-<!--                                <mat-icon>delete</mat-icon>-->
-<!--                            </button>-->
-<!--                        </div>-->
-<!--                    </mat-list-item>-->
-<!--                </mat-list>-->
-
-                <ngx-datatable
-                        class="material ml-0 mr-0 fullscreen"
-                        [rows]=""
-                        [columnMode]="'force'"
-                        [headerHeight]="40"
-                        [footerHeight]="40"
-                        [scrollbarH]="false"
-                        [limit]="10"
-                        [rowHeight]="40"
-                        [loadingIndicator]="loadingPays"
-                        [messages]="{emptyMessage: 'Nada por aca' }"
-                >
-                    <ngx-datatable-column name="{{'date' | translate }}" prop="pay_date"  [width]="80">
-                        <ng-template ngx-datatable-cell-template let-row="row">
-                            <span> {{ row?.pay_date | date : 'dd/MM/yyyy'}} </span>
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="{{'type' | translate }}" prop="type"  [width]="80">
-                        <ng-template ngx-datatable-cell-template let-row="row">
-                            <span>{{ row?.type | translate }} </span>
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column class="align-right" name="{{'amount' | translate }}" prop="amount" >
-                        <ng-template ngx-datatable-cell-template let-row="row">
-                            <span>{{ row?.amount  | currency:'$'}} </span>
-                        </ng-template>
-                    </ngx-datatable-column>
-
-                    <ngx-datatable-column name="{{'actions' | translate }}" [width]="20">
-                        <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
-                            <button mat-icon-button class="card-control" color="warn">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </ng-template>
-                    </ngx-datatable-column>
-                </ngx-datatable>
-
-
-
-            </mat-card-content>
-        </mat-card>
-        <!-- END PAYS-->
     </div>
 </div>

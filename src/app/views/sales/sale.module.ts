@@ -35,8 +35,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {CurrencyMaskModule} from "ng2-currency-mask";
-import {CustomerPopupComponent} from "../../shared/components/customer-popup/customer-popup.component";
-import {SharedComponentsModule} from "../../shared/components/shared-components.module";
+import {CustomerPopupComponent} from "@components/customer-popup/customer-popup.component";
+import {SharedComponentsModule} from "@components/shared-components.module";
 import {SalesListComponent} from "./sales-list/sales-list.component";
 import {SaleViewComponent} from "./sale-view/sale-view.component";
 import {SaleLateralFormComponent} from "./sale-lateral-form/sale-lateral-form.component";
@@ -48,6 +48,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDividerModule} from '@angular/material/divider';
+import {SaleProductListComponent} from "./sale-product-list/sale-product-list.component";
+import {SalePaysListComponent} from "./sale-pays-list/sale-pays-list.component";
 
 @NgModule({
     imports: [
@@ -100,6 +102,7 @@ import {MatDividerModule} from '@angular/material/divider';
         SalesListComponent
     ],
     declarations: [SaleComponent, SelectorComponent, SalesListComponent,
-        SaleViewComponent, CustomerPopupComponent, SaleLateralFormComponent]
+        SaleViewComponent, CustomerPopupComponent, SaleLateralFormComponent, SaleProductListComponent,
+    SalePaysListComponent]
 })
 export class SaleModule { }

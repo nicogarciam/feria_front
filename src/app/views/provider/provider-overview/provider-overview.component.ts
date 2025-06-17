@@ -3,21 +3,24 @@ import {IPay} from '@models/pay.model';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppLoaderService} from '@services/app-loader/app-loader.service';
 import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, Subscription} from 'rxjs';
-import {PayService} from '@services/entities/pay.service';
+import {Subscription} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {egretAnimations} from '@animations/egret-animations';
-import {ICustomer} from "@models/customer.model";
+import {IProvider} from "@models/Provider.model";
 import {AppErrorService} from "@services/app-error/app-error.service";
 import {ISale} from "@models/sale.model";
 import {SaleService} from "@services/entities/sale.service";
 import {HttpResponse} from "@angular/common/http";
-import {PayPopupComponent} from "@components/pays/pay-popup/pay-popup.component";
-import {IMovement} from "@models/movement.model";
+import {IMovement, Movement} from "@models/movement.model";
 import {MovementsService} from "@services/entities/movements.service";
 import * as moment from "moment";
 import {IBalance} from "@models/balance.model";
 import {JwtAuthService} from "@services/auth/jwt-auth.service";
+import {ProductService} from "@services/entities/product.service";
+import {IProduct} from "@models/product.model";
+import {Pageable} from "@models/pageable.model";
+import {MovementPopupComponent} from "@components/movement-popup/movement-popup.component";
+import {ImageService} from "@services/image.service";
 
 @Component({
     selector: 'app-provider-overview',
@@ -32,42 +35,45 @@ export class ProviderOverviewComponent implements OnInit, OnDestroy {
 
     pays: IPay[] = [];
     sales: ISale[] = [];
+    products: IProduct[] = [];
     movements: IMovement[] = [];
     balance: IBalance;
     loadingPays = false;
     loadingSales = false;
+    loadingProducts = false;
     loadingBalance = false;
-    loadingCustomer = false;
+    loadingProvider = false;
     selectedImage = null;
     imageError: string;
 
-    @Output() customerChange = new EventEmitter();
+    @Output() providerChange = new EventEmitter();
     @Output() cancel = new EventEmitter();
     @Output() saved = new EventEmitter();
 
 
-    _customer: ICustomer;
+    _provider: IProvider;
 
     @Input()
-    set customer(value: ICustomer) {
+    set provider(value: IProvider) {
         if (value !== undefined) {
-            this._customer = value;
+            this._provider = value;
             this.updateData();
-            this.customerChange.emit(this._customer);
+            this.providerChange.emit(this._provider);
         }
 
     };
 
-    get customer() {
-        return this._customer;
+    get provider() {
+        return this._provider;
     }
 
 
     constructor(
         private loader: AppLoaderService,
-        private dialog: MatDialog, private payService: PayService, private t: TranslateService,
+        private dialog: MatDialog, private t: TranslateService,
         private snack: MatSnackBar, private movementService: MovementsService, public jwtAuth: JwtAuthService,
-        private saleService: SaleService, private error: AppErrorService) {
+        private saleService: SaleService, private error: AppErrorService,
+        private productService: ProductService, public imageService: ImageService) {
     }
 
     ngOnInit() {
@@ -82,28 +88,25 @@ export class ProviderOverviewComponent implements OnInit, OnDestroy {
     }
 
     updateData() {
-        this.getCustomer();
-        this.getSales();
-        this.getPays();
-        // this.getMovements();
+        this.getProvider();
         this.getBalance();
     }
 
-    getCustomer() {
-       this.loadingCustomer = true;
+    getProvider() {
+       this.loadingProvider = true;
 
     }
-
+    // 'date_from':  moment().subtract(1, 'M').startOf('month').startOf('hour').toISOString(),
     getBalance() {
         const options = {
-            'for': {'customer_id': this.customer.id, 'hotel_id': this.jwtAuth.getStore().id},
-            'date_from':  moment().subtract(1, 'M').startOf('month').startOf('hour').toISOString(),
-            'date_to': moment().endOf('month').endOf('hour').toISOString(),
+            'for': {'provider_id': this.provider.id, 'store_id': this.jwtAuth.getStore().id},
+            'date_to': moment().endOf('hour').toISOString(),
         }
         this.loadingBalance = true;
         this.subscriptions.push(this.movementService.queryBalance(options)
             .subscribe((res: HttpResponse<IBalance>) => {
                     (this.balance = res.body);
+                    console.log(this.balance);
                     this.loadingBalance = false;
                 },
                 (error) => {
@@ -113,53 +116,50 @@ export class ProviderOverviewComponent implements OnInit, OnDestroy {
             ));
     }
 
-    getSales() {
-        this.loadingSales = true;
-        this.subscriptions.push(this.saleService.query({'customer_id': this.customer.id})
-            .subscribe((res: HttpResponse<ISale[]>) => {
-                    (this.sales = res.body || []);
-                    this.loadingSales = false;
+    getProducts() {
+        this.loadingProducts = true;
+        this.subscriptions.push(this.productService.queryPage({'provider_id': this.provider.id,
+            'store_id': this.jwtAuth.getStore().id  })
+            .subscribe((res: HttpResponse<Pageable>) => {
+                    (this.products = res.body.data || []);
+                    this.loadingProducts = false;
                 },
                 (error) => {
                     this.error.error(error);
-                    this.loadingSales = false;
+                    this.loadingProducts = false;
                 }
             ));
     }
 
+    addProduct() {
 
-
-    getPays() {
-        this.loadingPays = true;
-        this.subscriptions.push(this.payService.query({'customer_id': this.customer.id})
-            .subscribe((res: HttpResponse<IPay[]>) => {
-                    (this.pays = res.body || []);
-                    this.loadingPays = false;
-                },
-                (error) => {
-                    this.error.error(error);
-                    this.loadingPays = false;
-                }
-            ));
     }
 
-    addPayPopup() {
 
-        const dialogRef: MatDialogRef<any> = this.dialog.open(PayPopupComponent, {
-            width: '820px',
+    openMovementPopUp(isNew: boolean, movement: IMovement = null) {
+        const title = (isNew ? this.t.instant('newa') : this.t.instant('update'))
+            + '  ' + this.t.instant('movement');
+
+        movement = new Movement({
+            ...movement,
+            'provider_id': this.provider.id,
+            'provider': this.provider,
+            'store_id': this.jwtAuth.getStore().id
+        });
+
+        const dialogRef: MatDialogRef<any> = this.dialog.open(MovementPopupComponent, {
+            width: '850px',
             disableClose: true,
-            data: {customer: this.customer}
+            data: {title: title, item: movement}
         })
         dialogRef.afterClosed()
             .subscribe(res => {
-                if (!res) {
+                if (res) {
+                    this.getBalance();
                     return;
                 }
-                this.getPays();
-                this.snack.open(this.t.instant('saved.success'), 'OK', {duration: 4000})
             })
     }
-
 
     fileChangeEvent(fileInput: any) {
         this.loader.open()
@@ -172,13 +172,14 @@ export class ProviderOverviewComponent implements OnInit, OnDestroy {
             const max_width = 25600;
 
             if (fileInput.target.files[0].size > max_size) {
-                this.imageError =
-                    'Maximum size allowed is ' + max_size / 1000 + 'Mb';
+                this.imageError = 'Maximum size allowed is ' + max_size / 1000 + 'Mb';
+                this.loader.close()
                 return false;
             }
 
             if (!allowed_types.includes(fileInput.target.files[0].type)) {
                 this.imageError = 'Only Images are allowed ( JPG | PNG )';
+                this.loader.close()
                 return false;
             }
             const reader = new FileReader();
@@ -188,9 +189,6 @@ export class ProviderOverviewComponent implements OnInit, OnDestroy {
                 image.onload = rs => {
                     const img_height = rs.currentTarget['height'];
                     const img_width = rs.currentTarget['width'];
-
-                    console.log(img_height, img_width);
-
                     if (img_height > max_height && img_width > max_width) {
                         this.imageError =
                             'Maximum dimentions allowed ' +
@@ -198,9 +196,10 @@ export class ProviderOverviewComponent implements OnInit, OnDestroy {
                             '*' +
                             max_width +
                             'px';
+                        this.loader.close()
                         return false;
                     } else {
-
+                        this.loader.close()
                         this.selectedImage = fileInput.target.files[0];
                         this.updateLogo();
                     }
@@ -214,16 +213,18 @@ export class ProviderOverviewComponent implements OnInit, OnDestroy {
     updateLogo() {
         const formData = new FormData();
         formData.append('image', this.selectedImage, this.selectedImage.name);
-        formData.append('customer_id', this.customer.id.toString());
-
-        // this.subscriptions.push(this.accountService.updateImage(formData).subscribe(
-        //     (res) => {
-        //         this.account = res.body;
-        //
-        //         this.onSaveSuccess();
-        //     },
-        //     (error) => this.onSaveError(error.error)));
+        formData.append('provider_id', this.provider.id.toString());
+        this.subscriptions.push(this.productService.queryPage({'provider_id': this.provider.id,
+            'store_id': this.jwtAuth.getStore().id  })
+            .subscribe((res: HttpResponse<Pageable>) => {
+                    (this.products = res.body.data || []);
+                    this.loadingProducts = false;
+                },
+                (error) => {
+                    this.error.error(error);
+                    this.loadingProducts = false;
+                }
+            ))
+        this.loader.close()
     }
-
-
 }

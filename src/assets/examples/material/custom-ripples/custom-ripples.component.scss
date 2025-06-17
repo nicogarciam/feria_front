@@ -6,10 +6,10 @@
     height: 300px;
     line-height: 300px;
   
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+    user-select: auto;
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
   
     -webkit-user-drag: none;
     -webkit-tap-highlight-color: transparent;
@@ -23,4 +23,3 @@
   .example-ripple-form-field {
     margin: 0 12px 0 0;
   }
-  

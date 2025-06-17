@@ -1,28 +1,30 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {egretAnimations} from "@animations/egret-animations";
-import {CartItem} from "@models/cartItem";
-import {CartService} from "@services/cart/cart.service";
-import {CartQuery} from "@services/cart/cart.query";
-import {Observable, Subscription} from "rxjs";
-import {IProductState} from "@models/product-state.model";
-import {HttpResponse} from "@angular/common/http";
-import {ProductStateService} from "@services/entities/productState.service";
-import {ISale, Sale} from "@models/sale.model";
-import {IStore} from "@models/store.model";
-import {JwtAuthService} from "@services/auth/jwt-auth.service";
-import {SaleService} from "@services/entities/sale.service";
-import {AppErrorService} from "@services/app-error/app-error.service";
-import {AppLoaderService} from "@services/app-loader/app-loader.service";
-import {TranslateService} from "@ngx-translate/core";
-import {debounceTime, finalize, switchMap, tap} from "rxjs/operators";
-import {CustomerService} from "@services/entities/customer.service";
-import {FormControl, Validators} from "@angular/forms";
-import {ICustomer} from "@models/customer.model";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {CustomerPopupComponent} from "@components/customer-popup/customer-popup.component";
-import * as moment from "moment/moment";
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {DateAdapter, MAT_DATE_FORMATS} from "@angular/material/core";
 import {APP_DATE_FORMATS, AppDateAdapter} from "@helpers/format-datepicker";
+import {Observable, Subscription} from "rxjs";
+import {FormControl, Validators} from "@angular/forms";
+import {ICustomer} from "@models/customer.model";
+import {IProductState} from "@models/product-state.model";
+import {ISale, Sale} from "@models/sale.model";
+import {CartService} from "@services/cart/cart.service";
+import {CartQuery} from "@services/cart/cart.query";
+import {ProductStateService} from "@services/entities/productState.service";
+import {JwtAuthService} from "@services/auth/jwt-auth.service";
+import {AppErrorService} from "@services/app-error/app-error.service";
+import {SaleService} from "@services/entities/sale.service";
+import {AppLoaderService} from "@services/app-loader/app-loader.service";
+import {CustomerService} from "@services/entities/customer.service";
+import {TranslateService} from "@ngx-translate/core";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import * as moment from "moment";
+import {debounceTime, finalize, switchMap, tap} from "rxjs/operators";
+import {HttpResponse} from "@angular/common/http";
+import {egretAnimations} from "@animations/egret-animations";
+import {CustomerPopupComponent} from "@components/customer-popup/customer-popup.component";
+import {CartItem} from "@models/cartItem";
+import {IStore} from "@models/store.model";
+import {Router} from "@angular/router";
+
 
 @Component({
     selector: 'app-cart-lateral',
@@ -35,6 +37,9 @@ import {APP_DATE_FORMATS, AppDateAdapter} from "@helpers/format-datepicker";
     animations: [egretAnimations]
 })
 export class CartLateralComponent implements OnInit, OnDestroy {
+
+
+    @Input() cartPanel;
 
     public getItemSub: Subscription[] = [];
 
@@ -54,31 +59,29 @@ export class CartLateralComponent implements OnInit, OnDestroy {
     productStates: IProductState[] = [];
     sale: ISale;
 
-
     constructor(
         private cartService: CartService, private productStateService: ProductStateService,
         protected cartQuery: CartQuery, private jwtAuthService: JwtAuthService,
         private saleService: SaleService, private errorService: AppErrorService,
         private loader: AppLoaderService, private t: TranslateService,
-        private customerService: CustomerService, private dialog: MatDialog
+        private customerService: CustomerService, private dialog: MatDialog,
+        private router: Router
     ) {
         this.customer_search = new FormControl('', Validators.required);
-        this.date_sale = new FormControl(moment(), Validators.required);
+        this.date_sale = new FormControl(new Date(), Validators.required);
     }
 
     ngOnInit() {
 
-
         this.store = this.jwtAuthService.getStore();
-        this.cart$ = this.cartQuery.selectAll();
         this.getStates();
+        this.cart$ = this.cartQuery.selectAll();
         this.cart$.subscribe(carItems => {
             this.cart = carItems;
             this.cartEmpty = carItems?.length < 1;
-            this.subTotal = 0;
+            this.total = 0;
             carItems.forEach(item => {
-                this.subTotal += (item.product.price * item.data.quantity);
-                this.total = this.subTotal + (this.subTotal * (15 / 100));
+                this.total += (item.product.price * item.data.quantity);
             })
         });
 
@@ -102,7 +105,6 @@ export class CartLateralComponent implements OnInit, OnDestroy {
                 },
             ));
 
-
         this.sale = new Sale({
             store_id: this.store.id
         });
@@ -111,9 +113,12 @@ export class CartLateralComponent implements OnInit, OnDestroy {
     }
 
     removeProduct(cartItem) {
-        this.cartService.remove(cartItem)
+        this.cartService.remove(cartItem);
     }
 
+    toggleCartPanel() {
+        this.cartPanel.toggle();
+    }
 
     private getStates() {
         this.getItemSub.push(this.productStateService.query()
@@ -136,11 +141,10 @@ export class CartLateralComponent implements OnInit, OnDestroy {
     }
 
     closeCart() {
-
+        this.toggleCartPanel();
     }
 
     saveCart() {
-
         if (this.customer_search.invalid || this.date_sale.invalid) {
             this.customer_search.updateValueAndValidity();
             this.date_sale.updateValueAndValidity();
@@ -157,10 +161,12 @@ export class CartLateralComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.loader.open("Guardando");
         if (this.sale.id) {
-
-            this.getItemSub.push(this.saleService.update(this.sale).subscribe(b => {
+            this.getItemSub.push(this.saleService.update(this.sale).subscribe(resp => {
+                    this.toggleCartPanel();
                     this.loading = false;
                     this.loader.close();
+                    const sale = resp.body;
+                    this.router.navigate(['/sales/view/' + sale.id]);
                 },
                 error => {
                     this.loader.close();
@@ -168,9 +174,12 @@ export class CartLateralComponent implements OnInit, OnDestroy {
                     this.loading = false;
                 }))
         } else {
-            this.getItemSub.push(this.saleService.create(this.sale).subscribe(b => {
+            this.getItemSub.push(this.saleService.create(this.sale).subscribe(resp => {
+                    this.toggleCartPanel();
                     this.loading = false;
                     this.loader.close();
+                    const sale = resp.body;
+                    this.router.navigate(['/sales/view/' + sale.id]);
                 },
                 error => {
                     this.loader.close();
@@ -205,6 +214,7 @@ export class CartLateralComponent implements OnInit, OnDestroy {
                 } else {
                     this.sale.customer = res;
                     this.sale.customer_id = res.id;
+                    this.customer_search.setValue(res);
                 }
             })
 

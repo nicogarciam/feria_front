@@ -13,7 +13,7 @@ export const SalesRoutes: Routes = [
     component: SelectorComponent
   },
   {
-    path: 'view/:asleID',
+    path: 'view/:saleID',
     component: SaleViewComponent
   }
 ];

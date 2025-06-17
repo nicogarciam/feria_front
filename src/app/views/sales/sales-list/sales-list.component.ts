@@ -21,7 +21,7 @@ import {PayPopupComponent} from "@components/pays/pay-popup/pay-popup.component"
 import {saleLike} from "@helpers/sales-helper";
 import {FilterState, IFilterState} from "@models/filterState.model";
 import {DatatableComponent} from "@swimlane/ngx-datatable";
-import {Moment} from "moment";
+import {isMoment, Moment} from "moment";
 import {Pageable} from "@models/pageable.model";
 
 @Component({
@@ -85,7 +85,7 @@ export class SalesListComponent implements OnInit, OnDestroy {
         this.options.store_id = this.jwtAuth.getStore().id;
 
         this.getSalesFromServer();
-        this.getSalesResumeFromServer();
+        // this.getSalesResumeFromServer();
     }
 
 
@@ -210,8 +210,11 @@ export class SalesListComponent implements OnInit, OnDestroy {
     }
 
     compareDates(a: Moment, b: Moment): number {
+        if (isMoment(a) && isMoment(b)) {
+            return a.isBefore(b) ? -1 : 1;
+        }
+        return 0;
 
-        return a.isBefore(b) ? -1 : 1;
     }
 
     ngOnDestroy() {

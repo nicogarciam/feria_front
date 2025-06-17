@@ -7,6 +7,7 @@ import {environment} from '@environments/environment';
 import {createRequestOption} from '@helpers/request-util';
 import {Product, IProduct} from "@models/product.model";
 import {Pageable} from "@models/pageable.model";
+import {isArray} from "rxjs/internal-compatibility";
 
 type EntityResponseType = HttpResponse<IProduct>;
 type EntityArrayResponseType = HttpResponse<IProduct[]>;
@@ -53,14 +54,14 @@ export class ProductService {
     }
 
 
-    query(req?: any): Observable<EntityArrayResponseType> {
+    query(req?: any): Observable<PageResponseType> {
         const options = createRequestOption(req);
         return this.http
-            .get<IProduct[]>(this.resourceUrl, {params: options, observe: 'response'})
+            .get<Pageable>(this.resourceUrl, {params: options, observe: 'response'})
             .pipe(
                 (map(
-                    (res: EntityArrayResponseType) =>
-                        this.convertDateArrayFromServer(res)
+                    (res: PageResponseType) =>
+                        this.convertDatePageFromServer(res)
                 ))
             );
     }
@@ -104,9 +105,16 @@ export class ProductService {
     protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
 
         if (res.body) {
-            res.body.forEach((product: IProduct) => {
-                product.created_at = product.created_at ? moment(product.created_at) : null;
-            });
+            if (isArray(res.body)) {
+                res.body.forEach((product: IProduct) => {
+                    product.created_at = product.created_at ? moment(product.created_at) : null;
+                });
+            } else if ((res.body as any).data) {
+                ((res.body as any).data as IProduct[]).forEach((product: IProduct) => {
+                    product.created_at = product.created_at ? moment(product.created_at) : null;
+                });
+            }
+
         }
 
         return res;

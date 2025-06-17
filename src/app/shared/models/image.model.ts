@@ -1,3 +1,10 @@
+export interface GalleryImage {
+  url: string;
+  state: string;
+  id?: number;
+}
+
+
 export interface IImage {
 
   id?: number;

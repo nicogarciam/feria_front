@@ -1,36 +1,42 @@
 <div class="margin-333">
-    <div *ngIf="!cartEmpty" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+    <div class="mb-1">
+        <h1>{{ 'cart' | translate }}</h1>
+    </div>
+    <div *ngIf="!cartEmpty">
         <table class="cart-table default-bg mat-elevation-z1"
-               *ngIf="cart$"
-               [@animate]="{value:'*',params:{delay: '100ms', x:'-50px'}}">
+               *ngIf="cart$">
             <thead>
             <tr>
-                <th class="text-muted"></th>
-                <th class="text-muted">Product</th>
-                <th class="text-muted">Provider</th>
-                <th class="text-muted">Price</th>
-                <th class="text-muted">state</th>
+                <th class="text-muted p-05" style="width: 20px"></th>
+                <th class="text-muted p-05">{{ 'product' | translate }}</th>
+                <th class="text-muted p-05">{{ 'provider' | translate }}</th>
+                <th class="text-muted p-05">%</th>
+                <th class="text-muted p-05">{{ 'state' | translate }}</th>
+                <th class="text-muted p-05">{{ 'price' | translate }}</th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let item of cart$ | async">
-                <td>
-                    <button mat-icon-button color="warn" (click)="removeProduct(item)">
-                        <mat-icon>close</mat-icon>
+                <td class="p-05" style="width: 20px">
+                    <button mat-icon-button color="warn"  (click)="removeProduct(item)"
+                            style="width: 12px; height: 12px">
+                        <mat-icon style="font-size: 16px;">close</mat-icon>
                     </button>
                 </td>
-                <td>{{ item.product.description }}</td>
-                <td>{{ item.product.provider.name }}</td>
-                <td>{{ item.product.price | currency :'ARS':'symbol':'1.0-0' }}</td>
-                <td>
-                    <mat-form-field class="p-0 ml-1" style="width: 140px" required>
-                        <mat-select [value]="item.product.state_id" (selectionChange)="changeItemProductState($event, item)">
+                <td class="p-05">{{ item.product.description }}</td>
+                <td class="p-05">{{ item.product.provider.name }}</td>
+                <td class="p-05">{{ item.product.provider.fee }}</td>
+                <td class="p-05 width-80">
+                    <mat-form-field class="p-0 ml-1 mat-form-field-required-marker" style="width: 100px" required>
+                        <mat-select [value]="item.product.state_id" (selectionChange)="changeItemProductState($event, item)"
+                        >
                             <mat-option *ngFor="let st of productStates" [value]="st.id">
                                 {{ st.name | translate }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </td>
+                <td class="align-right">{{ item.product.price | currency :'ARS':'symbol':'1.2-2' }}</td>
             </tr>
             </tbody>
         </table>
@@ -38,20 +44,15 @@
         <div fxLayout="column" fxLayout.lt-md="column" [@animate]="{value:'*',params:{delay: '100ms', x:'50px'}}">
             <mat-card class="m-0">
                 <div class="line mb-1">
-                    <span class="fw-500">Subtotal:</span>
+                    <span class="fw-500">{{ 'subtotal' | translate }}:</span>
                     <span fxFlex></span>
-                    <span class="text-muted">{{ subTotal | currency:'ARS':'symbol':'1.0-0' }}</span>
-                </div>
-                <div class="line mb-1">
-                    <span class="fw-500">VAT:</span>
-                    <span fxFlex></span>
-                    <span class="text-muted">{{ vat }}%</span>
+                    <span class="text-muted">{{ subTotal | currency:'ARS':'symbol':'1.2-2' }}</span>
                 </div>
                 <mat-divider class=""></mat-divider>
                 <div class="line mb-1 pt-1">
-                    <span class="fw-500">Total:</span>
+                    <span class="fw-500">{{ 'total' | translate }}:</span>
                     <span fxFlex></span>
-                    <span class="text-muted">{{ total | currency:'ARS':'symbol':'1.0-0' }}</span>
+                    <span class="text-muted">{{ total | currency:'ARS':'symbol':'1.2-2' }}</span>
                 </div>
 
                 <div>
@@ -80,7 +81,6 @@
                         </mat-form-field>
 
 
-
 <!--                        <mat-form-field style="width: 130px" class="pr-05">-->
 <!--                            <input-->
 <!--                                    formControl="date_sale"-->
@@ -95,10 +95,12 @@
 <!--                        </mat-form-field>-->
 
                         <mat-form-field>
-                            <input matInput [matDatepicker]="picker" placeholder="Fecha del carrito">
+                            <input matInput [matDatepicker]="picker"
+                                   placeholder="{{'sale.date' | translate }}"
+                                   [formControl]="date_sale" required>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
+                        </mat-form-field> *
 
 
                     </form>
@@ -106,8 +108,9 @@
                 </div>
                 <mat-card-actions>
                     <span fxFlex></span>
-                    <button mat-raised-button color="primary" [disabled]="loading">{{ 'cancel' | translate }}</button>
-                    <button mat-raised-button color="warn" [disabled]="loading">{{ 'checkout' | translate }}</button>
+                    <button mat-raised-button color="primary" [disabled]="loading"
+                            (click)="toggleCartPanel()">{{ 'cancel' | translate }}
+                    </button>
                     <button mat-raised-button color="warn" [disabled]="loading" 
                     (click)="saveCart()">{{ 'save' | translate }}</button>
                 </mat-card-actions>

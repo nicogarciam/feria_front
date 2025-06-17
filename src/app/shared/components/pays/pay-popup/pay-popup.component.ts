@@ -48,10 +48,8 @@ export class PayPopupComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: { title: string, sale: ISale, customer: ICustomer },
         public dialogRef: MatDialogRef<PayPopupComponent>, private errorService: AppErrorService,
         private fb: FormBuilder, private voucherService: VoucherService,
-        private accountService: AccountService,
         private payService: PayService, private bankAccountService: BankAccountService,
-        private t: TranslateService,
-        private snack: MatSnackBar, private authService: JwtAuthService
+        private t: TranslateService, private snack: MatSnackBar, private authService: JwtAuthService
     ) {
 
         this.sale = data.sale;

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,21 +24,21 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { ShopProductsComponent } from './shop-products/shop-products.component';
 import { ShopService } from './shop.service';
-import { ShopRoutes } from './shop.routing';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
-import {CartLateralComponent} from "./cart-lateral/cart-lateral.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {ShopComponent} from "./shop.component";
+import {ShopRoutingModule} from "./shop-routing.module";
 
 @NgModule({
     imports: [
         CommonModule,
-        RouterModule.forChild(ShopRoutes),
+        ShopRoutingModule,
         FormsModule,
         ReactiveFormsModule,
         FlexLayoutModule,
@@ -69,15 +68,15 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         MatDatepickerModule
     ],
     declarations: [
+        ShopComponent,  // Añade el nuevo componente
         ShopProductsComponent,
         ProductDetailsComponent,
-        CartComponent, CheckoutComponent,
-        CartLateralComponent
+        CartComponent, CheckoutComponent
     ],
     exports: [
-        CartComponent,
-        CartLateralComponent
+        CartComponent
     ],
     providers: [ShopService]
 })
-export class ShopModule { }
+export class ShopModule {
+}

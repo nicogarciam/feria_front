@@ -25,7 +25,7 @@
             >
                 <ngx-datatable-column name="{{'name' | translate }}" prop="name">
                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                        <span title="Double click to edit"
+                        <span title="{{ 'doble.click.to.edit' | translate'}}"
                               (dblclick)="editing[rowIndex] = true"
                               *ngIf="!editing[rowIndex]">
                             {{ value }}
@@ -41,7 +41,7 @@
                 </ngx-datatable-column>
                 <ngx-datatable-column name="{{'contact.name' | translate }}" prop="contact_name">
                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                        <span title="Double click to edit"
+                        <span title="{{ 'doble.click.to.edit' | translate'}}"
                               (dblclick)="editing[rowIndex] = true"
                               *ngIf="!editing[rowIndex]">
                             {{ value }}
@@ -57,7 +57,7 @@
                 </ngx-datatable-column>
                 <ngx-datatable-column name="{{'email' | translate }}" prop="email">
                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                        <span title="Double click to edit"
+                        <span title="{{ 'doble.click.to.edit' | translate'}}"
                               (dblclick)="editing[rowIndex] = true"
                               *ngIf="!editing[rowIndex]">
                             {{ value }}
@@ -74,7 +74,7 @@
                 </ngx-datatable-column>
                 <ngx-datatable-column name="{{'phone' | translate }}" prop="phone">
                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                        <span title="Double click to edit"
+                        <span title="{{ 'doble.click.to.edit' | translate'}}"
                               (dblclick)="editing[rowIndex] = true"
                               *ngIf="!editing[rowIndex]">
                             {{ value }}
@@ -90,7 +90,7 @@
                 </ngx-datatable-column>
                 <ngx-datatable-column name="{{'address' | translate }}" prop="address" >
                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                        <span title="Double click to edit"
+                        <span title="{{ 'doble.click.to.edit' | translate'}}"
                               (dblclick)="editing[rowIndex] = true"
                               *ngIf="!editing[rowIndex]">
                             {{ value }}
@@ -106,7 +106,7 @@
                 </ngx-datatable-column>
                 <ngx-datatable-column name="{{'cuil' | translate }}" prop="cuil" >
                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                        <span title="Double click to edit"
+                        <span title="{{ 'doble.click.to.edit' | translate'}}"
                               (dblclick)="editing[rowIndex] = true"
                               *ngIf="!editing[rowIndex]">
                             {{ value }}
@@ -114,6 +114,23 @@
 
                         <input *ngIf="editing[rowIndex]"
                                (blur)="updateValue($event, 'cuil', rowIndex)"
+                               type="text"
+                               [value]="value"
+                        />
+
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="{{'fee' | translate }}" prop="fee" >
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                        <span title="{{ 'doble.click.to.edit' | translate'}}"
+                              (dblclick)="editing[rowIndex] = true"
+                              *ngIf="!editing[rowIndex]">
+                            {{ value }} %
+                        </span>
+
+                        <input *ngIf="editing[rowIndex]"
+                               (blur)="updateValue($event, 'fee', rowIndex)"
                                type="text"
                                [value]="value"
                         />
@@ -144,30 +161,31 @@
 
 </div>
 
-<perfect-scrollbar class="sidebar-right ps" *ngIf="viewDetail"
-                   [@animate]="{value:'*',params:{x:'60px'}}"
-                   (mouseenter)="disableScroll($event)"
-                   (mouseleave)="enableScroll($event)"
->
 
-    <mat-card-title class="m-0" style="width: 850px">
-        <div class="card-title-text" fxLayout="row wrap" fxLayoutAlign="space-between center">
-            <span>{{selectedItem.name}}</span>
-            <div fxFlex></div>
-            <button class="card-control " mat-icon-button routerLink="/customer/view/{{selectedItem.id}}" >
-                <mat-icon>zoom_in</mat-icon>
-            </button>
+<div class="sidebar-right ps" *ngIf="viewDetail"  [@animate]="{value:'*',params:{x:'60px'}}">
+    <perfect-scrollbar >
 
-            <button
-                    class="card-control"
-                    mat-icon-button
-                    (click)="viewDetail = false">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-    </mat-card-title>
-    <mat-divider></mat-divider>
-    <app-customer-overview [(customer)]="selectedItem"
-                           (cancel)="cancelLateralForm()"
-                           (saved)="savedItem()"></app-customer-overview>
-</perfect-scrollbar>
+        <mat-card-title class="m-0" style="width: 100%">
+            <div class="card-title-text" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                <span>{{selectedItem.name}}</span>
+                <div fxFlex></div>
+                <button class="card-control ml-1" mat-icon-button routerLink="/customer/view/{{selectedItem.id}}" >
+                    <mat-icon>zoom_in</mat-icon>
+                </button>
+
+                <button
+                        class="card-control ml-1"
+                        mat-icon-button
+                        (click)="viewDetail = false">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-card-title>
+        <mat-divider></mat-divider>
+        <app-provider-overview [(provider)]="selectedItem"
+                               (cancel)="cancelLateralForm()"
+                               (saved)="savedItem()"></app-provider-overview>
+    </perfect-scrollbar>
+
+</div>
+

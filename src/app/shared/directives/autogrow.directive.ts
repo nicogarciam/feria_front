@@ -13,12 +13,10 @@ export class AutoGrowDirective {
 
     @HostListener('focus') onFocus() {
         this.el.nativeElement.style.width = "500px";
-        // this.el.nativeElement.setElementStyle(this.el.nativeElement, 'Width', '500px');
     }
 
     @HostListener('blur') onBlur() {
-        this.el.nativeElement.style.width = "120px";
-        // this.renderer.setElementStyle(this.el.nativeElement, 'Width', '120px');
+        this.el.nativeElement.style.width = "220px";
     }
 
 }

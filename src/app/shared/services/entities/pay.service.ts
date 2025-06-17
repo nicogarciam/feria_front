@@ -3,10 +3,11 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import * as moment from 'moment';
-import {environment} from '../../../../environments/environment';
+import {environment} from '@environments/environment';
 import {DATE_FORMAT} from '../../constants/input.constants';
-import {createRequestOption} from '../../helpers/request-util';
-import {IPay} from '../../models/pay.model';
+import {createRequestOption} from '@helpers/request-util';
+import {IPay} from '@models/pay.model';
+import {IProduct} from "@models/product.model";
 
 type ResponseType = HttpResponse<IPay>;
 type ArrayResponseType = HttpResponse<IPay[]>;
@@ -14,6 +15,7 @@ type ArrayResponseType = HttpResponse<IPay[]>;
 @Injectable({providedIn: 'root'})
 export class PayService {
     public resourceUrl = environment.apiURL + '/payments';
+    public saleUrl = environment.apiURL + '/sales';
 
     constructor(protected http: HttpClient) {
     }
@@ -57,6 +59,17 @@ export class PayService {
         return this.http
             .get<IPay[]>(this.resourceUrl, {params: options, observe: 'response'})
             .pipe(map((res: ArrayResponseType) => this.convertDateArrayFromServer(res)));
+    }
+
+    findForSale(saleId: number): Observable<ArrayResponseType> {
+        return this.http
+            .get<IPay[]>(`${this.saleUrl}/${saleId}/pays`, {observe: 'response'})
+            .pipe(
+                (map(
+                    (res: ArrayResponseType) =>
+                        this.convertDateArrayFromServer(res)
+                ))
+            );
     }
 
     delete(id: number): Observable<HttpResponse<{}>> {

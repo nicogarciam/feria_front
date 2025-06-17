@@ -1,7 +1,7 @@
-import { Injectable, Renderer2 } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { getQueryParam } from "../helpers/url.helper";
-import { ThemeService } from "./theme.service";
+import {Injectable} from "@angular/core";
+import {BehaviorSubject} from "rxjs";
+import {getQueryParam} from "../helpers/url.helper";
+import {ThemeService} from "./theme.service";
 
 export interface ILayoutConf {
   navigationPos?: string; // side, top

@@ -9,6 +9,7 @@ import {egretAnimations} from '@animations/egret-animations';
 import {AppLoaderService} from '@services/app-loader/app-loader.service';
 import {CartItem} from "@models/cartItem";
 import {ShopService} from "../shop.service";
+import {CartAnimationService} from "@services/cart/cart-animation.service";
 
 @Component({
     selector: 'app-shop-products',
@@ -30,10 +31,9 @@ export class ShopProductsComponent implements OnInit, OnDestroy {
     public cartData: any;
 
     constructor(
-        private fb: FormBuilder,
-        private snackBar: MatSnackBar,
+        private fb: FormBuilder, private snackBar: MatSnackBar,
         private loader: AppLoaderService,
-        private shopService: ShopService
+        private shopService: ShopService, private cartAnimationService: CartAnimationService
     ) {
     }
 
@@ -69,7 +69,7 @@ export class ShopProductsComponent implements OnInit, OnDestroy {
     }
 
     addToCart(product) {
-      const cartItem: CartItem = {
+        const cartItem: CartItem = {
             product: product,
             data: {
                 quantity: 1
@@ -79,7 +79,7 @@ export class ShopProductsComponent implements OnInit, OnDestroy {
             .addToCart(cartItem)
             .subscribe(cart => {
                 this.cart = cart;
-                this.snackBar.open('Product added to cart', 'OK', {duration: 4000});
+                this.snackBar.open('Se agrego el Producto al carro', 'OK', {duration: 4000});
             })
     }
 

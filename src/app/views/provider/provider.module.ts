@@ -33,11 +33,12 @@ import {ProviderSettingsComponent} from "./provider-settings/provider-settings.c
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {ProviderPopupComponent} from "@components/provider-popup/provider-popup.component";
+import {ProviderPopupComponent} from "@components/providers/provider-popup/provider-popup.component";
 import {CustomerModule} from "../customer/customer.module";
+import {SharedComponentsModule} from "@components/shared-components.module";
 
 @NgModule({
-  imports: [ 
+    imports: [
         CommonModule,
         FormsModule,
         MatListModule,
@@ -69,7 +70,8 @@ import {CustomerModule} from "../customer/customer.module";
         PerfectScrollbarModule,
         MatTooltipModule,
         MatAutocompleteModule,
+        SharedComponentsModule,
     ],
-  declarations: [ProviderComponent,  ProviderPopupComponent, ProviderOverviewComponent, ProviderSettingsComponent]
+  declarations: [ProviderComponent,  ProviderOverviewComponent, ProviderSettingsComponent]
 })
 export class ProviderModule { }

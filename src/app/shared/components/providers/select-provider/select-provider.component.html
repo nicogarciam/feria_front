@@ -1,0 +1,39 @@
+<!-- select-provider.component.html -->
+<div>
+  <form>
+    <mat-form-field class="full-width">
+      <input type="text"
+             [placeholder]="('search.or.add.provider' | translate)"
+             matInput
+             [formControl]="providerSearch"
+             [matAutocomplete]="autoProvider"
+             appAutoGrow
+             (click)="$event.target.select()">
+
+      <mat-autocomplete #autoProvider="matAutocomplete" [displayWith]="displayProviderFn">
+        <mat-option *ngIf="loadingProviders" class="pt-05">
+          <mat-spinner diameter="16"></mat-spinner>
+        </mat-option>
+        <mat-option class="pb-05" [value]="'new'">
+          <mat-icon [style.fontSize]="'25px'">add</mat-icon>
+          <span class="mr-1">{{ 'new' | translate }}</span>
+        </mat-option>
+        <mat-option *ngFor="let provider of filteredProviders" 
+                    [value]="provider"
+                    [style.fontSize]="'15px'">
+          <mat-icon [style.fontSize]="'25px'">person</mat-icon>
+          <span class="mr-1">{{ provider.name }}, {{ provider.address }}</span>
+          <b class="mr-1">{{ provider.email }}</b>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+
+  <div *ngIf="selectedProvider">
+    <app-provider-item [provider]="selectedProvider" [layout]="layout"></app-provider-item>
+<!--    <small>{{ 'provider' | translate }}</small>-->
+<!--    <div class="card-title-text">-->
+<!--      {{ selectedProvider.name }}, {{ selectedProvider.email }}-->
+<!--    </div>-->
+  </div>
+</div>

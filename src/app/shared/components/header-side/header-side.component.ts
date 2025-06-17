@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ThemeService} from '@services/theme.service';
 import {LayoutService} from '@services/layout.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -7,14 +7,19 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ChangeStorePopupComponent} from "@components/change-store-popup/change-store-popup.component";
 import {CartService} from "@services/cart/cart.service";
 import {CartQuery} from "@services/cart/cart.query";
+import {CartAnimationService} from "@services/cart/cart-animation.service";
+import {MatButton} from "@angular/material/button";
 
 @Component({
     selector: 'app-header-side',
     templateUrl: './header-side.template.html'
 })
-export class HeaderSideComponent implements OnInit {
+export class HeaderSideComponent implements OnInit, AfterViewInit {
     @Input() notificPanel;
     @Input() cartPanel;
+
+    @ViewChild('cartIcon') cartIcon: MatButton;
+
     public availableLangs = [
         {
             name: 'ES',
@@ -36,6 +41,7 @@ export class HeaderSideComponent implements OnInit {
         private themeService: ThemeService, private layout: LayoutService,
         public translate: TranslateService, private renderer: Renderer2,
         public jwtAuth: JwtAuthService, private dialog: MatDialog,
+        private cartAnimationService: CartAnimationService
     ) {
     }
 
@@ -43,6 +49,10 @@ export class HeaderSideComponent implements OnInit {
         this.egretThemes = this.themeService.egretThemes;
         this.layoutConf = this.layout.layoutConf;
         this.translate.use(this.currentLang.code);
+    }
+
+    ngAfterViewInit() {
+        this.cartAnimationService.setElemento(this.cartIcon._elementRef.nativeElement);
     }
 
     setLang(lng) {

@@ -6,16 +6,11 @@ import { AuthGuard } from './shared/guards/auth.guard';
 export const rootRouterConfig: Routes = [
 
   {
-    path: 'login',
-    redirectTo: 'sessions/signin',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
+    path: 'sessions',
     component: AuthLayoutComponent,
     children: [
       {
-        path: 'sessions',
+        path: '',
         loadChildren: () => import('./views/sessions/sessions.module').then(m => m.SessionsModule),
         data: { title: 'Session'}
       }
@@ -26,6 +21,16 @@ export const rootRouterConfig: Routes = [
     component: AdminLayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: 'products',
+        loadChildren: () => import('./views/products/product.module').then(m => m.ProductModule),
+        data: { title: 'products', breadcrumb: 'PRODUCTS', moduleId: 'products' }
+      },
+      {
+        path: 'shop',
+        loadChildren: () => import('./views/shop/shop.module').then(m => m.ShopModule),
+        data: { title: 'Shop', breadcrumb: 'SHOP', moduleId: 'shop'}
+      },
       {
         path: 'dashboard',
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule),
@@ -40,16 +45,6 @@ export const rootRouterConfig: Routes = [
         path: 'store-config/:tab',
         loadChildren: () => import('./views/store-config/store-config.module').then(m => m.StoreConfigModule),
         data: { title: 'my.entity'}
-      },
-      {
-        path: 'shop',
-        loadChildren: () => import('./views/shop/shop.module').then(m => m.ShopModule),
-        data: { title: 'Shop', breadcrumb: 'SHOP'}
-      },
-      {
-        path: 'products',
-        loadChildren: () => import('./views/products/product.module').then(m => m.ProductModule),
-        data: { title: 'products', breadcrumb: 'PRODUCTS'}
       },
       {
         path: 'my-profile',

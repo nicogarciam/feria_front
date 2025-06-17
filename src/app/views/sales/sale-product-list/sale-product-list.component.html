@@ -1,0 +1,40 @@
+
+<mat-card class="p-0" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
+
+    <table class="cart-table default-bg mat-elevation-z1">
+        <thead>
+        <tr>
+            <th class="text-muted p-05" style="width: 20px"></th>
+            <th class="text-muted p-05">{{ 'product' | translate }}</th>
+            <th class="text-muted p-05">{{ 'provider' | translate }}</th>
+            <th class="text-muted p-05">%</th>
+            <th class="text-muted p-05">{{ 'state' | translate }}</th>
+            <th class="text-muted p-05">{{ 'price' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of _products ">
+            <td class="p-05" style="width: 20px">
+                <button mat-icon-button color="warn"  (click)="removeProduct(item)"
+                        style="width: 12px; height: 12px">
+                    <mat-icon style="font-size: 16px;">close</mat-icon>
+                </button>
+            </td>
+            <td class="p-05">{{ item.description }}</td>
+            <td class="p-05">{{ item.provider.name }}</td>
+            <td class="p-05">{{ item.provider.fee }}</td>
+            <td class="p-05 width-80">
+                <mat-form-field class="p-0 ml-1 mat-form-field-required-marker" style="width: 100px" required>
+                    <mat-select [value]="item.state_id" (selectionChange)="changeState($event, item)"
+                    >
+                        <mat-option *ngFor="let st of productStates" [value]="st.id">
+                            {{ st.name | translate }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </td>
+            <td class="align-right">{{ item.price | currency :'ARS':'symbol':'1.2-2' }}</td>
+        </tr>
+        </tbody>
+    </table>
+</mat-card>

@@ -81,7 +81,7 @@ export class NavigationService {
       name: 'customers',
       type: 'link',
       tooltip: 'customers',
-      icon: 'badge',
+      icon: 'person',
       state: 'customers'
     },
     {

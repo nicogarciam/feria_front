@@ -21,13 +21,6 @@
 
                 </div>
 
-                <div class="mr-1">{{ 'paxs' | translate }}</div>
-                <div class="mr-1">
-                    <mat-form-field appearance="legacy" style="width: 60px">
-                        <input matInput>
-                        <mat-icon matSuffix>group</mat-icon>
-                    </mat-form-field>
-                </div>
 
                 <button mat-icon-button color="primary" (click)="getSalesFromServer()"
                         [disabled]="loadingSales">
@@ -46,7 +39,7 @@
             <div fxLayout="row" fxLayoutAlign="end center">
 
                 <!--             TOOLBAR -->
-                <mat-toolbar class="booking-toolbar" [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">
+                <mat-toolbar >
 
                     <button *ngFor="let filter of filters_state"
                             class="ml-1" mat-raised-button color="{{filter.selected ? 'primary': ''}}"
@@ -99,67 +92,47 @@
                 [loadingIndicator]="loadingSales"
                 [messages]="{emptyMessage: 'Nada por aca' }"
         >
-            <ngx-datatable-column name="{{'code' | translate }}" [width]="40">
+            <ngx-datatable-column name="{{'id' | translate }}" [width]="5" [maxWidth]="5">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ row?.id}}-{{ row?.code }}
+                    {{ row?.id}}
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="{{'owner' | translate }}" [width]="230" prop="customer.name">
+            <ngx-datatable-column name="{{'date' | translate }}" [width]="10" [comparator]="compareDates"
+                                  prop="date_sale">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    <ng-container *ngIf="row?.customer">
-                        <div fxLayout="row" fxLayoutAlign="space-between center">
-                            <div fxLayout="column" class="mr-1 text-18" style="width: 150px">
-                                {{ row.customer?.name}}
-                            </div>
-                            <div fxLayout="column">
-                                <small>{{ row.customer?.phone}}</small>
-                                <small>{{ row.customer?.email}}</small>
-                            </div>
-                        </div>
-                    </ng-container>
-                    <ng-container *ngIf="row?.customer">
-                        <div fxLayout="row" fxLayoutAlign="space-between center">
-                            <div fxLayout="column" class="mr-1 text-18" style="width: 150px">
-                                {{ row.customer?.name}}
-                            </div>
-                            <div fxLayout="column">
-                                <small>{{ row.customer?.phone}}</small>
-                                <small>{{ row.customer?.email}}</small>
-                            </div>
-                        </div>
+                    <ng-container>
+                        <small> {{ row.date_sale | date : 'dd/MM/yyyy'  }} </small>
                     </ng-container>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="{{'checkin' | translate }}" [width]="40" prop="date_in" [comparator]="compareDates">
+            <ngx-datatable-column name="{{'customer' | translate }}" [width]="20">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    <small> {{ row.date_sale | date : 'dd/MM/yyyy'  }} </small>
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="{{'checkout' | translate }}" [width]="40" prop="date_out" [comparator]="compareDates">
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                    <small> {{ row.date_pay | date : 'dd/MM/yyyy'  }} </small>
+                     {{ row.customer?.name }} <small>{{ row.customer?.email }} </small>
                 </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="{{'state' | translate }}" [width]="40"  prop="booking_state.state">
+            <ngx-datatable-column name="{{'state' | translate }}" [width]="10" prop="sale_state.name" >
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    <mat-card class="m-0 p-4 text-12">{{ row.booking_state?.state | translate}}</mat-card>
+                    <mat-card class="m-0 p-4 text-12">{{ row.sale_state.name | translate}}</mat-card>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="{{'amount' | translate }}" [width]="50" prop="total_price">
+            <ngx-datatable-column name="{{'amount' | translate }}" [width]="20" prop="total_price">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <span class="text-blue">{{ row.total_price | currency: 'ar$' : 'symbol' }}</span>
                 </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="{{'actions' | translate }}" [width]="30" [sortable]="false">
+            <ngx-datatable-column name="{{'paid' | translate }}" [width]="20" >
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    <button mat-icon-button routerLink="/bookings/view/{{row.id}}"
+                    <span class="text-blue">{{ row.total_paid | currency: 'ar$' : 'symbol' }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="{{'actions' | translate }}" [width]="20" [sortable]="false">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <button mat-icon-button routerLink="/sales/view/{{row.id}}"
                             matTooltip="{{ 'detail' | translate }}">
                         <mat-icon>zoom_in</mat-icon>
-                    </button>
-                    <button mat-icon-button (click)="addPayPopup(row)" matTooltip="{{ 'pay' | translate }}">
-                        <mat-icon>payments</mat-icon>
                     </button>
                     <button mat-icon-button (click)="deleteSale(row)" matTooltip="{{'delete' | translate}}">
                         <mat-icon>delete</mat-icon>
@@ -175,7 +148,7 @@
 
 
 <!--    PANEL LATERAL-->
-<div class="sidebar-booking" *ngIf="viewRightSidebar"
+<div class="sidebar-sale" *ngIf="viewRightSidebar"
      [@animate]="{value:'*',params:{x:'60px'}}">
 
 

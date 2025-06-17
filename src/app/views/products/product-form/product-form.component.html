@@ -1,72 +1,66 @@
-<form [formGroup]="itemForm">
+<form [formGroup]="itemForm" *ngIf="product">
     <div fxLayout="column" fxLayoutAlign="start stretch">
         <div class="border-bottom p-05 m-0 mb-1">
             <div class="border-bottom pb-1 mb-1">
                 <div fxLayout="column nowrap" fxLayoutAlign="space-between">
-                    <div>
-                        <form>
-                            <mat-form-field class="full-width">
-                                <input type="text" 
-                                       placeholder="{{'search.or.add.provider' | translate}}"
-                                       matInput
-                                       [formControl]="provider_search"
-                                       [matAutocomplete]="autoProvider"
-                                       appAutoGrow
-                                       (click)="$event.target.select()">
 
-                                <mat-autocomplete #autoProvider="matAutocomplete" [displayWith]="displayProviderFn">
-                                    <mat-option *ngIf="loadingProviders" class="pt-05">
-                                        <mat-spinner diameter="16"></mat-spinner>
-                                    </mat-option>
-                                    <mat-option class="pb-05" [value]="'new'">
-                                        <mat-icon [style.fontSize]="'25px'">add</mat-icon>
-                                        <span class="mr-1">Nuevo</span>
-                                    </mat-option>
-                                    <mat-option *ngFor="let p of filteredProviders" [value]="p"
-                                                [style.fontSize]="'15px'">
-                                        <mat-icon [style.fontSize]="'25px'">person</mat-icon>
-                                        <span class="mr-1"> {{p.name}}, {{p.address}} </span>
-                                        <b class="mr-1">{{p.email }} </b>
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                        </form>
+                    <!--  SELECT PROVIDER-->
+                    <app-select-provider
+                            [selectedProvider]="product?.provider"
+                            (providerSelected)="onProviderSelected($event)"
+                            [layout]="'row'"
+                            >
+                    </app-select-provider>
 
-                        <div *ngIf="_product.provider">
-                            <app-provider-item [provider]="_product.provider" ></app-provider-item>
-                            <small>{{ 'provider' | translate}}</small>
-                            <div class="card-title-text">{{_product.provider.name}}, {{_product.provider.email}}</div>
+                    <div class="gallery-container" fxLayout="column">
+                        <!-- Imagen Principal -->
+                        <div class="main-image-container" *ngIf="photoGallery.length > 0">
+                            <!--                            [src]="photoGallery.find(p => p.state === '1')?.url || defaultImage"-->
+                            <img [src]="imageSelected?.url || defaultImage"
+                                 class="main-image"
+                                 [@fadeInOut]>
+                        </div>
+                        <div class="main-image-container" *ngIf="photoGallery.length === 0">
+                            <img [src]="defaultImage" class="main-image placeholder">
+                        </div>
+
+                        <!-- Thumbnails -->
+                        <div class="thumbnails-container" fxLayout="row wrap" fxLayoutGap="8px grid">
+                            <div class="thumbnail-wrapper" *ngFor="let photo of photoGallery">
+                                <div class="thumbnail"
+                                     [class.active]="photo.state === '1'"
+                                     (click)="changeState(photo)">
+                                    <img [src]="photo.url" alt="Product thumbnail">
+                                    <button mat-icon-button class="remove-button"
+                                            (click)="removeImage(photo); $event.stopPropagation()">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Botón para agregar imagen -->
+                            <div class="thumbnail-wrapper add-image">
+                                <input type="file"
+                                       #fileInput
+                                       style="display: none"
+                                       (change)="onFileSelected($event)"
+                                       accept="image/*">
+                                <button mat-stroked-button
+                                        class="upload-button"
+                                        (click)="fileInput.click()">
+                                    <mat-icon>add_photo_alternate</mat-icon>
+                                    {{ 'add ' | translate }}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div fxFlex.lt-md="auto" fxFlex="50" class="product-photos-wrap">
-                        <div class="gallery-thumbnails" [@animate]="{value:'*',params:{delay: '100ms', x:'-100px'}}">
-                            <img class="mat-elevation-z1" [ngClass]="{'active': image.state === '1'}"
-                                 *ngFor="let image of photoGallery" [src]="image.url"
-                                 (click)="changeState(image)">
-                        </div>
-                        <div class="gallery-photo" [@animate]="{value:'*',params:{delay: '100ms', y:'50px'}}">
-                            <img class="mat-elevation-z2" *ngFor="let image of photoGallery" [src]="image.url" alt="" [@fadeInOut]="image.state">
-                        </div>
-                    </div>
-
-                    <!-- Input para cargar imágenes -->
-                    <div class="mt-2 mb-2">
-                        <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;" #fileInput>
-                        <button mat-flat-button color="primary" (click)="fileInput.click()">
-                            <mat-icon>add_photo_alternate</mat-icon>
-                            {{ 'upload.image' | translate }}
-                        </button>
-                        <div *ngIf="previewImage" class="mt-2">
-                            <img [src]="previewImage" style="max-width: 100px; max-height: 100px;" />
-                        </div>
-                    </div>
 
                     <mat-form-field class="p-0 mt-1" fxFlex="50">
-                        <mat-label> {{ 'category' | translate}}</mat-label>
+                        <mat-label> {{ 'category' | translate }}</mat-label>
                         <mat-select formControlName="category_id" required>
                             <mat-option *ngFor="let cat of categories" [value]="cat.id">
-                                {{ cat.name | translate}}
+                                {{ cat.name | translate }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -77,10 +71,13 @@
                         </textarea>
                     </mat-form-field>
 
-                    <div fxLayout="row nowrap" fxLayoutAlign="space-between">
+                    <div fxLayout="row nowrap" fxLayoutAlign="space-between" fxLayout.lt-lg="column">
                         <mat-form-field class="mr-1">
-                            <input matInput placeholder="{{ 'sale.price' | translate}}" type="number"
-                                   formControlName="price">
+                            <input matInput placeholder="{{ 'sale.price' | translate}}" type="text"
+                                   formControlName="price"
+                                   currencyMask
+                                   [options]="{ thousands: '.', decimal: ',' }"
+                            >
                         </mat-form-field>
                         <mat-form-field class="mr-1">
                             <input matInput placeholder="{{ 'fee' | translate}}" type="number"
@@ -88,8 +85,12 @@
                             <mat-icon matSuffix>%</mat-icon>
                         </mat-form-field>
                         <mat-form-field class="mr-1">
-                            <input matInput placeholder="{{ 'cost' | translate}}" type="number"
-                                   formControlName="cost">
+                            <input matInput placeholder="{{ 'cost' | translate}}" type="text"
+                                   currencyMask
+                                   [options]="{ thousands: '.', decimal: ',' }"
+                                   formControlName="cost"
+
+                            >
                         </mat-form-field>
                     </div>
                 </div>
@@ -100,11 +101,14 @@
 
         <div class="bg-white" fxLayout="row" fxLayoutAlign="space-between center">
             <button mat-flat-button color="accent" (click)="cancelSelection()"
-                    [disabled]="loading">{{ 'close' | translate}}</button>
+                    [disabled]="loading">{{ 'close' | translate }}
+            </button>
             <button mat-flat-button color="warn" (click)="deleteProduct()"
-                    [disabled]="loading">{{ 'delete' | translate}}</button>
+                    [disabled]="loading">{{ 'delete' | translate }}
+            </button>
             <button mat-flat-button color="primary" (click)="saveProduct()"
-                    [disabled]="loading">{{ 'save' | translate}}</button>
+                    [disabled]="loading">{{ 'save' | translate }}
+            </button>
         </div>
     </div>
 </form>

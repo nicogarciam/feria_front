@@ -128,7 +128,7 @@ export class SigninComponent implements OnInit, AfterViewInit, OnDestroy {
                 (error) => {
                     console.log(error);
                     this.egretLoader.close();
-                    this.router.navigate(['/my-profile']);
+                    this.router.navigate(['/dashboard']);
                 }
             );
     }
