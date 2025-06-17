@@ -7,7 +7,7 @@ import {APP_DATE_FORMATS, AppDateAdapter} from '@helpers/format-datepicker';
 import {egretAnimations} from '@animations/egret-animations';
 import {MatDialog} from '@angular/material/dialog';
 import {AppConfirmService} from '@services/app-confirm/app-confirm.service';
-import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators';
+import {debounceTime, finalize, switchMap, tap} from 'rxjs/operators'; // finalize is correctly here
 import {AppErrorService} from '@services/app-error/app-error.service';
 import {Subscription} from 'rxjs';
 import {IProduct, Product} from '@models/product.model';
@@ -25,6 +25,7 @@ import {ProviderPopupComponent} from "@components/providers/provider-popup/provi
 import {GalleryImage} from "@models/image.model";
 import {AiFeaturesService} from "@shared/services/ai-features.service.ts";
 import {PriceSuggestionService} from "@shared/services/price-suggestion.service.ts";
+// Removed duplicate "import { finalize } from 'rxjs/operators';"
 
 @Component({
     selector: 'app-product-form',
@@ -285,11 +286,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         event.target.select();
     }
 
-    ngOnDestroy() {
-        this.getItemSub.forEach((sub) => sub.unsubscribe());
-        this.getItemSub = [];
-    }
-
     private addProvider(data: {}, isNew: boolean) {
         const title = (isNew ? this.t.instant('new') : this.t.instant('update')) + '  ' + this.t.instant('provider');
         const dialogRef = this.dialog.open(ProviderPopupComponent, {
@@ -347,5 +343,97 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         }
     }
 
+    // Method 1: base64ToFile
+    private base64ToFile(dataurl: string, filename: string): File | null {
+      try {
+        const arr = dataurl.split(',');
+        if (arr.length < 2) { return null; }
+        const mimeMatch = arr[0].match(/:(.*?);/);
+        if (!mimeMatch || mimeMatch.length < 2) { return null; }
+        const mime = mimeMatch[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
+      } catch (e) {
+        console.error('Error converting base64 to File:', e);
+        this.snack.open(this.t.instant('notifications.base64_conversion_error'), 'OK', { duration: 3000 });
+        return null;
+      }
+    }
 
+    // Method 2: detectFeatures
+    public detectFeatures(): void {
+      const selectedImage = this.photoGallery.find(p => p.state === '1');
+      if (!selectedImage || !selectedImage.url) {
+        this.snack.open(this.t.instant('notifications.select_image_first'), 'OK', { duration: 3000 });
+        return;
+      }
+
+      const imageFile = this.base64ToFile(selectedImage.url, 'product_image.png');
+      if (!imageFile) {
+        this.snack.open(this.t.instant('notifications.image_process_error'), 'OK', { duration: 3000 });
+        return;
+      }
+
+      this.loading = true;
+      this.getItemSub.push(
+        this.aiFeaturesService.detectFeatures(imageFile).pipe(
+          finalize(() => this.loading = false)
+        ).subscribe(
+          (features) => {
+            this.detectedFeatures = features;
+            this.snack.open(this.t.instant('notifications.features_detected_success'), 'OK', { duration: 3000 });
+          },
+          (error) => {
+            console.error('Error detecting features:', error);
+            this.snack.open(this.t.instant('notifications.features_detected_error'), 'OK', { duration: 3000 });
+          }
+        )
+      );
+    }
+
+    // Method 3: searchPriceSuggestions
+    public searchPriceSuggestions(): void {
+      const categoryId = this.itemForm.get('category_id')?.value;
+      const category = this.categories.find(cat => cat.id === categoryId);
+
+      const selectedImage = this.photoGallery.find(p => p.state === '1');
+      let imageFile: File | null = null;
+      if (selectedImage && selectedImage.url) {
+        imageFile = this.base64ToFile(selectedImage.url, 'product_image_price_search.png');
+        if (!imageFile) {
+          this.snack.open(this.t.instant('notifications.image_process_error_price_suggestion_optional'), 'OK', { duration: 3000 });
+        }
+      }
+
+      this.loading = true;
+      this.getItemSub.push(
+        this.priceSuggestionService.getPriceSuggestions({
+          category: category?.name,
+          photo: imageFile ?? undefined,
+          brand: undefined,
+          year: undefined
+        }).pipe(
+          finalize(() => this.loading = false)
+        ).subscribe(
+          (prices) => {
+            this.suggestedPrices = prices;
+            this.snack.open(this.t.instant('notifications.prices_suggested_success'), 'OK', { duration: 3000 });
+          },
+          (error) => {
+            console.error('Error loading price suggestions:', error);
+            this.snack.open(this.t.instant('notifications.prices_suggested_error'), 'OK', { duration: 3000 });
+          }
+        )
+      );
+    }
+
+    ngOnDestroy() {
+        this.getItemSub.forEach((sub) => sub.unsubscribe());
+        this.getItemSub = [];
+    }
 }

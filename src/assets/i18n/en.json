@@ -38,7 +38,6 @@
   "arrivals": "Arrivals",
   "AUTOCOMPLETE": "Autocomplete",
   "auto.signing": "Automatically Signing you...!",
-
   "back": "Back",
   "bad.credentials": "email and/or password incorrect!",
   "balance": "Balance",
@@ -61,7 +60,6 @@
   "by.accommodation": "By accommodation",
   "by.accommodation.type": "By accommodation type",
   "by.system": "By system",
-
   "CALENDAR": "Calendar",
   "cancel": "Cancel",
   "CANCELED": "Canceled",
@@ -102,7 +100,6 @@
   "creditcard": "Creditcard",
   "customer": "Customer",
   "customers": "Customers",
-
   "DASHBOARD": "Dashboard",
   "DATEPICKER": "Datepicker",
   "date": "Date",
@@ -135,7 +132,6 @@
   "DOC": "Documentation",
   "dont.have.account": "Don't have an account?",
   "duration": "Duration",
-
   "ECOMMERCE": "Ecommerce",
   "edit": "Edit",
   "EDITOR": "Editor",
@@ -150,7 +146,6 @@
   "EXPIRED": "EXPIRED",
   "EXPIRED.by.system": "EXPIRED by System",
   "expiration": "Expiration",
-
   "family": "Family",
   "family.members": "family members",
   "family.quantity": "Family Members",
@@ -174,7 +169,6 @@
   "from": "From",
   "FORGOT": "Forgot",
   "FULLSCREEN": "Fullscreen",
-
   "GALLERY": "Gallery",
   "garage": "Garage",
   "gender": "Gender",
@@ -183,7 +177,6 @@
   "GRIDS": "Grids",
   "guest": "Guest",
   "guests": "Guests",
-
   "High": "High",
   "HIGH": "High",
   "home.subtitle": "Stop wasting time and money.",
@@ -191,7 +184,6 @@
   "hours": "Hours",
   "hours.ago": "Hours ago",
   "hours.between.uses": "Number of hours that have to pass between each use",
-
   "i.would.like.to.be.a.member": "I would like to be a member",
   "i.would.like.to.be.a.member.of": "I would like to be a member of",
   "image": "Image",
@@ -203,7 +195,6 @@
   "INPUT": "Input",
   "input.range.dates.available": "Enter between which dates it will be available",
   "ITEM": "Item",
-
   "last.name": "Last Name",
   "legal": "Legal",
   "lets.start": "Lets get started!",
@@ -217,7 +208,6 @@
   "LOCKSCREEN": "Lockscreen",
   "Low": "Low",
   "LOW": "Low",
-
   "MAP": "Map",
   "Male": "Male",
   "MALE": "MALE",
@@ -260,7 +250,6 @@
   "my.hotel": "My Hotel",
   "my.profile": "My Profile",
   "my.store": "My Store",
-
   "name": "Name",
   "new": "New",
   "NEW": "New",
@@ -285,9 +274,18 @@
   "no.prices.found": "No Prices found",
   "no.result.found": "No result found",
   "no.voucher.found": "No voucher found",
-  "notifications": "Notifications",
+  "notifications": {
+    "title": "Notifications",
+    "base64_conversion_error": "Error converting image for processing.",
+    "select_image_first": "Please select an image first.",
+    "image_process_error": "Could not process image.",
+    "features_detected_success": "Features detected successfully.",
+    "features_detected_error": "Error detecting features.",
+    "image_process_error_price_suggestion_optional": "Could not process image for price suggestion (optional).",
+    "prices_suggested_success": "Price suggestions loaded.",
+    "prices_suggested_error": "Error loading price suggestions."
+  },
   "NOTFOUND": "Not Found",
-
   "option": "Option",
   "options": "Options",
   "OTHER": "OTHER",
@@ -298,7 +296,6 @@
   "only.images.are.allowed": "Solo esta permitido Imagenes del tipo PNG o JPG",
   "OVERVIEW": "OVERVIEW",
   "overview": "Overview",
-
   "PAGING": "Paging",
   "PAGES": "Pages",
   "paid": "Paid",
@@ -339,16 +336,13 @@
   "provider": "Provider",
   "providers": "Providers",
   "query": "Query",
-
   "quick.access": "Quick access",
   "quota": "Quota",
   "RADIO": "Radio",
-
   "reactive": "Reactive",
   "reference": "Reference",
   "refresh": "Refresh",
   "remove": "Remove",
-
   "sale": "Sale",
   "sale.date": "Sale date",
   "sale.price": "Sale Price",
@@ -396,7 +390,6 @@
   "SUSPENDED": "SUSPENDED",
   "SUSPENDED.by.system": "Suspended by System",
   "SWITCH": "Switch",
-
   "TABLES": "Tables",
   "TABS": "Tabs",
   "team": "Team",
@@ -420,7 +413,6 @@
   "Tuesday": "Tuesday",
   "type": "Type",
   "types": "Types",
-
   "unauthorized": "Unauthorized",
   "undefined": "Undefined",
   "update": "Update",
@@ -431,11 +423,9 @@
   "users": "Users",
   "USERS": "Users",
   "user.notified": "User was notified",
-
   "view": "View",
   "view.all": "View all",
   "view.more": "View more",
-
   "We": "We",
   "website": "Website",
   "Wednesday": "Wednesday",
@@ -450,7 +440,6 @@
   "without.assignation": "Without assignation",
   "without.quota": "Without quota",
   "WIZARD": "Wizard",
-
   "year.amount": "Year amount",
   "years.ago": "Years ago",
   "yes": "yes",

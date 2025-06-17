@@ -38,7 +38,6 @@
   "arrivals": "Arribos",
   "AUTOCOMPLETE": "Autocomplete",
   "auto.signing": "Logueandote automaticamente...!",
-
   "back": "Atrás",
   "bad.credentials": "Email y/o contraseña incorrectos!",
   "balance": "Balance",
@@ -60,7 +59,6 @@
   "by.accommodation": "Por alojamiento",
   "by.accommodation.type": "Por tipo de alojamiento",
   "by.system": "Por el sistema",
-
   "cancel": "Cancelar",
   "CANCELED": "Cancelada",
   "capacity": "Capacidad",
@@ -100,7 +98,6 @@
   "creditcard": "Tarjeta de credito",
   "customer": "Cliente",
   "customers": "Clientes",
-
   "DASHBOARD": "Tablero",
   "date": "Fecha",
   "date.end": "Fecha fin",
@@ -133,7 +130,6 @@
   "dni": "DNI",
   "dont.have.account": "¿Todavía no tenes una Cuenta?",
   "duration": "Duración",
-
   "edit": "Editar",
   "edit.groups.and.schedule.of.activity": "Editar los grupos y los horarios de la actividad",
   "EDITOR": "Editor",
@@ -145,7 +141,6 @@
   "expire": "Vence",
   "EXPIRED.by.system": "VENCIDO por el Sistema",
   "expiration": "Vencimiento",
-
   "family": "Familia",
   "family.members": "Parientes",
   "family.quantity": "Cantidad de familiares",
@@ -166,14 +161,12 @@
   "for.activate": "Para activar",
   "for.dates": "Para las Fechas",
   "from": "Desde",
-
   "garage": "Cochera",
   "gender": "Genero",
   "geocode.fail": "Fallos el Geocode",
   "gift": "Regalo",
   "guest": "Pasajero",
   "guests": "Pasajeros",
-
   "High": "Alta",
   "HIGH": "Alta",
   "home.subtitle": "No pierdas más el tiempo.",
@@ -181,7 +174,6 @@
   "hours": "Horas",
   "hours.ago": "Horas atras",
   "hours.between.uses": "Cantidad de horas que tienen que pasar entre cada uso",
-
   "i.would.like.to.be.a.member": "Me gustaría ser miembro",
   "i.would.like.to.be.a.member.of": "Me gustaría ser miembro de",
   "image": "Imagen",
@@ -192,7 +184,6 @@
   "increment.months": "Meses de incrementeo",
   "in.house": "En casa",
   "input.range.dates.available": "Ingrese entre que fechas va a estar disponible",
-
   "lastname": "Apellido",
   "last.name": "Apellido",
   "legal": "Legal",
@@ -206,7 +197,6 @@
   "logout": "Salir",
   "Low": "Baja",
   "LOW": "Baja",
-
   "MATERIAL": "Material",
   "MALE": "HOMBRE",
   "Male": "Hombre",
@@ -244,7 +234,6 @@
   "my.hotel": "Mi Hotel",
   "my.profile": "Mi Perfil",
   "my.store": "Mi Tienda",
-
   "name": "Nombre",
   "new": "Nuevo",
   "NEW": "Nueva",
@@ -272,8 +261,17 @@
   "no.product.found": "No se encontraron Productos",
   "no.result.found": "No se encontraron resultados",
   "no.voucher.found": "No se encontró el Voucher",
-  "notifications": "Notificaciones",
-
+  "notifications": {
+    "title": "Notificaciones",
+    "base64_conversion_error": "Error al convertir la imagen para su procesamiento.",
+    "select_image_first": "Por favor, seleccione una imagen primero.",
+    "image_process_error": "No se pudo procesar la imagen.",
+    "features_detected_success": "Características detectadas con éxito.",
+    "features_detected_error": "Error al detectar características.",
+    "image_process_error_price_suggestion_optional": "No se pudo procesar la imagen para la sugerencia de precios (opcional).",
+    "prices_suggested_success": "Sugerencias de precios cargadas.",
+    "prices_suggested_error": "Error al cargar las sugerencias de precios."
+  },
   "option": "Opción",
   "options": "Opciones",
   "OTHER": "OTRO",
@@ -282,7 +280,6 @@
   "others": "Otros",
   "OVERVIEW": "RESUMEN",
   "overview": "Resumen",
-
   "PAID": "PAGADO",
   "paid": "Pagado",
   "password.didnt.match": "El password no coincide",
@@ -320,16 +317,13 @@
   "PRODUCT.DETAILS": "Detalles del producto",
   "provider": "Provedor",
   "providers": "Provedores",
-
   "query": "Consulta",
   "quick.access": "Accesos Rapidos",
   "quota": "Cupo",
-
   "reactive": "Reactivar",
   "reference": "Referencia",
   "refresh": "Recargar",
   "remove": "Quitar",
-
   "sale": "Venta",
   "sale.date": "Fecha de venta",
   "sale.price": "Precio de venta",
@@ -368,7 +362,6 @@
   "suspended": "Suspendido",
   "SUSPENDED": "SUSPENDIDO",
   "SUSPENDED.by.system": "Suspendido por el Sistema",
-
   "team": "Equipo",
   "this.pay": "Este Pago",
   "times": "Veces",
@@ -383,7 +376,6 @@
   "to.pay": "Por Pagar",
   "type": "Tipo",
   "types": "Tipos",
-
   "unauthorized": "Sin Autorización",
   "undefined": "Sin definir",
   "update": "Modificar",
@@ -394,11 +386,9 @@
   "USERS": "Users",
   "username": "Nombre de usuario",
   "user.notified": "El usuario fue notificado",
-
   "view": "Ver",
   "view.all": "Ver todos",
   "view.more": "Ver mas",
-
   "website": "Pagina Web",
   "week": "Semana",
   "wek": "sem.",
@@ -410,14 +400,12 @@
   "with.quota": "Con cupo",
   "without.assignation": "Sin Asignación",
   "without.quota": "Sin cupo",
-
   "year.amount": "Precio anual",
   "years.ago": "Años atras",
   "yes": "Si",
   "you.do.not.have.an.entity": "No tiene una Entidad registrada, por favor Ingrese los datos de su entidad",
   "you.do.not.have.an.store": "No tiene una Tienda Seleccionada, por favor Ingrese los datos de su Tienda",
   "your.members.will.have": "Sus Miembros tendrán",
-
   "LOADER": "Cargando",
   "SELECT": "Seleccionar",
   "INPUT": "Entrada",
@@ -437,7 +425,6 @@
   "SNACKBAR": "Snackbar",
   "FORMS": "Formularios",
   "BASIC": "Sencillo",
-  "UPLOAD": "Upload",
   "WIZARD": "paso a paso",
   "TABLES": "Mesas",
   "FULLSCREEN": "Pantalla Completa",
@@ -451,7 +438,6 @@
   "LOCKSCREEN": "Lockscreen",
   "GALLERY": "Galeria",
   "PRICINGS": "Precios",
-  "USERS": "Usiarios",
   "PROFILE": "Perfil",
   "BLANK": "Blanca",
   "MATICONS": "Iconos",
@@ -462,8 +448,6 @@
   "ERROR": "Error",
   "ECOMMERCE": "Ecommerce",
   "SHOP": "Tienda",
-
-
   "Mo": "Lu",
   "Monday": "Lunes",
   "Tu": "Ma",
