@@ -1,0 +1,39 @@
+<div class="p-16">
+  <h2 class="text-center">Advanced Analytics Dashboard</h2>
+
+  <div [formGroup]="dateRangeForm" class="mb-16">
+    <mat-form-field appearance="fill">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate formControlName="startDate" placeholder="Start date">
+        <input matEndDate formControlName="endDate" placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-16">
+    <mat-form-field appearance="fill">
+      <mat-label>Filter by Category</mat-label>
+      <mat-select [formControl]="categoryFilterControl">
+        <mat-option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row wrap" fxLayoutGap="16px grid">
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="33">
+      <app-widget-host [widgetConfig]="salesWidgetConfig" [dateRange]="dateRangeForm.value" [activeFilters]="{ category: categoryFilterControl.value }"></app-widget-host>
+    </div>
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="33">
+      <app-widget-host [widgetConfig]="churnWidgetConfig" [dateRange]="dateRangeForm.value" [activeFilters]="{ category: categoryFilterControl.value }"></app-widget-host>
+    </div>
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="33">
+      <app-widget-host [widgetConfig]="salesByMonthWidgetConfig" [dateRange]="dateRangeForm.value" [activeFilters]="{ category: categoryFilterControl.value }"></app-widget-host>
+    </div>
+    <!-- Add more widget hosts here as needed -->
+  </div>
+</div>

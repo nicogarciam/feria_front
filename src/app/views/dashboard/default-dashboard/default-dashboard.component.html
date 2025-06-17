@@ -1,164 +1,172 @@
-<!-- Dashboard card row -->
-<div fxLayout="row wrap">
+<mat-tab-group>
+  <mat-tab label="{{'dashboard' | translate}}">
+    <!-- Existing content -->
+    <!-- Dashboard card row -->
+    <div fxLayout="row wrap">
 
-    <div fxFlex="100" *ngIf="jwtAuth.getStore() == null">
-        <mat-card class="amber-A200 amber-A200-fg px-16 py-24 ng-star-inserted" >
-            {{'you.do.not.have.an.hotel' | translate}}
-        </mat-card>
+        <div fxFlex="100" *ngIf="jwtAuth.getStore() == null">
+            <mat-card class="amber-A200 amber-A200-fg px-16 py-24 ng-star-inserted" >
+                {{'you.do.not.have.an.hotel' | translate}}
+            </mat-card>
+        </div>
+        <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
+            <mat-card>
+                <mat-card-title fxLayoutAlign="start center">
+                    <small class="text-muted">{{'total.members' | translate }}</small>
+                    <span fxFlex></span>
+                    <mat-chip
+                            class="icon-chip"
+                            color="primary"
+                            selected="true">
+                        <mat-icon>trending_up</mat-icon>
+                        20%
+                    </mat-chip>
+                </mat-card-title>
+                <mat-card-content>
+                    <h3 class="m-0 font-normal">{{newSales}}</h3>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+
+        <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}">
+            <mat-card>
+                <mat-card-title>
+                    <small class="text-muted">{{'activities' | translate }}</small>
+                    <span fxFlex></span>
+                    <mat-chip
+                            class="icon-chip"
+                            color="accent"
+                            selected="true">
+                        <mat-icon>trending_up</mat-icon>
+                        10%
+                    </mat-chip>
+                </mat-card-title>
+                <mat-card-content>
+                    <h3 class="m-0 font-normal">{{newProducts}}</h3>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}">
+            <mat-card>
+                <mat-card-title>
+                    <small class="text-muted">{{'total.benefits' | translate }}</small>
+                    <span fxFlex></span>
+                    <mat-chip
+                            class="icon-chip"
+                            color="accent"
+                            selected="true">
+                        <mat-icon>trending_up</mat-icon>
+                        9%
+                    </mat-chip>
+                </mat-card-title>
+                <mat-card-content>
+                    <h3 class="m-0 font-normal">{{totalProducts}}</h3>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}">
+            <mat-card>
+                <mat-card-title>
+                    <small class="text-muted">{{'total.events' | translate }}</small>
+                    <span fxFlex></span>
+                    <mat-chip
+                            class="icon-chip"
+                            color="warn"
+                            selected="true">
+                        <mat-icon>trending_down</mat-icon>
+                        2%
+                    </mat-chip>
+                </mat-card-title>
+                <mat-card-content>
+                    <h3 class="m-0 font-normal">{{totalSales}}</h3>
+                </mat-card-content>
+            </mat-card>
+        </div>
     </div>
-    <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
-        <mat-card>
-            <mat-card-title fxLayoutAlign="start center">
-                <small class="text-muted">{{'total.members' | translate }}</small>
-                <span fxFlex></span>
-                <mat-chip
-                        class="icon-chip"
-                        color="primary"
-                        selected="true">
-                    <mat-icon>trending_up</mat-icon>
-                    20%
-                </mat-chip>
-            </mat-card-title>
-            <mat-card-content>
-                <h3 class="m-0 font-normal">{{newSales}}</h3>
+
+    <div fxLayout="row wrap">
+        <!-- ticket and project table column -->
+        <div fxFlex="100" fxFlex.gt-sm="75" fxLayout="column wrap">
+            <mat-card class="default" [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">
+                <mat-card-title>
+                    <mat-form-field class="full-width">
+                        <input placeholder="{{ 'search' | translate }}  {{'products' | translate }} "
+                               (focusin)="componentMethod($event)"
+                               class="default-bg" type="text"
+                               matInput
+                               [@animate]="{value:'*',params:{delay:'300ms',scale:'.5'}}"/>
+                    </mat-form-field>
+                </mat-card-title>
+            <mat-card-content class="p-0">
+                <ngx-datatable
+                    #membersTable
+                    class="material ml-0 mr-0"
+                    [rows]=""
+                    [columnMode]="ColumnMode.force"
+                    [headerHeight]="40"
+                    [footerHeight]="40"
+                    [sortType]="SortType.multi"
+                    [scrollbarH]="true"
+                    [limit]="10"
+                    [rowHeight]="40">
+    <!--                <ngx-datatable-column name="{{'image' | translate }}" [width]="70">-->
+    <!--                    <ng-template let-row="row" ngx-datatable-cell-template>-->
+    <!--                        <img mat-list-avatar class="mr-1" [src]="row?.code" alt="" height="25px">-->
+    <!--                    </ng-template>-->
+    <!--                </ngx-datatable-column>-->
+                    <ngx-datatable-column name="{{'code' | translate }}" fxFlex="2">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                          {{ row?.code }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="{{'description' | translate }}" fxFlex="2">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row?.description }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="{{'category' | translate }}">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row?.category.name }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="{{'state' | translate }}">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row?.state }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="{{'cost' | translate }}">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row?.cost }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="{{'price' | translate }}">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row?.price }}
+                        </ng-template>
+                    </ngx-datatable-column>
+
+                    <ngx-datatable-column name="" [width]="40">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <button mat-icon-button mat-sm-button color="primary"
+                                    routerLink="/products/view/{{row.id}}">
+                                <mat-icon>person_search</mat-icon>
+                            </button>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
             </mat-card-content>
-        </mat-card>
+            </mat-card>
+        </div>
+        <div fxFlex="100" fxFlex.gt-sm="50" fxLayout="column wrap">
+
+
+        </div>
+        <!-- End tables and users column -->
     </div>
-
-
-    <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}">
-        <mat-card>
-            <mat-card-title>
-                <small class="text-muted">{{'activities' | translate }}</small>
-                <span fxFlex></span>
-                <mat-chip
-                        class="icon-chip"
-                        color="accent"
-                        selected="true">
-                    <mat-icon>trending_up</mat-icon>
-                    10%
-                </mat-chip>
-            </mat-card-title>
-            <mat-card-content>
-                <h3 class="m-0 font-normal">{{newProducts}}</h3>
-            </mat-card-content>
-        </mat-card>
-    </div>
-
-    <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}">
-        <mat-card>
-            <mat-card-title>
-                <small class="text-muted">{{'total.benefits' | translate }}</small>
-                <span fxFlex></span>
-                <mat-chip
-                        class="icon-chip"
-                        color="accent"
-                        selected="true">
-                    <mat-icon>trending_up</mat-icon>
-                    9%
-                </mat-chip>
-            </mat-card-title>
-            <mat-card-content>
-                <h3 class="m-0 font-normal">{{totalProducts}}</h3>
-            </mat-card-content>
-        </mat-card>
-    </div>
-    <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}">
-        <mat-card>
-            <mat-card-title>
-                <small class="text-muted">{{'total.events' | translate }}</small>
-                <span fxFlex></span>
-                <mat-chip
-                        class="icon-chip"
-                        color="warn"
-                        selected="true">
-                    <mat-icon>trending_down</mat-icon>
-                    2%
-                </mat-chip>
-            </mat-card-title>
-            <mat-card-content>
-                <h3 class="m-0 font-normal">{{totalSales}}</h3>
-            </mat-card-content>
-        </mat-card>
-    </div>
-</div>
-
-<div fxLayout="row wrap">
-    <!-- ticket and project table column -->
-    <div fxFlex="100" fxFlex.gt-sm="75" fxLayout="column wrap">
-        <mat-card class="default" [@animate]="{value:'*',params:{delay:'300ms',y:'50px'}}">
-            <mat-card-title>
-                <mat-form-field class="full-width">
-                    <input placeholder="{{ 'search' | translate }}  {{'products' | translate }} "
-                           (focusin)="componentMethod($event)"
-                           class="default-bg" type="text"
-                           matInput
-                           [@animate]="{value:'*',params:{delay:'300ms',scale:'.5'}}"/>
-                </mat-form-field>
-            </mat-card-title>
-        <mat-card-content class="p-0">
-            <ngx-datatable
-                #membersTable
-                class="material ml-0 mr-0"
-                [rows]=""
-                [columnMode]="ColumnMode.force"
-                [headerHeight]="40"
-                [footerHeight]="40"
-                [sortType]="SortType.multi"
-                [scrollbarH]="true"
-                [limit]="10"
-                [rowHeight]="40">
-<!--                <ngx-datatable-column name="{{'image' | translate }}" [width]="70">-->
-<!--                    <ng-template let-row="row" ngx-datatable-cell-template>-->
-<!--                        <img mat-list-avatar class="mr-1" [src]="row?.code" alt="" height="25px">-->
-<!--                    </ng-template>-->
-<!--                </ngx-datatable-column>-->
-                <ngx-datatable-column name="{{'code' | translate }}" fxFlex="2">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                      {{ row?.code }}
-                    </ng-template>
-                </ngx-datatable-column>
-                <ngx-datatable-column name="{{'description' | translate }}" fxFlex="2">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                        {{ row?.description }}
-                    </ng-template>
-                </ngx-datatable-column>
-                <ngx-datatable-column name="{{'category' | translate }}">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                        {{ row?.category.name }}
-                    </ng-template>
-                </ngx-datatable-column>
-                <ngx-datatable-column name="{{'state' | translate }}">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                        {{ row?.state }}
-                    </ng-template>
-                </ngx-datatable-column>
-                <ngx-datatable-column name="{{'cost' | translate }}">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                        {{ row?.cost }}
-                    </ng-template>
-                </ngx-datatable-column>
-                <ngx-datatable-column name="{{'price' | translate }}">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                        {{ row?.price }}
-                    </ng-template>
-                </ngx-datatable-column>
-
-                <ngx-datatable-column name="" [width]="40">
-                    <ng-template let-row="row" ngx-datatable-cell-template>
-                        <button mat-icon-button mat-sm-button color="primary"
-                                routerLink="/products/view/{{row.id}}">
-                            <mat-icon>person_search</mat-icon>
-                        </button>
-                    </ng-template>
-                </ngx-datatable-column>
-            </ngx-datatable>
-        </mat-card-content>
-        </mat-card>
-    </div>
-    <div fxFlex="100" fxFlex.gt-sm="50" fxLayout="column wrap">
-
-
-    </div>
-    <!-- End tables and users column -->
-</div>
+  </mat-tab>
+  <mat-tab label="{{'advanced.analytics' | translate}}">
+    <app-advanced-analytics-dashboard></app-advanced-analytics-dashboard>
+  </mat-tab>
+</mat-tab-group>

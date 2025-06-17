@@ -40,6 +40,7 @@
     "@ngu/carousel": "7.0.0",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
+    "@swimlane/ngx-charts": "^22.0.0",
     "@swimlane/ngx-datatable": "20.1.0",
     "@types/gapi.auth2": "0.0.57",
     "@types/google-one-tap": "^1.2.2",

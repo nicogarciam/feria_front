@@ -21,6 +21,7 @@ import { DashboardRoutes } from './dashboard.routing';
 import { DefaultDashboardComponent } from './default-dashboard/default-dashboard.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatInputModule} from '@angular/material/input';
+import { AdvancedAnalyticsModule } from '../advanced-analytics/advanced-analytics-module';
 
 @NgModule({
     imports: [
@@ -41,7 +42,8 @@ import {MatInputModule} from '@angular/material/input';
         SharedPipesModule,
         RouterModule.forChild(DashboardRoutes),
         TranslateModule,
-        MatInputModule
+        MatInputModule,
+        AdvancedAnalyticsModule
     ],
   declarations: [DefaultDashboardComponent],
   exports: []
