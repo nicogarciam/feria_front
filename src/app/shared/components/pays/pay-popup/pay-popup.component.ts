@@ -124,14 +124,11 @@ export class PayPopupComponent implements OnInit {
                 break;
             }
             case 2: {
-                // CREDIT CARD;
+                // MERCADO PAGO;
+                this.payMercadoPago();
                 break;
             }
             case 3: {
-                // MERCADO PAGO;
-                break;
-            }
-            case 4: {
                 // TRANSFERENCIA BANCARIA;
                 this.payBank();
                 break;

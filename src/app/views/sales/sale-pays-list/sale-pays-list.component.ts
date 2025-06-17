@@ -19,6 +19,8 @@ import {IPay} from "@models/pay.model";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {PayPopupComponent} from "@components/pays/pay-popup/pay-popup.component";
 import {AppConfirmService} from "@services/app-confirm/app-confirm.service";
+import {SaleService} from "@services/entities/sale.service"; // Added SaleService
+import {saleStateFactory} from "@shared/models/saleState.model"; // Added saleStateFactory
 
 @Component({
     selector: 'app-sale-pays-list',
@@ -57,6 +59,7 @@ export class SalePaysListComponent implements OnInit, OnDestroy {
 
     constructor(private errorService: AppErrorService,
                 private productService: ProductService, private payService: PayService,
+                private saleService: SaleService, // Injected SaleService
                 private t: TranslateService, private snack: MatSnackBar,
                 private confirmService: AppConfirmService,
                 public jwtAuth: JwtAuthService, private dialog: MatDialog,
@@ -126,8 +129,120 @@ export class SalePaysListComponent implements OnInit, OnDestroy {
                 if (!res) {
                     return;
                 }
-                this.getSalePays();
-                this.snack.open(this.t.instant('saved.success'), 'OK', {duration: 4000})
+                // New logic starts here
+                this.loading = true;
+                this.getItemSub.push(
+                    this.payService.findForSale(this.sale.id).subscribe(
+                        paysRes => {
+                            if (paysRes.body) {
+                                this.sale.pays = paysRes.body;
+                            }
+                            // Fetch the full updated Sale object
+                            this.getItemSub.push(
+                                this.saleService.find(this.sale.id).subscribe(
+                                    updatedSaleRes => {
+                                        if (updatedSaleRes.body) {
+                                            this.sale = updatedSaleRes.body; // Update the main sale object
+                                            this._pays = this.sale.pays; // Also update _pays if it's used by the template directly for pays list
+                                        }
+
+                                        const totalPaid = (this.sale.pays || []).reduce((sum, pay) => sum + (pay.amount || 0), 0);
+
+                                        if (this.sale.total_price !== undefined && totalPaid >= this.sale.total_price) {
+                                            this.getItemSub.push(
+                                                this.confirmService.confirm({
+                                                    title: this.t.instant('confirm.updateSaleStatus.title'), // New translation key
+                                                    message: this.t.instant('confirm.updateSaleStatus.message') // New translation key
+                                                }).subscribe(confirmationResult => {
+                                                    if (confirmationResult) {
+                                                        const paidState = saleStateFactory['PAID'];
+                                                        if (!paidState) {
+                                                            console.error('PAID state not found in saleStateFactory');
+                                                            this.snack.open('Error: PAID state definition missing.', 'ERROR', { duration: 4000 });
+                                                            this.loading = false;
+                                                            return;
+                                                        }
+                                                        this.sale.sale_state = paidState;
+                                                        // Assuming paidState.id exists, otherwise use 3 as per instructions
+                                                        this.sale.sale_state_id = paidState.id !== undefined ? paidState.id : 3;
+
+                                                        this.getItemSub.push(
+                                                            this.saleService.update(this.sale).subscribe(
+                                                                () => { // Sale updated successfully
+                                                                    // Update Product Statuses
+                                                                    if (this.sale.products && this.sale.products.length > 0) {
+                                                                        let productsUpdatedCount = 0;
+                                                                        const totalProductsToUpdate = this.sale.products.length;
+                                                                        this.sale.products.forEach(product => {
+                                                                            const originalStateId = product.state_id; // Keep original for potential rollback or logging
+                                                                            product.state_id = 2; // Placeholder ID for 'vendidos'
+                                                                            this.getItemSub.push(
+                                                                                this.productService.update(product).subscribe(
+                                                                                    () => {
+                                                                                        productsUpdatedCount++;
+                                                                                        if (productsUpdatedCount === totalProductsToUpdate) {
+                                                                                            this.snack.open(this.t.instant('saleAndProducts.updated.success'), 'OK', {duration: 4000}); // New translation key
+                                                                                            this.productChange.emit(); // Emit event to refresh parent/product list if necessary
+                                                                                            this.loading = false;
+                                                                                        }
+                                                                                    },
+                                                                                    prodUpdateErr => {
+                                                                                        console.error('Error updating product status:', prodUpdateErr);
+                                                                                        product.state_id = originalStateId; // Revert on error
+                                                                                        // Potentially collect errors and show a summary
+                                                                                        productsUpdatedCount++; // Count as processed
+                                                                                        if (productsUpdatedCount === totalProductsToUpdate) {
+                                                                                             this.snack.open(this.t.instant('sale.updated.products.error'), 'ERROR', { duration: 4000 }); // New translation key for partial success
+                                                                                             this.loading = false;
+                                                                                        }
+                                                                                    }
+                                                                                )
+                                                                            );
+                                                                        });
+                                                                    } else {
+                                                                        this.snack.open(this.t.instant('sale.updated.success'), 'OK', {duration: 4000}); // New translation key (sale updated, no products or no change needed)
+                                                                        this.loading = false;
+                                                                    }
+                                                                },
+                                                                saleUpdateErr => {
+                                                                    console.error('Error updating sale status:', saleUpdateErr);
+                                                                    this.snack.open(this.t.instant('error.updating.sale'), 'ERROR', {duration: 4000});
+                                                                    this.loading = false;
+                                                                }
+                                                            )
+                                                        );
+                                                    } else {
+                                                        // User did not confirm status update
+                                                        this.snack.open(this.t.instant('saved.success'), 'OK', {duration: 4000}); // Original message: pay saved
+                                                        this.loading = false;
+                                                    }
+                                                })
+                                            );
+                                        } else {
+                                            // Total paid is less than total price, or total_price is undefined
+                                            this.snack.open(this.t.instant('saved.success'), 'OK', {duration: 4000});
+                                            this.loading = false;
+                                            if (this.sale.total_price === undefined) {
+                                                console.warn('Sale total_price is undefined after fetching.');
+                                            }
+                                        }
+                                    },
+                                    updatedSaleErr => {
+                                        console.error("Error fetching updated sale:", updatedSaleErr);
+                                        this.snack.open(this.t.instant('error.fetching.sale'), 'ERROR', {duration: 4000});
+                                        this.loading = false;
+                                    }
+                                )
+                            );
+                        },
+                        paysErr => {
+                            console.error("Error fetching pays for sale:", paysErr);
+                            this.snack.open(this.t.instant('error.fetching.pays'), 'ERROR', {duration: 4000});
+                            this.loading = false;
+                        }
+                    )
+                );
+                // New logic ends here
             })
     }
 

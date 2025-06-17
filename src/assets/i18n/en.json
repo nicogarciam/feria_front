@@ -455,5 +455,10 @@
   "years.ago": "Years ago",
   "yes": "yes",
   "you.do.not.have.an.entity": "You do not have an Entity registered, please enter the details of your entity",
-  "you.do.not.have.an.store": "You do not have a Store registered, please enter Store details"
+  "you.do.not.have.an.store": "You do not have a Store registered, please enter Store details",
+
+  "confirm.updateSaleStatus.title": "Confirm Action",
+  "confirm.updateSaleStatus.message": "The payment covers the cart total. Do you want to change the sale status to PAID and products to SOLD?",
+  "saleAndProducts.updated.success": "Sale updated to PAID and products to SOLD.",
+  "sale.updated.success": "Sale updated successfully."
 }

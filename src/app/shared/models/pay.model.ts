@@ -35,10 +35,9 @@ export class Pay implements IPay {
 }
 
 export const pay_methods = [
-    {id: 1, dsc: 'cash'},
-    {id: 2, dsc: 'creditcard'},
-    {id: 3, dsc: 'mercadopago'},
-    {id: 4, dsc: 'bank_transfer'},
+    {id: 1, dsc: 'cash'}, // Efectivo
+    {id: 2, dsc: 'mercadopago'}, // Mercado Pago
+    {id: 3, dsc: 'bank_transfer'}, // Transferencia
 ];
 
 export const banks = [

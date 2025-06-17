@@ -70,7 +70,7 @@
                     </mat-action-row>
                 </mat-expansion-panel>
                 <!-- PAY BANk-->
-                <mat-expansion-panel hideToggle (opened)="setPayMethod(4)" [disabled]="paying" >
+                <mat-expansion-panel hideToggle (opened)="setPayMethod(3)" [disabled]="paying" >
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{'bank.transfer' | translate }}
@@ -110,34 +110,8 @@
                         </button-loading>
                     </mat-action-row>
                 </mat-expansion-panel>
-                <!-- PAY CREDIT CARD-->
-                <mat-expansion-panel hideToggle (opened)="setPayMethod(2)" [disabled]="paying">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            {{'creditcard' | translate }}
-                        </mat-panel-title>
-                        <mat-panel-description>
-                            <span> </span>
-                            <mat-icon>payment</mat-icon>
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Country</mat-label>
-                        <input matInput>
-                    </mat-form-field>
-                    <mat-action-row>
-                        <button-loading
-                                [loading]="paying"
-                                class="mr-16"
-                                color="primary"
-                                [disable]="itemForm.invalid">
-                            {{ 'pay' | translate}}
-                        </button-loading>
-                    </mat-action-row>
-                </mat-expansion-panel>
                 <!-- PAY MERCADO PAGO -->
-                <mat-expansion-panel hideToggle (opened)="setPayMethod(3)" [disabled]="paying">
+                <mat-expansion-panel hideToggle (opened)="setPayMethod(2)" [disabled]="paying">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             {{'mercadopago' | translate }}
