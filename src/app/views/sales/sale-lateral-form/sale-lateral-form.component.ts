@@ -228,7 +228,6 @@ export class SaleLateralFormComponent implements OnInit, OnDestroy {
 
         this.sale = this.createFromForm();
         // VALIDATION
-
         if (this.sale.id) {
             this.getItemSub.push(this.saleService.update(this.sale).subscribe(b => {
                     this.loading = false;
