@@ -5,9 +5,11 @@ import {DateAdapter, MAT_DATE_FORMATS} from '@angular/material/core';
 import {APP_DATE_FORMATS, AppDateAdapter} from '@helpers/format-datepicker';
 import {egretAnimations} from '@animations/egret-animations';
 import {AppErrorService} from "@services/app-error/app-error.service";
-import {Subscription} from "rxjs";
+import {Subscription} from "rxjs"; // Observable, throwError, EMPTY, tap, catchError removed as getPaysFromServer is void
 import {PayService} from "@services/entities/pay.service";
 import {IProduct} from "@models/product.model";
+// tap, catchError are not directly used in the component anymore, but in service if used there.
+// For this refactor, they are removed from component imports if not used elsewhere.
 import {ProductService} from "@services/entities/product.service";
 import {IProductState} from "@models/product-state.model";
 import {IStore, Store} from "@models/store.model";
@@ -43,6 +45,7 @@ export class SalePaysListComponent implements OnInit, OnDestroy {
     _sale: ISale;
 
     @Output() productChange = new EventEmitter();
+    @Output() paymentUpdated = new EventEmitter<void>(); // Added EventEmitter
 
 
     @Input()
@@ -53,7 +56,12 @@ export class SalePaysListComponent implements OnInit, OnDestroy {
     set sale(value: ISale) {
         if (value !== undefined) {
             this._sale = value;
-            this.getPaysFromServer();
+            if (this._sale && this._sale.id) {
+                 this.getPaysFromServer('inputChanged');
+            } else {
+                 this._pays = [];
+                 this.loading = false;
+            }
         }
     }
 
@@ -87,23 +95,27 @@ export class SalePaysListComponent implements OnInit, OnDestroy {
     }
 
 
-    getPaysFromServer() {
+    private getPaysFromServer(actionSource: string = 'init'): void {
+        if (!this.sale || !this.sale.id) {
+            this._pays = [];
+            this.loading = false;
+            return;
+        }
         this.loading = true;
-
-        const options = {
-            'sale_id': this.sale.id,
-        };
-
-        this.getItemSub.push(
-            this.payService.findForSale(this.sale.id).subscribe(resp => {
-                    this._pays = resp.body;
-                    this.loading = false;
-                },
-                error => {
-                    this.loading = false;
-                    this.errorService.error(error)
-                })
-        )
+        this.getItemSub.push(this.payService.findForSale(this.sale.id).subscribe(
+            resp => {
+                this._pays = resp.body || [];
+                this.loading = false;
+                if (actionSource === 'paymentAdded' || actionSource === 'paymentDeleted') {
+                    this.paymentUpdated.emit();
+                }
+            },
+            err => {
+                this._pays = [];
+                this.loading = false;
+                this.errorService.error(err);
+            }
+        ));
     }
 
 
@@ -129,120 +141,10 @@ export class SalePaysListComponent implements OnInit, OnDestroy {
                 if (!res) {
                     return;
                 }
-                // New logic starts here
-                this.loading = true;
-                this.getItemSub.push(
-                    this.payService.findForSale(this.sale.id).subscribe(
-                        paysRes => {
-                            if (paysRes.body) {
-                                this.sale.pays = paysRes.body;
-                            }
-                            // Fetch the full updated Sale object
-                            this.getItemSub.push(
-                                this.saleService.find(this.sale.id).subscribe(
-                                    updatedSaleRes => {
-                                        if (updatedSaleRes.body) {
-                                            this.sale = updatedSaleRes.body; // Update the main sale object
-                                            this._pays = this.sale.pays; // Also update _pays if it's used by the template directly for pays list
-                                        }
+                // Show basic saved success snackbar
+                this.snack.open(this.t.instant('saved.success'), 'OK', {duration: 4000});
 
-                                        const totalPaid = (this.sale.pays || []).reduce((sum, pay) => sum + (pay.amount || 0), 0);
-
-                                        if (this.sale.total_price !== undefined && totalPaid >= this.sale.total_price) {
-                                            this.getItemSub.push(
-                                                this.confirmService.confirm({
-                                                    title: this.t.instant('confirm.updateSaleStatus.title'), // New translation key
-                                                    message: this.t.instant('confirm.updateSaleStatus.message') // New translation key
-                                                }).subscribe(confirmationResult => {
-                                                    if (confirmationResult) {
-                                                        const paidState = saleStateFactory['PAID'];
-                                                        if (!paidState) {
-                                                            console.error('PAID state not found in saleStateFactory');
-                                                            this.snack.open('Error: PAID state definition missing.', 'ERROR', { duration: 4000 });
-                                                            this.loading = false;
-                                                            return;
-                                                        }
-                                                        this.sale.sale_state = paidState;
-                                                        // Assuming paidState.id exists, otherwise use 3 as per instructions
-                                                        this.sale.sale_state_id = paidState.id !== undefined ? paidState.id : 3;
-
-                                                        this.getItemSub.push(
-                                                            this.saleService.update(this.sale).subscribe(
-                                                                () => { // Sale updated successfully
-                                                                    // Update Product Statuses
-                                                                    if (this.sale.products && this.sale.products.length > 0) {
-                                                                        let productsUpdatedCount = 0;
-                                                                        const totalProductsToUpdate = this.sale.products.length;
-                                                                        this.sale.products.forEach(product => {
-                                                                            const originalStateId = product.state_id; // Keep original for potential rollback or logging
-                                                                            product.state_id = 2; // Placeholder ID for 'vendidos'
-                                                                            this.getItemSub.push(
-                                                                                this.productService.update(product).subscribe(
-                                                                                    () => {
-                                                                                        productsUpdatedCount++;
-                                                                                        if (productsUpdatedCount === totalProductsToUpdate) {
-                                                                                            this.snack.open(this.t.instant('saleAndProducts.updated.success'), 'OK', {duration: 4000}); // New translation key
-                                                                                            this.productChange.emit(); // Emit event to refresh parent/product list if necessary
-                                                                                            this.loading = false;
-                                                                                        }
-                                                                                    },
-                                                                                    prodUpdateErr => {
-                                                                                        console.error('Error updating product status:', prodUpdateErr);
-                                                                                        product.state_id = originalStateId; // Revert on error
-                                                                                        // Potentially collect errors and show a summary
-                                                                                        productsUpdatedCount++; // Count as processed
-                                                                                        if (productsUpdatedCount === totalProductsToUpdate) {
-                                                                                             this.snack.open(this.t.instant('sale.updated.products.error'), 'ERROR', { duration: 4000 }); // New translation key for partial success
-                                                                                             this.loading = false;
-                                                                                        }
-                                                                                    }
-                                                                                )
-                                                                            );
-                                                                        });
-                                                                    } else {
-                                                                        this.snack.open(this.t.instant('sale.updated.success'), 'OK', {duration: 4000}); // New translation key (sale updated, no products or no change needed)
-                                                                        this.loading = false;
-                                                                    }
-                                                                },
-                                                                saleUpdateErr => {
-                                                                    console.error('Error updating sale status:', saleUpdateErr);
-                                                                    this.snack.open(this.t.instant('error.updating.sale'), 'ERROR', {duration: 4000});
-                                                                    this.loading = false;
-                                                                }
-                                                            )
-                                                        );
-                                                    } else {
-                                                        // User did not confirm status update
-                                                        this.snack.open(this.t.instant('saved.success'), 'OK', {duration: 4000}); // Original message: pay saved
-                                                        this.loading = false;
-                                                    }
-                                                })
-                                            );
-                                        } else {
-                                            // Total paid is less than total price, or total_price is undefined
-                                            this.snack.open(this.t.instant('saved.success'), 'OK', {duration: 4000});
-                                            this.loading = false;
-                                            if (this.sale.total_price === undefined) {
-                                                console.warn('Sale total_price is undefined after fetching.');
-                                            }
-                                        }
-                                    },
-                                    updatedSaleErr => {
-                                        console.error("Error fetching updated sale:", updatedSaleErr);
-                                        this.snack.open(this.t.instant('error.fetching.sale'), 'ERROR', {duration: 4000});
-                                        this.loading = false;
-                                    }
-                                )
-                            );
-                        },
-                        paysErr => {
-                            console.error("Error fetching pays for sale:", paysErr);
-                            this.snack.open(this.t.instant('error.fetching.pays'), 'ERROR', {duration: 4000});
-                            this.loading = false;
-                        }
-                    )
-                );
-                // New logic ends here
+                this.getPaysFromServer('paymentAdded');
             })
     }
 
@@ -250,17 +152,22 @@ export class SalePaysListComponent implements OnInit, OnDestroy {
         const message = this.t.instant('delete') + ' ' + this.t.instant('pays') + ' ?'
         this.getItemSub.push(
             this.confirmService.confirm({title: this.t.instant('are.you.sure'), message: message})
-                .subscribe(res => {
-                    if (res) {
+                .subscribe(confirmationResult => {
+                    if (confirmationResult) {
+                        this.loading = true;
                         this.getItemSub.push(this.payService.delete(pay.id)
-                            .subscribe(item => {
-                                    this.getSalePays();
-                                    this.snack.open(this.t.instant('deleted'), 'OK', {duration: 4000})
+                            .subscribe({
+                                next: item => {
+                                    // this.loading = false; // loading is handled by getPaysFromServer
+                                    this.snack.open(this.t.instant('deleted'), 'OK', {duration: 4000});
+                                    this.getPaysFromServer('paymentDeleted');
                                 },
-                                (error => {
+                                error: err => {
                                     this.loading = false;
-                                    this.snack.open(this.t.instant('error'), 'Ups!', {duration: 4000})
-                                })))
+                                    this.errorService.error(err);
+                                    this.snack.open(this.t.instant('error'), 'Ups!', {duration: 4000});
+                                }
+                            }));
                     }
                 }));
     }

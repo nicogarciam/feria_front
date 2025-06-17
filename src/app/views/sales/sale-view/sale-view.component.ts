@@ -28,6 +28,7 @@ import {ICustomer} from "@models/customer.model";
 import {HttpResponse} from "@angular/common/http";
 import {IProductState} from "@models/product-state.model";
 import {ProductStateService} from "@services/entities/productState.service";
+import { saleStateFactory } from '@shared/models/saleState.model'; // Added import
 
 @Component({
     selector: 'app-sales-view',
@@ -182,10 +183,9 @@ export class SaleViewComponent implements OnInit, OnDestroy {
             this.getItemSub.push(
                 this.saleService.update(this._sale).subscribe(b => {
                     this.loading = false;
-                    this.sale = b.body;
+                    this.sale = b.body; // Re-assign to trigger setter
                     this.loader.close();
                     this.snack.open(this.t.instant('saved.success'), 'OK', {duration: 4000})
-                    // this.saved.emit();
                 },
                 error => {
                     console.log(error);
@@ -226,8 +226,10 @@ export class SaleViewComponent implements OnInit, OnDestroy {
                             this.loader.close();
                             this.errorService.error(error);
                         });
+                } else { // If user cancels deletion
+                    this.loading = false;
+                    this.loader.close();
                 }
-
             }));
     }
 
@@ -235,6 +237,86 @@ export class SaleViewComponent implements OnInit, OnDestroy {
         event.target.select();
     }
 
+    // New methods start here
+    public onPaymentUpdated(): void {
+        this.loader.open();
+        this.getItemSub.push(
+            this.saleService.find(this.sale.id).subscribe(
+                updatedSaleRes => {
+                    this.loader.close();
+                    if (!updatedSaleRes.body) {
+                        this.errorService.error({ message: 'Failed to load updated sale data.' });
+                        return;
+                    }
+                    // CRITICAL: Assign to this.sale to trigger the setter and update related data
+                    this.sale = updatedSaleRes.body;
+
+                    const totalPaid = (this.sale.pays || []).reduce((sum, pay) => sum + (pay.amount || 0), 0);
+
+                    if (this.sale.total_price != null && totalPaid >= this.sale.total_price) {
+                        const currentSaleStateName = this.sale.sale_state?.name?.toLowerCase();
+                        const isNotFinalState = currentSaleStateName !== 'paid' && currentSaleStateName !== 'pagado' &&
+                                              currentSaleStateName !== 'canceled' && currentSaleStateName !== 'cancelado';
+                        if (isNotFinalState) {
+                            this.promptForStatusUpdate(totalPaid);
+                        }
+                    }
+                },
+                error => {
+                    this.loader.close();
+                    this.errorService.error(error);
+                }
+            )
+        );
+    }
+
+    private promptForStatusUpdate(totalPaid: number): void {
+        const message = this.t.instant('confirm.updateSaleStatus.message'); // This message will be updated later
+        const title = this.t.instant('confirm.updateSaleStatus.title');
+
+        this.getItemSub.push(
+            this.confirmService.confirm({ title: title, message: message })
+            .subscribe(confirmationResult => {
+                if (confirmationResult) {
+                    this.updateSaleStatusToPaid(); // Renamed method called here
+                }
+            })
+        );
+    }
+
+    private updateSaleStatusToPaid(): void { // Renamed method
+        this.loader.open();
+
+        const paidState = saleStateFactory['PAID'];
+        if (!paidState) {
+            console.error("PAID state definition not found in saleStateFactory.");
+            this.loader.close();
+            this.snack.open("Error: PAID state configuration is missing.", "ERROR", { duration: 4000 }); // Or use a translated key
+            return;
+        }
+
+        const saleToUpdate = { ...this.sale }; // Work with a copy
+        saleToUpdate.sale_state = paidState;
+        saleToUpdate.sale_state_id = paidState.id != null ? paidState.id : 3;
+
+        this.getItemSub.push(
+            this.saleService.update(saleToUpdate).subscribe(
+                updatedSaleRes => {
+                    this.loader.close();
+                    if (updatedSaleRes.body) {
+                        this.sale = updatedSaleRes.body; // Update the main sale object
+                    }
+                    // Use new translation key for "Sale updated to PAID"
+                    this.snack.open(this.t.instant('sale.updatedToPaid.success'), 'OK', { duration: 4000 });
+                },
+                saleUpdateError => {
+                    this.loader.close();
+                    this.errorService.error(saleUpdateError);
+                }
+            )
+        );
+    }
+    // End of new methods
 
     ngOnDestroy() {
         this.getItemSub.forEach(sub => sub.unsubscribe());
@@ -288,6 +370,4 @@ export class SaleViewComponent implements OnInit, OnDestroy {
         console.log(o2);
         return o1 != null && o2 != null ? (o1.id === o2.id) : false;
     }
-
-
 }

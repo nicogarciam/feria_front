@@ -479,7 +479,7 @@
   "Sunday": "Domingo",
 
   "confirm.updateSaleStatus.title": "Confirmar Acción",
-  "confirm.updateSaleStatus.message": "El pago cubre el total del carrito. ¿Desea cambiar el estado de la venta a PAGADO y los productos a VENDIDOS?",
-  "saleAndProducts.updated.success": "Venta actualizada a PAGADO y productos a VENDIDOS.",
-  "sale.updated.success": "Venta actualizada correctamente."
+  "confirm.updateSaleStatus.message": "El pago cubre el total del carrito. ¿Desea cambiar el estado de la venta a PAGADO?",
+  "sale.updated.success": "Venta actualizada correctamente.",
+  "sale.updatedToPaid.success": "Venta actualizada a PAGADO."
 }

@@ -195,7 +195,7 @@
         <!-- // PRODUCTS-->
 
         <!-- PAYS-->
-        <app-sale-pays-list [sale]="_sale"></app-sale-pays-list>
+        <app-sale-pays-list [sale]="_sale" (paymentUpdated)="onPaymentUpdated()"></app-sale-pays-list>
 
         <!-- END PAYS-->
     </div>

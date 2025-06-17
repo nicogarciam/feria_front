@@ -458,7 +458,7 @@
   "you.do.not.have.an.store": "You do not have a Store registered, please enter Store details",
 
   "confirm.updateSaleStatus.title": "Confirm Action",
-  "confirm.updateSaleStatus.message": "The payment covers the cart total. Do you want to change the sale status to PAID and products to SOLD?",
-  "saleAndProducts.updated.success": "Sale updated to PAID and products to SOLD.",
-  "sale.updated.success": "Sale updated successfully."
+  "confirm.updateSaleStatus.message": "The payment covers the cart total. Do you want to change the sale status to PAID?",
+  "sale.updated.success": "Sale updated successfully.",
+  "sale.updatedToPaid.success": "Sale updated to PAID."
 }
