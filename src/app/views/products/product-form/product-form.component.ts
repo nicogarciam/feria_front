@@ -23,6 +23,8 @@ import {CategoryService} from '@services/entities/category.service';
 import {JwtAuthService} from '@services/auth/jwt-auth.service';
 import {ProviderPopupComponent} from "@components/providers/provider-popup/provider-popup.component";
 import {GalleryImage} from "@models/image.model";
+import {AiFeaturesService} from "@shared/services/ai-features.service.ts";
+import {PriceSuggestionService} from "@shared/services/price-suggestion.service.ts";
 
 @Component({
     selector: 'app-product-form',
@@ -83,7 +85,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         private dialog: MatDialog,
         public jwtAuth: JwtAuthService,
         private providerService: ProviderService,
-        private categoryService: CategoryService
+        private categoryService: CategoryService,
+        private aiFeaturesService: AiFeaturesService,
+        private priceSuggestionService: PriceSuggestionService
     ) {
     }
 

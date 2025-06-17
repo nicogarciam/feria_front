@@ -62,11 +62,11 @@
                         </button>
                         <div *ngIf="detectedFeatures.length > 0" class="mt-05">
                             <h4 class="mat-subheading-1">{{ 'detected_features' | translate }}:</h4>
-                            <mat-chip-listbox aria-label="Detected features">
-                                <mat-chip-option *ngFor="let feature of detectedFeatures" selected>
+                            <mat-list role="list">
+                                <mat-list-item role="listitem" *ngFor="let feature of detectedFeatures">
                                     {{feature}}
-                                </mat-chip-option>
-                            </mat-chip-listbox>
+                                </mat-list-item>
+                            </mat-list>
                             <!-- Add input fields for editing features if needed -->
                         </div>
                     </div>
@@ -93,11 +93,11 @@
                         </button>
                         <div *ngIf="suggestedPrices.length > 0" class="mt-05">
                             <h4 class="mat-subheading-1">{{ 'suggested_prices' | translate }}:</h4>
-                            <mat-chip-listbox aria-label="Suggested prices">
-                                <mat-chip-option *ngFor="let price of suggestedPrices" (click)="itemForm.get('price').setValue(price)">
+                            <div fxLayout="row wrap" fxLayoutGap="8px">
+                                <button mat-stroked-button *ngFor="let price of suggestedPrices" (click)="itemForm.get('price').setValue(price)">
                                     {{price | currency:'USD':'symbol':'1.2-2'}}
-                                </mat-chip-option>
-                            </mat-chip-listbox>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
