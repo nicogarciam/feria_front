@@ -1,0 +1,30 @@
+/* Styles for RoleEditorComponent */
+.full-width {
+  width: 100%;
+}
+
+.permissions-container {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  max-height: 200px; /* Example max height */
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.permission-item {
+  display: block; /* Each checkbox on a new line */
+  margin-bottom: 8px;
+}
+
+.actions-buttons {
+  margin-top: 20px;
+}
+
+.actions-buttons button {
+  margin-right: 8px;
+}
+
+mat-card-title {
+  margin-bottom: 20px;
+}

@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-title>{{ isEditMode ? 'Edit Role' : 'Create New Role' }}</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Role Name</mat-label>
+        <input matInput formControlName="name" placeholder="Enter role name" required>
+        <mat-error *ngIf="roleForm.get('name')?.hasError('required')">
+          Role name is required.
+        </mat-error>
+      </mat-form-field>
+
+      <h3>Permissions</h3>
+      <div formArrayName="permissions" class="permissions-container">
+        <div *ngFor="let permissionGroup of permissionsFormArray.controls; let i = index" [formGroupName]="i" class="permission-item">
+          <mat-checkbox formControlName="selected">
+            {{ permissionGroup.get('name')?.value }}
+          </mat-checkbox>
+        </div>
+      </div>
+      <div *ngIf="!(allPermissions$ | async)?.length">
+        Loading permissions or no permissions available...
+      </div>
+
+      <div class="actions-buttons">
+        <button mat-raised-button color="primary" type="submit" [disabled]="roleForm.invalid">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+        <button mat-stroked-button type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

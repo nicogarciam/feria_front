@@ -1,0 +1,30 @@
+<mat-card *ngIf="user">
+  <mat-card-title>Assign Roles to {{ user?.displayName }}</mat-card-title>
+  <mat-card-subtitle>{{ user?.email }}</mat-card-subtitle>
+  <mat-card-content>
+    <form [formGroup]="userRoleForm" (ngSubmit)="onSubmit()">
+      <h3>Available Roles</h3>
+      <div formArrayName="roles" class="roles-container">
+        <div *ngFor="let roleGroup of rolesFormArray.controls; let i = index" [formGroupName]="i" class="role-item">
+          <mat-checkbox formControlName="selected">
+            {{ roleGroup.get('name')?.value }}
+          </mat-checkbox>
+        </div>
+      </div>
+      <div *ngIf="!(allRoles$ | async)?.length && !rolesFormArray.length">
+        Loading roles or no roles available...
+      </div>
+
+      <div class="actions-buttons">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!userId">
+          Save Role Assignments
+        </button>
+        <button mat-stroked-button type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<div *ngIf="!user && userId">
+  <p>Loading user data...</p>
+</div>

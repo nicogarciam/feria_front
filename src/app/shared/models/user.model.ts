@@ -3,7 +3,7 @@ import {IAccount} from './account.model';
 export interface IUser {
   id?: number;
   displayName?: string;
-  role?: string;
+  roles?: string[];
   name?: string;
   email?: string;
   account?: IAccount;
@@ -15,7 +15,7 @@ export class User implements IUser {
   constructor(
       public id?: number,
       public displayName?: string,
-      public role?: string,
+      public roles?: string[],
       public name?: string,
       public email?: string,
       public account?: IAccount,

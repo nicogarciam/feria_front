@@ -1,0 +1,26 @@
+/* Styles for UserRoleAssignerComponent */
+.roles-container {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  max-height: 300px; /* Example max height */
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.role-item {
+  display: block; /* Each checkbox on a new line */
+  margin-bottom: 8px;
+}
+
+.actions-buttons {
+  margin-top: 20px;
+}
+
+.actions-buttons button {
+  margin-right: 8px;
+}
+
+mat-card-title, mat-card-subtitle {
+  margin-bottom: 10px;
+}

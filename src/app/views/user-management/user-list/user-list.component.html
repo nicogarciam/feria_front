@@ -1,0 +1,51 @@
+<div>
+  <h2>User List</h2>
+  <!-- <button mat-raised-button color="primary">Create New User</button> --> <!-- Assuming user creation is elsewhere -->
+
+  <table mat-table [dataSource]="users$" class="mat-elevation-z8" *ngIf="users$ | async as users">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let user"> {{user.id}} </td>
+    </ng-container>
+
+    <!-- DisplayName Column -->
+    <ng-container matColumnDef="displayName">
+      <th mat-header-cell *matHeaderCellDef> Display Name </th>
+      <td mat-cell *matCellDef="let user"> {{user.displayName}} </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+    </ng-container>
+
+    <!-- Roles Column -->
+    <ng-container matColumnDef="roles">
+      <th mat-header-cell *matHeaderCellDef> Roles </th>
+      <td mat-cell *matCellDef="let user"> {{ user.roles?.join(', ') }} </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let user">
+        <button mat-icon-button color="primary" (click)="viewUserDetails(user)" matTooltip="View Details / Assign Roles">
+          <mat-icon>assignment_ind</mat-icon>
+        </button>
+        <!-- <button mat-icon-button color="accent" (click)="editUser(user)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteUser(user.id!)">
+          <mat-icon>delete</mat-icon>
+        </button> -->
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <p *ngIf="!(users$ | async)?.length">No users found.</p>
+</div>

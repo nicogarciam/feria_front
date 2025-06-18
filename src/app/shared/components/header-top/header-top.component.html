@@ -58,6 +58,29 @@
             <span fxFlex></span>
             <!-- End Navigation -->
 
+            <!-- Impersonation Controls -->
+            <div *ngIf="!layoutConf.isMobile && canImpersonate()" class="impersonation-controls topbar-button-right">
+                <mat-select
+                    *ngIf="!isImpersonating()"
+                    placeholder="View as Role"
+                    [(ngModel)]="selectedImpersonationRole"
+                    (selectionChange)="onStartImpersonation($event.value)"
+                    class="mr-1"
+                    [style.width]="'auto'">
+                    <mat-option *ngFor="let role of (allRoles$ | async)" [value]="role.name">
+                        {{role.name}}
+                    </mat-option>
+                </mat-select>
+
+                <div *ngIf="isImpersonating()" class="impersonation-active-display">
+                    <span class="mr-1">Viewing as: <strong>{{ getImpersonatedRoleName() }}</strong></span>
+                    <button mat-stroked-button color="warn" (click)="onStopImpersonation()" class="mr-1">
+                        Stop Impersonating
+                    </button>
+                </div>
+            </div>
+            <!-- End Impersonation Controls -->
+
             <!-- Language Switcher -->
             <mat-select
                     *ngIf="!layoutConf.isMobile"

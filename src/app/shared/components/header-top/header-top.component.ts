@@ -6,8 +6,12 @@ import {TranslateService} from '@ngx-translate/core';
 import {LayoutService} from '@services/layout.service';
 import {JwtAuthService} from '@services/auth/jwt-auth.service';
 import {IStore} from "@models/store.model";
-import {CartService} from "@services/cart/cart.service";
-import {CartQuery} from "@services/cart/cart.query";
+// CartService and CartQuery seem unused in the provided code snippet for HeaderTopComponent, removed for brevity if not needed.
+// import {CartService} from "@services/cart/cart.service";
+// import {CartQuery} from "@services/cart/cart.query";
+import { RoleService } from '@services/entities/role.service'; // Import RoleService
+import { IRole } from '@models/role.model'; // Import IRole
+import { Observable, of } from 'rxjs'; // Import Observable and of for allRoles$
 
 @Component({
     selector: 'app-header-top',
@@ -32,10 +36,14 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
     }]
     @Input() notificPanel;
 
+    allRoles$: Observable<IRole[]> = of([]); // Initialize with empty array
+    selectedImpersonationRole: string = '';
+
     constructor(
         private layout: LayoutService, private navService: NavigationService, public themeService: ThemeService,
         public translate: TranslateService, private renderer: Renderer2,
-        public jwtAuth: JwtAuthService
+        public jwtAuth: JwtAuthService,
+        private roleService: RoleService // Inject RoleService
     ) {
     }
 
@@ -60,7 +68,11 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
                 })
                 this.menuItems = mainItems
             });
-        this.jwtAuth.store$.subscribe(value => this.selectedHotel = value)
+        this.jwtAuth.store$.subscribe(value => this.selectedHotel = value);
+
+        if (this.canImpersonate()) { // Only fetch roles if user can potentially impersonate
+            this.allRoles$ = this.roleService.getRoles();
+        }
     }
 
     ngOnDestroy() {
@@ -88,5 +100,34 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
         this.layout.publishLayoutChange({
             sidebarStyle: 'closed'
         })
+    }
+
+    // --- Impersonation UI Methods ---
+    canImpersonate(): boolean {
+        return this.jwtAuth.canImpersonate();
+    }
+
+    isImpersonating(): boolean {
+        return this.jwtAuth.isImpersonating;
+    }
+
+    onStartImpersonation(roleName: string): void {
+        if (roleName) {
+            this.jwtAuth.startImpersonation(roleName);
+            this.selectedImpersonationRole = ''; // Reset select
+        }
+    }
+
+    onStopImpersonation(): void {
+        this.jwtAuth.stopImpersonation();
+    }
+
+    getImpersonatedRoleName(): string | undefined {
+        if (this.isImpersonating()) {
+            const currentUser = this.jwtAuth.getUser();
+            // Assuming roles is string[] and impersonated user has one role
+            return currentUser?.roles?.[0];
+        }
+        return undefined;
     }
 }
